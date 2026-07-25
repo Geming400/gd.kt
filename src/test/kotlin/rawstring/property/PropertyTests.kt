@@ -44,14 +44,75 @@ class PropertyTests {
         Assertions.assertEquals(prop.value, testValue)
 
         Assertions.assertEquals(prop.toRawString(), "${prop.id},$testValue")
-
     }
 
     @Test
-    fun valueTest() {
+    fun testIntProp() {
         propTest(
             IntProperty(0u, 5, 0),
-            7
+            testValue = 7
         )
+    }
+
+    @Test
+    fun testBoolProp() {
+        val prop = BoolProperty(1u, null)
+        Assertions.assertEquals(prop.toRawString(), "")
+
+        prop.value = true
+        Assertions.assertEquals(prop.asGdBool(), 1)
+        Assertions.assertEquals(prop.toRawString(), "${prop.id},1")
+
+        prop.value = false
+        Assertions.assertEquals(prop.asGdBool(), 0)
+        Assertions.assertEquals(prop.toRawString(), "${prop.id},0")
+    }
+
+    @Test
+    fun testListProp() {
+        val prop = ListProperty<Int>(0u)
+        Assertions.assertEquals(prop.size(), 0)
+
+        prop.add(5)
+        Assertions.assertEquals(prop.size(), 1)
+        Assertions.assertEquals(prop[0], 5)
+        Assertions.assertEquals(prop[0], prop.getOrThrow()[0])
+
+        prop[0] = 4
+        Assertions.assertEquals(prop.size(), 1)
+        Assertions.assertEquals(prop[0], 4)
+        Assertions.assertEquals(prop[0], prop.getOrThrow()[0])
+
+        prop.clear()
+        Assertions.assertEquals(prop.size(), 0)
+        Assertions.assertThrows(IndexOutOfBoundsException::class.java) { prop[0] }
+
+        val secondProp = ListProperty<Int>(0u, defaultValue = null)
+        Assertions.assertThrows(NullPointerException::class.java) { secondProp[0] }
+        Assertions.assertThrows(NullPointerException::class.java) { secondProp[0] = 5 }
+        Assertions.assertThrows(NullPointerException::class.java) { secondProp.add(5) }
+        Assertions.assertThrows(NullPointerException::class.java) { secondProp.size() }
+        Assertions.assertDoesNotThrow { secondProp.clear() }
+        Assertions.assertDoesNotThrow { secondProp.isEmpty() }
+    }
+
+    @Test
+    fun testSetProp() {
+        // Most of the tests are already done above
+
+        val prop = SetProperty<Int>(0u)
+        Assertions.assertEquals(prop.size(), 0)
+
+        prop.add(5)
+        Assertions.assertEquals(prop.size(), 1)
+
+        prop.clear()
+        Assertions.assertEquals(prop.size(), 0)
+
+        val secondProp = SetProperty<Int>(0u, defaultValue = null)
+        Assertions.assertThrows(NullPointerException::class.java) { secondProp.add(5) }
+        Assertions.assertThrows(NullPointerException::class.java) { secondProp.size() }
+        Assertions.assertDoesNotThrow { secondProp.clear() }
+        Assertions.assertDoesNotThrow { secondProp.isEmpty() }
     }
 }

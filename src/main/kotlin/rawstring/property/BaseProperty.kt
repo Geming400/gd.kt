@@ -1,7 +1,7 @@
 package fr.geming400.gddotkt.rawstring.property
 
 /**
- * The base class for all properties.
+ * The base class for all properties
  * @property id the id of the property. It's unsigned because no properties have negative IDs.
  *              Also in geometry dash, no id goes below 1
  * @property defaultValue the default value if the property, this affects if it will be serialized or not
@@ -29,9 +29,12 @@ abstract class BaseProperty<T>(val id: UInt, val defaultValue: T? = null, privat
 
     /**
      * Returns the property's [value] or throw if it's `null`.
-     * This is only useful if the default value is nullable
-     * @return the property's [value] or throw if it's `null
-     * @throws NullPointerException if the property's [value] is null
+     * This is only useful if the default value is nullable and is suggested
+     * to be used with [collection properties][AbstractCollectionProperty].
+     *
+     * `this.value!!` can also be used but this has a proper error message.
+     * @return the property's [value] or throw if it's `null`
+     * @throws NullPointerException if the property's [value] is `null`
      */
     fun getOrThrow(): T {
         if (this.value == null)
@@ -97,7 +100,7 @@ abstract class BaseProperty<T>(val id: UInt, val defaultValue: T? = null, privat
      *         However, an empty string can be returned if [value] is `null` or if
      *         this property is [not serializable][isSerializable]
      */
-    protected fun toRawStringHelper(value: Any? = this.value, suffix: String = "", suffixMode: SuffixMode = SuffixMode.WHEN_SERIALIZABLE): String {
+    protected open fun toRawStringHelper(value: Any? = this.value, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT): String {
         return if (this.isSerializable() && value != null) {
             this.id.toString() + KEY_VAL_SEPARATOR + value.toString() + suffixMode.getString(this, suffix)
         } else {
@@ -119,6 +122,79 @@ abstract class BaseProperty<T>(val id: UInt, val defaultValue: T? = null, privat
 }
 
 /**
+ * The base class for all properties backed by a [Collection]
+ * @property id the id of the property. It's unsigned because no properties have negative IDs.
+ *              Also in geometry dash, no id goes below 1
+ * @property defaultValue the default value if the property, this affects if it will be serialized or not
+ * @property currentValue the value to set by default. It defaults to the property value
+ */
+abstract class AbstractCollectionProperty<T, C>(id: UInt, defaultValue: C? = null, currentValue: C? = defaultValue) : BaseProperty<C>(id, defaultValue, currentValue) where C : MutableCollection<T> {
+    companion object {
+        const val ELEMENT_SEPARATOR: Char = '.'
+    }
+
+    /**
+     * Returns if the underlying collection is [empty][Collection.isEmpty]
+     * @see Collection.isEmpty
+     */
+    fun isEmpty(): Boolean {
+        if (this.value == null)
+            return true
+
+        return this.value!!.isEmpty()
+    }
+
+    /**
+     * Removes all the elements from the underlying collection. If the collection is `null` nothing will happen
+     * @see MutableCollection.clear
+     */
+    fun clear() = this.value?.clear()
+
+    /**
+     * Adds the specified element to the collection.
+     * @return `true` if the element has been added, `false` if the collection does not support duplicates
+     * and the element is already contained in the collection.
+     * @throws NullPointerException if the collection [value] is null
+     * @see MutableCollection.add
+    */
+    fun add(element: T): Boolean = this.getOrThrow().add(element)
+
+    /**
+     * Removes a single instance of the specified element from this
+     * collection, if the collection contains it.
+     * @return `true` if the element has been successfully removed; `false` if it was not contained in the collection.
+     * @throws NullPointerException if the collection [value] is null
+     * @see MutableCollection.remove
+     */
+    fun remove(element: T): Boolean = this.getOrThrow().remove(element)
+
+    /**
+     * The size of the underlying collection
+     * @throws NullPointerException if the collection [value] is null
+     * @see Collection.size
+     */
+    fun size(): Int = this.getOrThrow().size
+
+    /**
+     * See [toRawStringHelper] for more info
+     * @see [toRawStringHelper]
+     */
+    protected fun toRawIterableStringHelper(value: Collection<T>? = this.value, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT, transform: ((T?) -> CharSequence)? = null): String {
+        if (value != null || this.isEmpty() || !this.isSerializable()) {
+            return ""
+        } else if (this.value != null) {
+            this.toRawStringHelper(
+                this.value!!.joinToString(ELEMENT_SEPARATOR.toString(), transform = transform),
+                suffix,
+                suffixMode
+            )
+        }
+
+        return ""
+    }
+}
+
+/**
  * The mode on how to apply the suffix in [BaseProperty.toRawStringHelper]
  */
 enum class SuffixMode {
@@ -132,6 +208,11 @@ enum class SuffixMode {
      * @see BaseProperty.isSerializable
      */
     WHEN_SERIALIZABLE;
+
+    companion object {
+        inline val DEFAULT
+            get() = WHEN_SERIALIZABLE
+    }
 
     fun getString(prop: BaseProperty<*>, suffix: String): String {
         return if (this == ALWAYS)
