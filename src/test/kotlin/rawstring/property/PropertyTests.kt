@@ -6,7 +6,7 @@ import kotlin.io.encoding.Base64
 
 class PropertyTests {
     fun <T> propTest(
-        prop: BaseProperty<T>,
+        prop: AbstractProperty<T>,
         testValue: T,
         testRawStringValue: Any? = testValue,
         doEqualityCheck: Boolean = true

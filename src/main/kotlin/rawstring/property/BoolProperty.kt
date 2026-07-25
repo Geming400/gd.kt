@@ -2,7 +2,7 @@ package fr.geming400.gddotkt.rawstring.property
 
 import org.intellij.lang.annotations.MagicConstant
 
-class BoolProperty(id: UInt, defaultValue: Boolean? = null, currentValue: Boolean? = defaultValue) : BaseProperty<Boolean>(id, defaultValue, currentValue) {
+class BoolProperty(id: UInt, defaultValue: Boolean? = null, currentValue: Boolean? = defaultValue) : AbstractProperty<Boolean>(id, defaultValue, currentValue) {
     override fun toRawString(): String {
         val boolValue = when (this.value) {
             null -> null

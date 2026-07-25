@@ -2,6 +2,9 @@ package fr.geming400.gddotkt.rawstring
 
 import fr.geming400.gddotkt.exceptions.InvalidRawStringException
 
+/**
+ * Represents something that can have a conversion to a "geometry dash raw string"
+ */
 interface RawStringable {
     companion object {
         /**

@@ -7,7 +7,7 @@ package fr.geming400.gddotkt.rawstring.property
  * @property defaultValue the default value if the property, this affects if it will be serialized or not
  * @property currentValue the value to set by default. It defaults to the property value
  */
-abstract class BaseProperty<T>(val id: UInt, val defaultValue: T? = null, private var currentValue: T? = defaultValue) {
+abstract class AbstractProperty<T>(val id: UInt, val defaultValue: T? = null, private var currentValue: T? = defaultValue) {
     companion object {
         const val KEY_VAL_SEPARATOR: Char = ','
     }
@@ -109,9 +109,28 @@ abstract class BaseProperty<T>(val id: UInt, val defaultValue: T? = null, privat
     }
 
     /**
+     * Helper to make raw strings
+     * @param suffix the suffix to append
+     * @param suffixMode the mode deciding how to append the suffix
+     * @param valueGetter the getter used to obtain the value of the property, possibly put in a string format if needed.
+     *                    This will always get converted into a [String]
+     * @return the raw string of this property in the format `id,value`.
+     *         However, an empty string can be returned if [value] is `null` or if
+     *         this property is [not serializable][isSerializable]
+     */
+    protected open fun toRawStringHelper(suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT, valueGetter: (T) -> Any): String {
+        return if (this.isSerializable()) {
+            val value = valueGetter(this.getOrThrow())
+            this.id.toString() + KEY_VAL_SEPARATOR + value.toString() + suffixMode.getString(this, suffix)
+        } else {
+            ""
+        }
+    }
+
+    /**
      * Turns this property into the raw string understandable by geometry dash.
      *
-     * If you are implementing [BaseProperty], use [toRawStringHelper] to make a raw string
+     * If you are implementing [AbstractProperty], use [toRawStringHelper] to make a raw string
      * @return the raw string in the format `id,value`
      */
     abstract fun toRawString(): String
@@ -128,7 +147,7 @@ abstract class BaseProperty<T>(val id: UInt, val defaultValue: T? = null, privat
  * @property defaultValue the default value if the property, this affects if it will be serialized or not
  * @property currentValue the value to set by default. It defaults to the property value
  */
-abstract class AbstractCollectionProperty<T, C>(id: UInt, defaultValue: C? = null, currentValue: C? = defaultValue) : BaseProperty<C>(id, defaultValue, currentValue) where C : MutableCollection<T> {
+abstract class AbstractCollectionProperty<T, C>(id: UInt, defaultValue: C? = null, currentValue: C? = defaultValue) : AbstractProperty<C>(id, defaultValue, currentValue) where C : MutableCollection<T> {
     companion object {
         const val ELEMENT_SEPARATOR: Char = '.'
     }
@@ -195,7 +214,7 @@ abstract class AbstractCollectionProperty<T, C>(id: UInt, defaultValue: C? = nul
 }
 
 /**
- * The mode on how to apply the suffix in [BaseProperty.toRawStringHelper]
+ * The mode on how to apply the suffix in [AbstractProperty.toRawStringHelper]
  */
 enum class SuffixMode {
     /**
@@ -204,8 +223,8 @@ enum class SuffixMode {
     ALWAYS,
 
     /**
-     * Only add the suffix when the property is [serializable][BaseProperty.isSerializable]
-     * @see BaseProperty.isSerializable
+     * Only add the suffix when the property is [serializable][AbstractProperty.isSerializable]
+     * @see AbstractProperty.isSerializable
      */
     WHEN_SERIALIZABLE;
 
@@ -214,7 +233,7 @@ enum class SuffixMode {
             get() = WHEN_SERIALIZABLE
     }
 
-    fun getString(prop: BaseProperty<*>, suffix: String): String {
+    fun getString(prop: AbstractProperty<*>, suffix: String): String {
         return if (this == ALWAYS)
             suffix
         else if (prop.isSerializable())

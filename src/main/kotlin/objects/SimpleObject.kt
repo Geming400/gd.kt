@@ -4,7 +4,7 @@ import fr.geming400.gddotkt.objects.data.Pos
 import fr.geming400.gddotkt.objects.data.Position
 import fr.geming400.gddotkt.objects.data.Scale
 import fr.geming400.gddotkt.rawstring.RawStringFactory
-import fr.geming400.gddotkt.rawstring.property.BaseProperty
+import fr.geming400.gddotkt.rawstring.property.AbstractProperty
 import fr.geming400.gddotkt.rawstring.property.BoolProperty
 import fr.geming400.gddotkt.rawstring.property.IntProperty
 import fr.geming400.gddotkt.rawstring.property.FloatProperty
@@ -102,16 +102,16 @@ open class SimpleObject : GenericGdObject {
      * For more information see [RawStringFactory.asMap]
      * @see RawStringFactory.asMap
      */
-    fun asMap(): Map<UInt, BaseProperty<*>> =
+    fun asMap(): Map<UInt, AbstractProperty<*>> =
         this.rawStringFactory.asMap()
 
 
-    override fun get(propID: UInt): BaseProperty<*> =
+    override fun get(propID: UInt): AbstractProperty<*> =
         this.rawStringFactory.properties.first { it.id == propID }
 
     override fun <T> set(propID: UInt, value: T) {
         @Suppress("UNCHECKED_CAST")
-        val prop = this[propID] as BaseProperty<T>
+        val prop = this[propID] as AbstractProperty<T>
         prop.value = value
     }
 }

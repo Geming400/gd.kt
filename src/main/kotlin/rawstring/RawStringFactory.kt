@@ -1,7 +1,7 @@
 package fr.geming400.gddotkt.rawstring
 
 import fr.geming400.gddotkt.objects.GenericGdObject
-import fr.geming400.gddotkt.rawstring.property.BaseProperty
+import fr.geming400.gddotkt.rawstring.property.AbstractProperty
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
@@ -20,7 +20,7 @@ class RawStringFactory {
     }
 
     private val parent: GenericGdObject
-    lateinit var properties: Collection<BaseProperty<*>>
+    lateinit var properties: Collection<AbstractProperty<*>>
         private set
 
     constructor(parent: GenericGdObject) {
@@ -30,28 +30,28 @@ class RawStringFactory {
         }
     }
 
-    private fun computeProperties(consumer: (List<BaseProperty<*>>) -> Unit) {
-        val props = mutableListOf<BaseProperty<*>>()
+    private fun computeProperties(consumer: (List<AbstractProperty<*>>) -> Unit) {
+        val props = mutableListOf<AbstractProperty<*>>()
 
         this.parent::class.memberProperties.forEach {
-            if (it.visibility == KVisibility.PUBLIC && it.returnType.isSubtypeOf(BaseProperty::class.starProjectedType)) {
+            if (it.visibility == KVisibility.PUBLIC && it.returnType.isSubtypeOf(AbstractProperty::class.starProjectedType)) {
                 val prop = it.getter.call(this.parent)
                 if (prop != null)
-                    props.add(prop as BaseProperty<*>)
+                    props.add(prop as AbstractProperty<*>)
             }
         }
 
         consumer(props)
     }
 
-    fun getSerializableProperties(): List<BaseProperty<*>> =
+    fun getSerializableProperties(): List<AbstractProperty<*>> =
         this.properties
             .stream()
             .filter { it.isSerializable() }
             .toList()
 
-    fun asMap(): Map<UInt, BaseProperty<*>> {
-        val res = mutableMapOf<UInt, BaseProperty<*>>()
+    fun asMap(): Map<UInt, AbstractProperty<*>> {
+        val res = mutableMapOf<UInt, AbstractProperty<*>>()
         this.properties.forEach {
             res[it.id] = it
         }
@@ -63,10 +63,10 @@ class RawStringFactory {
      * Get the raw string of this factory's [parent] by concatenating all
      * properties' raw strings
      * @return the raw string of this factory's [parent]
-     * @see BaseProperty.toRawString
+     * @see AbstractProperty.toRawString
      */
     fun asRawString(): String =
-        this.getSerializableProperties().joinToString(BaseProperty.KEY_VAL_SEPARATOR.toString()) {
+        this.getSerializableProperties().joinToString(AbstractProperty.KEY_VAL_SEPARATOR.toString()) {
             it.toRawString()
         }
 
