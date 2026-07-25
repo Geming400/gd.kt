@@ -48,7 +48,8 @@ data class Pos(
     override val actualX = this.x
     override val actualY = this.y
 
-    val gridPos: GridPos = GridPos.ofPos(this)
+    val gridPos: GridPos
+        get() = GridPos.ofPos(this)
 }
 
 /**
@@ -74,16 +75,17 @@ data class GridPos(
          * @see gridUncentered
          */
         fun gridCentered(x: Float, y: Float): GridPos =
-            GridPos(x + Position.GRID_OFFSET, y + Position.GRID_OFFSET)
+            GridPos(x + Position.GRID_OFFSET / Position.GRID_UNIT, y + Position.GRID_OFFSET / Position.GRID_UNIT)
 
         fun ofPos(pos: Position): GridPos =
-            GridPos(pos.actualX / 30, pos.actualY / 30)
+            GridPos(pos.actualX / Position.GRID_UNIT, pos.actualY / Position.GRID_UNIT)
     }
 
-    override val actualX = this.x * 30
-    override val actualY = this.y * 30
+    override val actualX = this.x * Position.GRID_UNIT
+    override val actualY = this.y * Position.GRID_UNIT
 
-    val gdPos: Pos = Pos.ofPos(this)
+    val gdPos: Pos
+        get() = Pos.ofPos(this)
 }
 
 /**
