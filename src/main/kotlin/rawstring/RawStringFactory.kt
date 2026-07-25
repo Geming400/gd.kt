@@ -1,0 +1,66 @@
+package fr.geming400.gddotkt.rawstring
+
+import fr.geming400.gddotkt.objects.GenericGdObject
+import fr.geming400.gddotkt.rawstring.property.BaseProperty
+import kotlin.reflect.KVisibility
+import kotlin.reflect.full.memberProperties
+
+class RawStringFactory {
+    companion object {
+        const val OBJECTS_SEPARATOR: Char = ';'
+    }
+
+    private val parent: GenericGdObject
+    lateinit var properties: Collection<BaseProperty<*>>
+        private set
+
+    constructor(parent: GenericGdObject) {
+        this.parent = parent
+        this.computeProperties { props ->
+            this.properties = props
+        }
+    }
+
+    private fun computeProperties(consumer: (List<BaseProperty<*>>) -> Unit) {
+        val props = mutableListOf<BaseProperty<*>>()
+
+        this.parent::class.memberProperties.forEach {
+            if (it.visibility == KVisibility.PUBLIC) {
+                val prop = it.getter.call(this.parent)
+                if (prop is BaseProperty<*>)
+                    props.add(prop)
+            }
+        }
+
+        consumer(props)
+    }
+
+    fun asMap(): Map<UInt, BaseProperty<*>> {
+        val res = mutableMapOf<UInt, BaseProperty<*>>()
+        this.properties.forEach {
+            res[it.id] = it
+        }
+
+        return res
+    }
+
+    /**
+     * Get the raw string of this factory's [parent] by concatenating all
+     * properties' raw strings
+     * @return the raw string of this factory's [parent]
+     * @see BaseProperty.toRawString
+     */
+    fun asRawString(): String =
+        this.properties.joinToString(OBJECTS_SEPARATOR.toString()) {
+            it.toRawString()
+        }
+
+    fun asRawStringMap(): Map<UInt, String> {
+        val res = mutableMapOf<UInt, String>()
+        this.properties.forEach {
+            res[it.id] = it.toRawString()
+        }
+
+        return res
+    }
+}
