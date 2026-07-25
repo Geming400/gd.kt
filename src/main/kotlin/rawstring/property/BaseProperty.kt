@@ -39,7 +39,7 @@ abstract class BaseProperty<T>(val id: UInt, val defaultValue: T? = null, privat
             this.value!!
     }
 
-    fun getOrElse(other: T?): T? {
+    fun getOrNullableElse(other: T?): T? {
         return if (this.value == null)
             other
         else
