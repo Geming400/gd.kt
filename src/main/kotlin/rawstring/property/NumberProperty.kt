@@ -7,3 +7,8 @@ open class NumberProperty<T : Number>(id: UInt, defaultValue: T? = null, current
     override fun toRawString(): String =
         this.toRawStringHelper()
 }
+
+class UIntProperty(id: UInt, defaultValue: UInt? = null, currentValue: UInt? = defaultValue) : BaseProperty<UInt>(id, defaultValue, currentValue) {
+    override fun toRawString(): String =
+        this.toRawStringHelper()
+}
