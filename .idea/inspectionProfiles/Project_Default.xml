@@ -11,6 +11,7 @@
     <inspection_tool class="UnusedReturnValue" enabled="true" level="TEXT ATTRIBUTES" enabled_by_default="true" editorAttributes="CONSIDERATION_ATTRIBUTES">
       <option name="IGNORE_BUILDER_PATTERN" value="true" />
     </inspection_tool>
+    <inspection_tool class="UnusedSymbol" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="unused" enabled="true" level="TEXT ATTRIBUTES" enabled_by_default="true" checkParameterExcludingHierarchy="false">
       <option name="LOCAL_VARIABLE" value="true" />
       <option name="FIELD" value="true" />
