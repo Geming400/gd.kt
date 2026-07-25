@@ -2,11 +2,13 @@ package fr.geming400.gddotkt.rawstring.property
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.io.encoding.Base64
 
 class PropertyTests {
     fun <T> propTest(
         prop: BaseProperty<T>,
         testValue: T,
+        testRawStringValue: Any? = testValue,
         doEqualityCheck: Boolean = true
     ) {
         if (doEqualityCheck) {
@@ -43,7 +45,7 @@ class PropertyTests {
         prop.value = testValue
         Assertions.assertEquals(prop.value, testValue)
 
-        Assertions.assertEquals(prop.toRawString(), "${prop.id},$testValue")
+        Assertions.assertEquals(prop.toRawString(), "${prop.id},$testRawStringValue")
     }
 
     @Test
@@ -66,6 +68,15 @@ class PropertyTests {
         prop.value = false
         Assertions.assertEquals(prop.asGdBool(), 0)
         Assertions.assertEquals(prop.toRawString(), "${prop.id},0")
+    }
+
+    @Test
+    fun testStringProp() {
+        propTest(
+            StringProperty(0u, defaultValue = "", currentValue = "Hii !!"),
+            testValue = "Bye :(",
+            testRawStringValue = Base64.UrlSafe.encode("Bye :(".toByteArray())
+        )
     }
 
     @Test
