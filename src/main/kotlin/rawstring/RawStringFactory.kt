@@ -3,11 +3,20 @@ package fr.geming400.gddotkt.rawstring
 import fr.geming400.gddotkt.objects.GenericGdObject
 import fr.geming400.gddotkt.rawstring.property.BaseProperty
 import kotlin.reflect.KVisibility
+import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
+import kotlin.reflect.full.starProjectedType
 
 class RawStringFactory {
     companion object {
         const val OBJECTS_SEPARATOR: Char = ';'
+
+        /**
+         * Joins multiple objects into a larger raw string understandable by geometry dash.
+         * Each entry is separated by a semicolon.
+         */
+        fun joinObjectsIntoRawString(objects: Collection<RawStringable>): String =
+            objects.joinToString(OBJECTS_SEPARATOR.toString()) { it.asRawString() }
     }
 
     private val parent: GenericGdObject
@@ -25,15 +34,21 @@ class RawStringFactory {
         val props = mutableListOf<BaseProperty<*>>()
 
         this.parent::class.memberProperties.forEach {
-            if (it.visibility == KVisibility.PUBLIC) {
+            if (it.visibility == KVisibility.PUBLIC && it.returnType.isSubtypeOf(BaseProperty::class.starProjectedType)) {
                 val prop = it.getter.call(this.parent)
-                if (prop is BaseProperty<*>)
-                    props.add(prop)
+                if (prop != null)
+                    props.add(prop as BaseProperty<*>)
             }
         }
 
         consumer(props)
     }
+
+    fun getSerializableProperties(): List<BaseProperty<*>> =
+        this.properties
+            .stream()
+            .filter { it.isSerializable() }
+            .toList()
 
     fun asMap(): Map<UInt, BaseProperty<*>> {
         val res = mutableMapOf<UInt, BaseProperty<*>>()
@@ -51,7 +66,7 @@ class RawStringFactory {
      * @see BaseProperty.toRawString
      */
     fun asRawString(): String =
-        this.properties.joinToString(OBJECTS_SEPARATOR.toString()) {
+        this.getSerializableProperties().joinToString(BaseProperty.KEY_VAL_SEPARATOR.toString()) {
             it.toRawString()
         }
 
