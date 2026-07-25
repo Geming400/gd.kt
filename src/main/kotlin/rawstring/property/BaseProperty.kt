@@ -14,7 +14,9 @@ abstract class BaseProperty<T>(val id: UInt, val defaultValue: T? = null, privat
 
     /**
      * The current value of this property.
+     * The actual value is stored internally and is not meant to be accessed.
      *
+     * If set to `null`, the [defaultValue] will be used instead *(see [resetValue])*
      */
     open var value: T?
         get() {
@@ -25,6 +27,12 @@ abstract class BaseProperty<T>(val id: UInt, val defaultValue: T? = null, privat
         }
         set(value) { this.currentValue = value }
 
+    /**
+     * Returns the property's [value] or throw if it's `null`.
+     * This is only useful if the default value is nullable
+     * @return the property's [value] or throw if it's `null
+     * @throws NullPointerException if the property's [value] is null
+     */
     fun getOrThrow(): T {
         if (this.value == null)
             throw NullPointerException("${this::class.simpleName}'s value is null when it was expected to be non null")
@@ -32,19 +40,27 @@ abstract class BaseProperty<T>(val id: UInt, val defaultValue: T? = null, privat
         return this.value!!
     }
 
-    fun getOrElse(other: T): T {
-        return if (this.value == null)
+    /**
+     * Returns the property's [value] or [other] if it's `null`.
+     * This is only useful if the default value is nullable
+     * @return the property's [value] or [other] if it's `null`
+     */
+    fun getOrElse(other: T): T =
+        if (this.value == null)
             other
         else
             this.value!!
-    }
 
-    fun getOrNullableElse(other: T?): T? {
-        return if (this.value == null)
+    /**
+     * Returns the property's [value] or [other] if it's `null`.
+     * This is only useful if the default value is nullable
+     * @return the property's [value] or [other] if it's `null`
+     */
+    fun getOrNullableElse(other: T?): T? =
+        if (this.value == null)
             other
         else
             this.value!!
-    }
 
     /**
      * Checks if this property's [value] is equal to its [default value][defaultValue]
