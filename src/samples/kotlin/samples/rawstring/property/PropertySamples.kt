@@ -1,6 +1,5 @@
 package samples.rawstring.property
 
-import fr.geming400.gddotkt.rawstring.property.BaseProperty
 import fr.geming400.gddotkt.rawstring.property.IntProperty
 
 private fun isSerializableSample() {
