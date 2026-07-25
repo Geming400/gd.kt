@@ -25,7 +25,7 @@ interface RawStringable {
      * @throws InvalidRawStringException if the raw string is invalid
      * @see isValidRawString
      */
-    fun toRawStringStrict(): String {
+    fun asRawStringStrict(): String {
         val rawString = this.asRawString()
         if (isValidRawString(rawString))
             return rawString
