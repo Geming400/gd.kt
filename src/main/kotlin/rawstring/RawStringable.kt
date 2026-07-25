@@ -27,9 +27,13 @@ interface RawStringable {
      */
     fun asRawStringStrict(): String {
         val rawString = this.asRawString()
-        if (isValidRawString(rawString))
+        if (rawString == "") {
             return rawString
+        } else {
+            if (isValidRawString(rawString))
+                return rawString
 
-        throw InvalidRawStringException(rawString)
+            throw InvalidRawStringException(rawString)
+        }
     }
 }
