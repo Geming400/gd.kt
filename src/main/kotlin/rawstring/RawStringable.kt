@@ -1,6 +1,6 @@
 package fr.geming400.gddotkt.rawstring
 
-import exceptions.InvalidRawStringException
+import fr.geming400.gddotkt.exceptions.InvalidRawStringException
 
 interface RawStringable {
     companion object {

@@ -1,19 +1,19 @@
-package exceptions;
+package fr.geming400.gddotkt.exceptions
 
-public class InvalidRawStringException extends RuntimeException {
-    public final String rawString;
+class InvalidRawStringException : RuntimeException {
+    val rawString: String?
 
-    public InvalidRawStringException(String rawString) {
-        super(getErrorMessage(rawString));
-        this.rawString = rawString;
+    constructor(rawString: String?) : super(getErrorMessage(rawString)) {
+        this.rawString = rawString
     }
 
-    public InvalidRawStringException(String rawString, Throwable cause) {
-        super(getErrorMessage(rawString), cause);
-        this.rawString = rawString;
+    constructor(rawString: String?, cause: Throwable?) : super(getErrorMessage(rawString), cause) {
+        this.rawString = rawString
     }
 
-    private static String getErrorMessage(String rawString) {
-        return "Raw string '%s' is malformed or invalid.".formatted(rawString);
+    companion object {
+        private fun getErrorMessage(rawString: String?): String {
+            return "Raw string '$rawString' is malformed or invalid."
+        }
     }
 }
