@@ -14,10 +14,12 @@ interface GenericGdObject : RawStringable {
      */
     operator fun get(propID: UInt): AbstractProperty<*>
 
-    /**
-     * Sets the property of this geometry dash object by its property id
-     * @throws ClassCastException if [T] is the invalid type for the corresponding property
-     * @throws NullPointerException if there is no property at the given id
-     */
-    operator fun <T> set(propID: UInt, value: T)
+// Old function, removed because of type unsafety
+// (you can more easily assign the wrong type to the value var, yes, you can assign the WRONG TYPE)
+//    /**
+//     * Sets the property of this geometry dash object by its property id
+//     * @throws ClassCastException if [T] is the invalid type for the corresponding property
+//     * @throws NullPointerException if there is no property at the given id
+//     */
+//    operator fun <T> set(propID: UInt, value: T)
 }

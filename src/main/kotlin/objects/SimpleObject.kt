@@ -11,6 +11,10 @@ import fr.geming400.gddotkt.rawstring.property.FloatProperty
 import fr.geming400.gddotkt.rawstring.property.SetProperty
 import fr.geming400.gddotkt.rawstring.property.UIntProperty
 
+/**
+ * A simple object is a generic geometry dash object in the editor.
+ * This is the class that represents every other objects
+ */
 open class SimpleObject : GenericGdObject {
     protected val rawStringFactory: RawStringFactory
 
@@ -29,6 +33,7 @@ open class SimpleObject : GenericGdObject {
     val warpYangle = FloatProperty(131u)
     val baseColor = IntProperty(21u)
     val detailColor = IntProperty(22u)
+    // TODO
 //    val baseColorHSV = HsvProperty(43u)
 //    val detailColorHSV = HsvProperty(44u)
 
@@ -37,7 +42,6 @@ open class SimpleObject : GenericGdObject {
 
     val groups = SetProperty<UInt>(57u)
     val groupsParent = SetProperty<UInt>(274u)
-    val singleGroup = IntProperty(33u, defaultValue = 0)
     val editorLayer = IntProperty(20u, defaultValue = 0)
     val editorLayer2 = IntProperty(61u, defaultValue = 0)
     val zLayer = IntProperty(24u, defaultValue = 0)
@@ -109,9 +113,10 @@ open class SimpleObject : GenericGdObject {
     override fun get(propID: UInt): AbstractProperty<*> =
         this.rawStringFactory.properties.first { it.id == propID }
 
-    override fun <T> set(propID: UInt, value: T) {
-        @Suppress("UNCHECKED_CAST")
-        val prop = this[propID] as AbstractProperty<T>
-        prop.value = value
-    }
+// See why this was removed in RawStringable
+//    override fun <T> set(propID: UInt, value: T) {
+//        @Suppress("UNCHECKED_CAST")
+//        val prop = this[propID] as AbstractProperty<T>
+//        prop.value = value
+//    }
 }
