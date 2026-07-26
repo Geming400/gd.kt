@@ -136,7 +136,7 @@ abstract class AbstractProperty<T>(val id: UInt, val defaultValue: T? = null, pr
     abstract fun toRawString(): String
 
     override fun toString(): String {
-        return "${this::class.qualifiedName!!}(id = ${this.id}, defaultValue = ${this.defaultValue}, value = ${this.value})"
+        return "${this::class.simpleName!!}(id = ${this.id}, defaultValue = ${this.defaultValue}, value = ${this.value})"
     }
 }
 
