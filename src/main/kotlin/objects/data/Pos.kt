@@ -94,7 +94,7 @@ data class GridPos(
  *
  * This is a quick way to multiply this value by `30`
  * @see Int.offsetGrid
- * @see Pos.gridCentered
+ * @see Pos.gridUncentered
  */
 inline val Int.grid: Int
     get() = this * Position.GRID_UNIT
@@ -117,7 +117,7 @@ inline val Int.offsetGrid: Int
  *
  * This is a quick way to multiply this value by `30`
  * @see Float.offsetGrid
- * @see Pos.gridCentered
+ * @see Pos.gridUncentered
  */
 inline val Float.grid: Float
     get() = this * Position.GRID_UNIT
