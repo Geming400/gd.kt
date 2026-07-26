@@ -1,6 +1,7 @@
 package fr.geming400.gddotkt.rawstring.property
 
 import fr.geming400.gddotkt.rawstring.Id
+import fr.geming400.gddotkt.rawstring.RawStringable
 
 /**
  * The base class for all properties
@@ -100,6 +101,7 @@ abstract class AbstractProperty<T>(val id: Id, val defaultValue: T? = null, priv
      * @return the raw string of this property in the format `id,value`.
      *         However, an empty string can be returned if [value] is `null` or if
      *         this property is [not serializable][isSerializable]
+     * @see RawStringable
      */
     protected open fun toRawStringHelper(value: Any? = this.value, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT): String {
         return if (this.isSerializable() && value != null) {
@@ -118,11 +120,12 @@ abstract class AbstractProperty<T>(val id: Id, val defaultValue: T? = null, priv
      * @return the raw string of this property in the format `id,value`.
      *         However, an empty string can be returned if [value] is `null` or if
      *         this property is [not serializable][isSerializable]
+     * @see RawStringable
      */
     protected open fun toRawStringHelper(suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT, valueGetter: (T) -> Any): String {
         return if (this.isSerializable()) {
             val value = valueGetter(this.getOrThrow())
-            this.id.toString() + KEY_VAL_SEPARATOR + value.toString() + suffixMode.getString(this, suffix)
+            this.id.getID() + KEY_VAL_SEPARATOR + value.toString() + suffixMode.getString(this, suffix)
         } else {
             ""
         }
