@@ -1,14 +1,14 @@
 package samples.rawstring
 
-import fr.geming400.gddotkt.rawstring.RawStringable
+import fr.geming400.gddotkt.objects.GenericGdObject
 
-private fun isValidRawStringSample() {
+private fun isValidObjectStringSample() {
     // This will return true
     // In its form it's a valid raw string
-    RawStringable.isValidRawString("1,1" + "2,2" + "3,3")
+    GenericGdObject.isValidObjectString("1,1" + "2,2" + "3,3")
 
     // However this will return false
     // In its form it's NOT a valid raw string because it has an even
     // number of commas
-    RawStringable.isValidRawString("1,1" + "2,2" + "3,3" + "4")
+    GenericGdObject.isValidObjectString("1,1" + "2,2" + "3,3" + "4")
 }
