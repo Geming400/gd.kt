@@ -1,5 +1,6 @@
 package fr.geming400.gddotkt.rawstring.property
 
+import fr.geming400.gddotkt.objects.data.Hsv
 import fr.geming400.gddotkt.rawstring.id
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -46,7 +47,7 @@ class PropertyTests {
         prop.value = testValue
         Assertions.assertEquals(prop.value, testValue)
 
-        Assertions.assertEquals(prop.toRawString(), "${prop.id},$testRawStringValue")
+        Assertions.assertEquals(prop.toRawString(), "${prop.id.getID()},$testRawStringValue")
     }
 
     @Test
@@ -64,11 +65,11 @@ class PropertyTests {
 
         prop.value = true
         Assertions.assertEquals(prop.asGdBool(), 1)
-        Assertions.assertEquals(prop.toRawString(), "${prop.id},1")
+        Assertions.assertEquals(prop.toRawString(), "${prop.id.getID()},1")
 
         prop.value = false
         Assertions.assertEquals(prop.asGdBool(), 0)
-        Assertions.assertEquals(prop.toRawString(), "${prop.id},0")
+        Assertions.assertEquals(prop.toRawString(), "${prop.id.getID()},0")
     }
 
     @Test
@@ -130,6 +131,17 @@ class PropertyTests {
 
     @Test
     fun hsvTest() {
+        val prop = HsvProperty(1.id, defaultValue = null, currentValue = Hsv.create())
+        Assertions.assertEquals(
+            prop.id.getID() + AbstractProperty.KEY_VAL_SEPARATOR + prop.getOrThrow().asRawString(),
+            prop.toRawString()
+        )
 
+        prop.setUsesColorProp(5.id)
+        Assertions.assertEquals(
+            prop.id.getID() + AbstractProperty.KEY_VAL_SEPARATOR + prop.getOrThrow().asRawString()
+                    + AbstractProperty.KEY_VAL_SEPARATOR + "5,1",
+            prop.toRawString()
+        )
     }
 }

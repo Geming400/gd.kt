@@ -10,6 +10,7 @@ import fr.geming400.gddotkt.rawstring.property.AbstractProperty
 import fr.geming400.gddotkt.rawstring.property.BoolProperty
 import fr.geming400.gddotkt.rawstring.property.IntProperty
 import fr.geming400.gddotkt.rawstring.property.FloatProperty
+import fr.geming400.gddotkt.rawstring.property.HsvProperty
 import fr.geming400.gddotkt.rawstring.property.SetProperty
 import fr.geming400.gddotkt.rawstring.property.UIntProperty
 
@@ -35,12 +36,8 @@ open class SimpleObject : GenericGdObject {
     val warpYangle = FloatProperty(131.id)
     val baseColor = IntProperty(21.id)
     val detailColor = IntProperty(22.id)
-    // TODO
-//    val baseColorHSV = HsvProperty(43u)
-//    val detailColorHSV = HsvProperty(44u)
-
-    // val usesBaseColorHSV = ConditionalProperty(41u, baseColorHSV, ...)
-    // val usesDetailColorHSV = ConditionalProperty(42u, detailColorHSV, ...)
+    val baseColorHSV = HsvProperty(43.id).setUsesColorProp(41.id)
+    val detailColorHSV = HsvProperty(44.id).setUsesColorProp(42.id)
 
     val groups = SetProperty<UInt>(57.id)
     val groupsParent = SetProperty<UInt>(274.id)
