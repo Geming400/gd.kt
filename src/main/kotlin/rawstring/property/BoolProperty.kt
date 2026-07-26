@@ -1,5 +1,6 @@
 package fr.geming400.gddotkt.rawstring.property
 
+import fr.geming400.gddotkt.utils.toInt
 import org.intellij.lang.annotations.MagicConstant
 
 class BoolProperty(id: UInt, defaultValue: Boolean? = null, currentValue: Boolean? = defaultValue) : AbstractProperty<Boolean>(id, defaultValue, currentValue) {
@@ -19,9 +20,6 @@ class BoolProperty(id: UInt, defaultValue: Boolean? = null, currentValue: Boolea
      */
     @MagicConstant(intValues = [0, 1])
     fun asGdBool(): Int {
-        return if (this.getOrThrow())
-            1
-        else
-            0
+        return this.getOrThrow().toInt()
     }
 }
