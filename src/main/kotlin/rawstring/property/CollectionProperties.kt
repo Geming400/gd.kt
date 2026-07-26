@@ -1,6 +1,8 @@
 package fr.geming400.gddotkt.rawstring.property
 
-open class ListProperty<T>(id: UInt, defaultValue: MutableList<T>? = arrayListOf(), currentValue: MutableList<T>? = defaultValue) : AbstractCollectionProperty<T, MutableList<T>>(id, defaultValue, currentValue) {
+import fr.geming400.gddotkt.rawstring.Id
+
+open class ListProperty<T>(id: Id, defaultValue: MutableList<T>? = arrayListOf(), currentValue: MutableList<T>? = defaultValue) : AbstractCollectionProperty<T, MutableList<T>>(id, defaultValue, currentValue) {
     /**
      * Returns the element at the specified index in the list
      * @throws NullPointerException if the collection [value] is null
@@ -26,7 +28,7 @@ open class ListProperty<T>(id: UInt, defaultValue: MutableList<T>? = arrayListOf
         }
 }
 
-open class SetProperty<T>(id: UInt, defaultValue: MutableSet<T>? = mutableSetOf(), currentValue: MutableSet<T>? = defaultValue) : AbstractCollectionProperty<T, MutableSet<T>>(id, defaultValue, currentValue) {
+open class SetProperty<T>(id: Id, defaultValue: MutableSet<T>? = mutableSetOf(), currentValue: MutableSet<T>? = defaultValue) : AbstractCollectionProperty<T, MutableSet<T>>(id, defaultValue, currentValue) {
     override fun toRawString(): String =
         this.toRawIterableStringHelper {
             it.toString()

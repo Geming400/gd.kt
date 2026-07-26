@@ -1,13 +1,14 @@
 package fr.geming400.gddotkt.rawstring.property
 
+import fr.geming400.gddotkt.rawstring.Id
+
 /**
  * The base class for all properties
- * @property id the id of the property. It's unsigned because no properties have negative IDs.
- *              Also in geometry dash, no id goes below 1
+ * @property id the id of the property. See the [Id] class on how to create an instance
  * @property defaultValue the default value if the property, this affects if it will be serialized or not
  * @property currentValue the value to set by default. It defaults to the property value
  */
-abstract class AbstractProperty<T>(val id: UInt, val defaultValue: T? = null, private var currentValue: T? = defaultValue) {
+abstract class AbstractProperty<T>(val id: Id, val defaultValue: T? = null, private var currentValue: T? = defaultValue) {
     companion object {
         const val KEY_VAL_SEPARATOR: Char = ','
     }
@@ -102,7 +103,7 @@ abstract class AbstractProperty<T>(val id: UInt, val defaultValue: T? = null, pr
      */
     protected open fun toRawStringHelper(value: Any? = this.value, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT): String {
         return if (this.isSerializable() && value != null) {
-            this.id.toString() + KEY_VAL_SEPARATOR + value.toString() + suffixMode.getString(this, suffix)
+            this.id.getID() + KEY_VAL_SEPARATOR + value.toString() + suffixMode.getString(this, suffix)
         } else {
             ""
         }
@@ -147,7 +148,7 @@ abstract class AbstractProperty<T>(val id: UInt, val defaultValue: T? = null, pr
  * @property defaultValue the default value if the property, this affects if it will be serialized or not
  * @property currentValue the value to set by default. It defaults to the property value
  */
-abstract class AbstractCollectionProperty<T, C>(id: UInt, defaultValue: C? = null, currentValue: C? = defaultValue) : AbstractProperty<C>(id, defaultValue, currentValue) where C : MutableCollection<T> {
+abstract class AbstractCollectionProperty<T, C>(id: Id, defaultValue: C? = null, currentValue: C? = defaultValue) : AbstractProperty<C>(id, defaultValue, currentValue) where C : MutableCollection<T> {
     companion object {
         const val ELEMENT_SEPARATOR: Char = '.'
     }

@@ -3,7 +3,9 @@ package fr.geming400.gddotkt.objects
 import fr.geming400.gddotkt.objects.data.Pos
 import fr.geming400.gddotkt.objects.data.Position
 import fr.geming400.gddotkt.objects.data.Scale
+import fr.geming400.gddotkt.rawstring.Id
 import fr.geming400.gddotkt.rawstring.RawStringFactory
+import fr.geming400.gddotkt.rawstring.id
 import fr.geming400.gddotkt.rawstring.property.AbstractProperty
 import fr.geming400.gddotkt.rawstring.property.BoolProperty
 import fr.geming400.gddotkt.rawstring.property.IntProperty
@@ -18,21 +20,21 @@ import fr.geming400.gddotkt.rawstring.property.UIntProperty
 open class SimpleObject : GenericGdObject {
     protected val rawStringFactory: RawStringFactory
 
-    val objID = UIntProperty(1u)
-    val x = FloatProperty(2u)
-    val y = FloatProperty(3u)
-    val rotation = FloatProperty(6u, defaultValue = 0f)
+    val objID = UIntProperty(1.id)
+    val x = FloatProperty(2.id)
+    val y = FloatProperty(3.id)
+    val rotation = FloatProperty(6.id, defaultValue = 0f)
     // This is now deprecated because in 2.2
     // the editor uses scaleX and scaleY
     // val scale = FloatProperty(32u, defaultValue = 1f)
-    val scaleX = FloatProperty(128u, defaultValue = 1f)
-    val scaleY = FloatProperty(129u, defaultValue = 1f)
-    val flipHorizontal = BoolProperty(5u, defaultValue = false)
-    val flipVertical = BoolProperty(4u, defaultValue = false)
-    val warpXangle = FloatProperty(132u)
-    val warpYangle = FloatProperty(131u)
-    val baseColor = IntProperty(21u)
-    val detailColor = IntProperty(22u)
+    val scaleX = FloatProperty(128.id, defaultValue = 1f)
+    val scaleY = FloatProperty(129.id, defaultValue = 1f)
+    val flipHorizontal = BoolProperty(5.id, defaultValue = false)
+    val flipVertical = BoolProperty(4.id, defaultValue = false)
+    val warpXangle = FloatProperty(132.id)
+    val warpYangle = FloatProperty(131.id)
+    val baseColor = IntProperty(21.id)
+    val detailColor = IntProperty(22.id)
     // TODO
 //    val baseColorHSV = HsvProperty(43u)
 //    val detailColorHSV = HsvProperty(44u)
@@ -40,16 +42,16 @@ open class SimpleObject : GenericGdObject {
     // val usesBaseColorHSV = ConditionalProperty(41u, baseColorHSV, ...)
     // val usesDetailColorHSV = ConditionalProperty(42u, detailColorHSV, ...)
 
-    val groups = SetProperty<UInt>(57u)
-    val groupsParent = SetProperty<UInt>(274u)
-    val editorLayer = IntProperty(20u, defaultValue = 0)
-    val editorLayer2 = IntProperty(61u, defaultValue = 0)
-    val zLayer = IntProperty(24u, defaultValue = 0)
-    val zOrder = IntProperty(25u, defaultValue = 0)
-    val order = IntProperty(115u, defaultValue = 0)
-    val channel = IntProperty(170u, defaultValue = 0)
+    val groups = SetProperty<UInt>(57.id)
+    val groupsParent = SetProperty<UInt>(274.id)
+    val editorLayer = IntProperty(20.id, defaultValue = 0)
+    val editorLayer2 = IntProperty(61.id, defaultValue = 0)
+    val zLayer = IntProperty(24.id, defaultValue = 0)
+    val zOrder = IntProperty(25.id, defaultValue = 0)
+    val order = IntProperty(115.id, defaultValue = 0)
+    val channel = IntProperty(170.id, defaultValue = 0)
     // TODO: Make a object class where the 'preview' property is a thing
-    val linkedGroupID = IntProperty(108u, defaultValue = 0)
+    val linkedGroupID = IntProperty(108.id, defaultValue = 0)
 
     // val customProperties = PropertiesSet<ImplementableProperty<Any>>()
 
@@ -96,21 +98,21 @@ open class SimpleObject : GenericGdObject {
         this.rawStringFactory.asRawString()
 
     /**
-     * For more information see [RawStringFactory.asRawStringMap]
-     * @see RawStringFactory.asRawStringMap
+     * For more information see [RawStringFactory.asRawStringIntMap]
+     * @see RawStringFactory.asRawStringIntMap
      */
     fun asRawStringMap(): Map<UInt, String> =
-        this.rawStringFactory.asRawStringMap()
+        this.rawStringFactory.asRawStringIntMap()
 
     /**
-     * For more information see [RawStringFactory.asMap]
-     * @see RawStringFactory.asMap
+     * For more information see [RawStringFactory.asIntMap]
+     * @see RawStringFactory.asIntMap
      */
     fun asMap(): Map<UInt, AbstractProperty<*>> =
-        this.rawStringFactory.asMap()
+        this.rawStringFactory.asIntMap()
 
 
-    override fun get(propID: UInt): AbstractProperty<*> =
+    override fun get(propID: Id): AbstractProperty<*> =
         this.rawStringFactory.properties.first { it.id == propID }
 
 // See why this was removed in RawStringable

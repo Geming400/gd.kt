@@ -1,14 +1,16 @@
 package fr.geming400.gddotkt.rawstring.property
 
+import fr.geming400.gddotkt.rawstring.Id
 import java.nio.charset.Charset
 import kotlin.io.encoding.Base64
 
 /**
- * A string property is used to store text
+ * A string property is used to store text in base 64 format. Geometry dash only understands text in this format
+ * @see Base64.UrlSafe
  */
-class StringProperty(id: UInt, defaultValue: String? = "", currentValue: String? = defaultValue) : AbstractProperty<String>(id, defaultValue, currentValue) {
+class StringProperty(id: Id, defaultValue: String? = "", currentValue: String? = defaultValue) : AbstractProperty<String>(id, defaultValue, currentValue) {
     companion object {
-        fun ofCharSequence(id: UInt, defaultValue: CharSequence? = "", currentValue: CharSequence? = defaultValue): StringProperty =
+        fun ofCharSequence(id: Id, defaultValue: CharSequence? = "", currentValue: CharSequence? = defaultValue): StringProperty =
             StringProperty(id, defaultValue.toString(), currentValue.toString())
     }
 

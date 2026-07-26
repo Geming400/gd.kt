@@ -50,14 +50,37 @@ class RawStringFactory {
             .filter { it.isSerializable() }
             .toList()
 
-    fun asMap(): Map<UInt, AbstractProperty<*>> {
-        val res = mutableMapOf<UInt, AbstractProperty<*>>()
+    /**
+     * Gets all the properties of this factory's parent in a map
+     * in the format `propID: prop`
+     * @return the properties in a [Map]
+     */
+    fun asMap(): Map<Id, AbstractProperty<*>> {
+        val res = mutableMapOf<Id, AbstractProperty<*>>()
         this.properties.forEach {
             res[it.id] = it
         }
 
         return res
     }
+
+    /**
+     * Gets all the properties of this factory's parent in a map
+     * in the format `propID: prop`
+     * @return the properties in a [Map]
+     * @throws NullPointerException if **ANY** of the [numerical ids][Id.numericalID] is `null`
+     */
+    fun asIntMap(): Map<UInt, AbstractProperty<*>> =
+        this.asMap().mapKeys { it.key.getNumericalIdStrict() }
+
+    /**
+     * Gets all the properties of this factory's parent in a map
+     * in the format `propID: prop`
+     * @return the properties in a [Map]
+     * @throws NullPointerException if **ANY** of the [string ids][Id.stringID] is `null`
+     */
+    fun asStringMap(): Map<String, AbstractProperty<*>> =
+        this.asMap().mapKeys { it.key.getStringIdStrict() }
 
     /**
      * Get the raw string of this factory's [parent] by concatenating all
@@ -70,12 +93,29 @@ class RawStringFactory {
             it.toRawString()
         }
 
-    fun asRawStringMap(): Map<UInt, String> {
-        val res = mutableMapOf<UInt, String>()
-        this.properties.forEach {
-            res[it.id] = it.toRawString()
-        }
+    /**
+     * Gets all the properties of this factory's parent in a map
+     * in the format `propID: propRawString`
+     * @return the properties in a [Map]
+     */
+    fun asRawStringMap(): Map<Id, String> =
+        this.asMap().mapValues { it.value.toRawString() }
 
-        return res
-    }
+    /**
+     * Gets all the properties of this factory's parent in a map
+     * in the format `propID: propRawString`
+     * @return the properties in a [Map]
+     * @throws NullPointerException if **ANY** of the [numerical ids][Id.numericalID] is `null`
+     */
+    fun asRawStringIntMap(): Map<UInt, String> =
+        this.asIntMap().mapValues { it.value.toRawString() }
+
+    /**
+     * Gets all the properties of this factory's parent in a map
+     * in the format `propID: propRawString`
+     * @return the properties in a [Map]
+     * @throws NullPointerException if **ANY** of the [string ids][Id.stringID] is `null`
+     */
+    fun asRawStringStringMap(): Map<String, String> =
+        this.asStringMap().mapValues { it.value.toRawString() }
 }

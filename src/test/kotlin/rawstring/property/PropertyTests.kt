@@ -1,5 +1,6 @@
 package fr.geming400.gddotkt.rawstring.property
 
+import fr.geming400.gddotkt.rawstring.id
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import kotlin.io.encoding.Base64
@@ -51,14 +52,14 @@ class PropertyTests {
     @Test
     fun testIntProp() {
         propTest(
-            IntProperty(0u, 5, 0),
+            IntProperty(1.id, 5, 0),
             testValue = 7
         )
     }
 
     @Test
     fun testBoolProp() {
-        val prop = BoolProperty(1u, null)
+        val prop = BoolProperty(1.id, null)
         Assertions.assertEquals(prop.toRawString(), "")
 
         prop.value = true
@@ -73,7 +74,7 @@ class PropertyTests {
     @Test
     fun testStringProp() {
         propTest(
-            StringProperty(0u, defaultValue = "", currentValue = "Hii !!"),
+            StringProperty(0.id, defaultValue = "", currentValue = "Hii !!"),
             testValue = "Bye :(",
             testRawStringValue = Base64.UrlSafe.encode("Bye :(".toByteArray())
         )
@@ -81,7 +82,7 @@ class PropertyTests {
 
     @Test
     fun testListProp() {
-        val prop = ListProperty<Int>(0u)
+        val prop = ListProperty<Int>(0.id)
         Assertions.assertEquals(prop.size(), 0)
 
         prop.add(5)
@@ -98,7 +99,7 @@ class PropertyTests {
         Assertions.assertEquals(prop.size(), 0)
         Assertions.assertThrows(IndexOutOfBoundsException::class.java) { prop[0] }
 
-        val secondProp = ListProperty<Int>(0u, defaultValue = null)
+        val secondProp = ListProperty<Int>(0.id, defaultValue = null)
         Assertions.assertThrows(NullPointerException::class.java) { secondProp[0] }
         Assertions.assertThrows(NullPointerException::class.java) { secondProp[0] = 5 }
         Assertions.assertThrows(NullPointerException::class.java) { secondProp.add(5) }
@@ -111,7 +112,7 @@ class PropertyTests {
     fun testSetProp() {
         // Most of the tests are already done above
 
-        val prop = SetProperty<Int>(0u)
+        val prop = SetProperty<Int>(0.id)
         Assertions.assertEquals(prop.size(), 0)
 
         prop.add(5)
@@ -120,10 +121,15 @@ class PropertyTests {
         prop.clear()
         Assertions.assertEquals(prop.size(), 0)
 
-        val secondProp = SetProperty<Int>(0u, defaultValue = null)
+        val secondProp = SetProperty<Int>(0.id, defaultValue = null)
         Assertions.assertThrows(NullPointerException::class.java) { secondProp.add(5) }
         Assertions.assertThrows(NullPointerException::class.java) { secondProp.size() }
         Assertions.assertDoesNotThrow { secondProp.clear() }
         Assertions.assertDoesNotThrow { secondProp.isEmpty() }
+    }
+
+    @Test
+    fun hsvTest() {
+
     }
 }
