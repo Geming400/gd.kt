@@ -21,13 +21,18 @@ object Serializers {
     )
 
     val INT: Serializer<Int> = Serializer.create(
-        Integer::toString,
-        Integer::parseInt
+        Int::toString,
+        String::toInt
+    )
+
+    val UINT: Serializer<UInt> = Serializer.create(
+        UInt::toString,
+        String::toUInt
     )
 
     val FLOAT: Serializer<Float> = Serializer.create(
         Float::toString,
-        java.lang.Float::parseFloat
+        String::toFloat
     )
 
     val HSV: Serializer<Hsv> = Serializer.fromRawstringable(Hsv::parseHsv)
