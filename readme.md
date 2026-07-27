@@ -6,3 +6,5 @@ This is the 3rd gd.<lang> lib I've made (it's predecessor is [gddotpy v2](https:
 This is mostly just to do a bit more kotlin and learn it more deeply.
 
 This is not really made to be used !!!
+
+Cool info explorer to see property ids: https://flowvix.github.io/gd-info-explorer/props
