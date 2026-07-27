@@ -102,6 +102,7 @@ abstract class AbstractProperty<T>(val id: Id, val defaultValue: T? = null, priv
      *         However, an empty string can be returned if [value] is `null` or if
      *         this property is [not serializable][isSerializable]
      * @see RawStringable
+     * @see toRawString
      */
     protected open fun toRawStringHelper(value: Any? = this.value, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT): String {
         return if (this.isSerializable() && value != null) {
@@ -121,6 +122,7 @@ abstract class AbstractProperty<T>(val id: Id, val defaultValue: T? = null, priv
      *         However, an empty string can be returned if [value] is `null` or if
      *         this property is [not serializable][isSerializable]
      * @see RawStringable
+     * @see toRawString
      */
     protected open fun toRawStringHelper(suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT, valueGetter: (T) -> Any): String {
         return if (this.isSerializable()) {
@@ -132,12 +134,18 @@ abstract class AbstractProperty<T>(val id: Id, val defaultValue: T? = null, priv
     }
 
     /**
-     * Turns this property into the raw string understandable by geometry dash.
-     *
-     * If you are implementing [AbstractProperty], use [toRawStringHelper] to make a raw string
-     * @return the raw string in the format `id,value`
+     * Helper to make raw strings
+     * @param serializer the serializer used to serialize the value into a raw string
+     * @param suffix the suffix to append
+     * @param suffixMode the mode deciding how to append the suffix
+     * @return the raw string of this property in the format `id,value`.
+     *         However, an empty string can be returned if [value] is `null` or if
+     *         this property is [not serializable][isSerializable]
+     * @see RawStringable
+     * @see toRawString
      */
-    abstract fun toRawString(): String
+    protected open fun toRawStringHelper(serializer: Serializable<T>, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT): String =
+        this.toRawStringHelper(suffix, suffixMode) { serializer.serialize(it) }
 
     override fun toString(): String {
         return "${this::class.simpleName!!}(id = ${this.id}, defaultValue = ${this.defaultValue}, value = ${this.value})"

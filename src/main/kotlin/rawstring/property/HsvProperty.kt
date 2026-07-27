@@ -2,6 +2,7 @@ package fr.geming400.gddotkt.rawstring.property
 
 import fr.geming400.gddotkt.objects.data.Hsv
 import fr.geming400.gddotkt.rawstring.Id
+import fr.geming400.gddotkt.rawstring.serializing.Serializers
 
 class HsvProperty(id: Id, defaultValue: Hsv? = Hsv.create(), currentValue: Hsv? = defaultValue) : AbstractProperty<Hsv>(id, defaultValue, currentValue) {
     private var usesColorPropID: Id? = null
@@ -19,8 +20,6 @@ class HsvProperty(id: Id, defaultValue: Hsv? = Hsv.create(), currentValue: Hsv? 
             else
                 KEY_VAL_SEPARATOR + this.usesColorPropID!!.getID() + KEY_VAL_SEPARATOR + "1"
 
-        return this.toRawStringHelper(suffix = suffix) {
-            it.asRawString()
-        }
+        return this.toRawStringHelper(Serializers.HSV, suffix = suffix)
     }
 }
