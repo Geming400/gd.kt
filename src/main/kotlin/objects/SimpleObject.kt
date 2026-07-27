@@ -1,5 +1,6 @@
 package fr.geming400.gddotkt.objects
 
+import fr.geming400.gddotkt.annotations.GDName
 import fr.geming400.gddotkt.objects.data.Pos
 import fr.geming400.gddotkt.objects.data.Position
 import fr.geming400.gddotkt.objects.data.Scale
@@ -11,7 +12,9 @@ import fr.geming400.gddotkt.rawstring.serializing.Serializers
 
 /**
  * A simple object is a generic geometry dash object in the editor.
- * This is the class that represents every other objects
+ * This is the class that represents every other objects.
+ *
+ * **If you are wondering what any of these properties mean, check the [GD Editor Guide](https://www.robtopgames.com/files/GDEditor.pdf) !**
  */
 open class SimpleObject : GenericGdObject {
     val rawStringFactory: RawStringFactory
@@ -41,7 +44,9 @@ open class SimpleObject : GenericGdObject {
     val editorLayer = IntProperty(20.id)
     val editorLayer2 = IntProperty(61.id)
     val zOrder = IntProperty(25.id, defaultValue = null)
+    @GDName("ORD")
     val order = IntProperty(115.id)
+    @GDName("CH")
     val channel = IntProperty(170.id)
     // TODO: Make a object class where the 'preview' property is a thing
     val linkedGroupID = IntProperty(108.id)
