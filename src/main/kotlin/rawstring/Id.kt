@@ -81,8 +81,7 @@ data class Id private constructor(val numericalID: UInt?, val stringID: String?)
      * Returns a string representation of the object.
      * If you are looking to get the **string representation** of the id, use [getID]
      */
-    override fun toString(): String =
-        "${this::class.simpleName}{id = ${this.getID()}}"
+    override fun toString(): String = this.getID()
 
     enum class Type {
         NUMERICAL,
