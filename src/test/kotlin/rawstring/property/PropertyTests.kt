@@ -1,10 +1,56 @@
 package fr.geming400.gddotkt.rawstring.property
 
+import fr.geming400.gddotkt.objects.GenericGdObject
 import fr.geming400.gddotkt.objects.data.Hsv
+import fr.geming400.gddotkt.rawstring.Id
+import fr.geming400.gddotkt.rawstring.RawStringFactory
 import fr.geming400.gddotkt.rawstring.id
+import fr.geming400.gddotkt.rawstring.serializing.Serializers
+import fr.geming400.gddotkt.utils.LACKS_IMPL
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import kotlin.io.encoding.Base64
+
+var shouldMutableConditionalPropBeSerializable = false
+
+class MyObj : GenericGdObject {
+    var rawStringFactory: RawStringFactory
+
+    val normalProp = IntProperty(1.id, defaultValue = 0)
+
+    val conditionalProp = ConditionalProperty(
+        id = 2.id,
+        dependantOn = this.normalProp,
+        serializer = Serializers.BOOLEAN,
+        predicate = { it.isSerializable() }
+    ) {
+        true
+    }
+
+    val mutableConditionalProp = MutableConditionalProperty(
+        id = 3.id,
+        defaultValue = true,
+        dependantOn = this.normalProp,
+        serializer = Serializers.BOOLEAN,
+        predicate = { shouldMutableConditionalPropBeSerializable }
+    )
+
+    override fun get(propID: Id): PropertyDefinition<*> = LACKS_IMPL()
+
+    override fun asRawString(): String =
+        this.rawStringFactory.asRawString()
+
+    constructor() {
+        0 + 0 // Useless instruction, but this prevents idea from complaining that
+              // this.rawStringFactory can be joined with its assignment.
+              //
+              // There is a real reason why this is the case, look at RawStringFactory's
+              // KDoc to learn why.
+
+        this.rawStringFactory = RawStringFactory(this)
+    }
+}
 
 class PropertyTests {
     fun <T> propTest(
@@ -19,22 +65,22 @@ class PropertyTests {
             Assertions.assertNotEquals(testValue, prop.defaultValue)
         }
 
-        Assertions.assertEquals(prop.getOrElse(testValue), prop.value)
-        Assertions.assertEquals(prop.getOrNullableElse(null), prop.value)
+        Assertions.assertEquals(prop.value, prop.getOrElse(testValue))
+        Assertions.assertEquals(prop.value, prop.getOrNullableElse(null))
         Assertions.assertDoesNotThrow { prop.getOrThrow() }
         Assertions.assertNotEquals(prop.value, prop.defaultValue)
         Assertions.assertFalse(prop.isDefaultValue())
 
         val defaultValTest = {
             Assertions.assertEquals(prop.value, prop.defaultValue)
-            Assertions.assertEquals(prop.toRawString(), "")
+            Assertions.assertEquals("", prop.toRawString())
             Assertions.assertTrue(prop.isDefaultValue())
 
             Assertions.assertEquals(prop.value, prop.defaultValue)
-            Assertions.assertEquals(prop.getOrElse(testValue), prop.defaultValue)
-            Assertions.assertEquals(prop.getOrNullableElse(null), prop.defaultValue)
+            Assertions.assertEquals(prop.defaultValue, prop.getOrElse(testValue))
+            Assertions.assertEquals(prop.defaultValue, prop.getOrNullableElse(null))
             Assertions.assertDoesNotThrow { prop.getOrThrow() }
-            Assertions.assertEquals(prop.toRawString(), "")
+            Assertions.assertEquals("", prop.toRawString())
         }
 
         prop.resetValue()
@@ -45,9 +91,9 @@ class PropertyTests {
         defaultValTest()
 
         prop.value = testValue
-        Assertions.assertEquals(prop.value, testValue)
+        Assertions.assertEquals(testValue, prop.value)
 
-        Assertions.assertEquals(prop.toRawString(), "${prop.id.getID()},$testRawStringValue")
+        Assertions.assertEquals("${prop.id.getID()},$testRawStringValue", prop.toRawString())
     }
 
     @Test
@@ -61,15 +107,15 @@ class PropertyTests {
     @Test
     fun testBoolProp() {
         val prop = BoolProperty(1.id, null)
-        Assertions.assertEquals(prop.toRawString(), "")
+        Assertions.assertEquals("", prop.toRawString())
 
         prop.value = true
-        Assertions.assertEquals(prop.asGdBool(), 1)
-        Assertions.assertEquals(prop.toRawString(), "${prop.id.getID()},1")
+        Assertions.assertEquals(1, prop.asGdBool())
+        Assertions.assertEquals("${prop.id.getID()},1", prop.toRawString())
 
         prop.value = false
-        Assertions.assertEquals(prop.asGdBool(), 0)
-        Assertions.assertEquals(prop.toRawString(), "${prop.id.getID()},0")
+        Assertions.assertEquals(0, prop.asGdBool())
+        Assertions.assertEquals("${prop.id.getID()},0", prop.toRawString())
     }
 
     @Test
@@ -84,20 +130,20 @@ class PropertyTests {
     @Test
     fun testListProp() {
         val prop = ListProperty<Int>(0.id)
-        Assertions.assertEquals(prop.size(), 0)
+        Assertions.assertEquals(0, prop.size())
 
         prop.add(5)
-        Assertions.assertEquals(prop.size(), 1)
-        Assertions.assertEquals(prop[0], 5)
+        Assertions.assertEquals(1, prop.size())
+        Assertions.assertEquals(5, prop[0])
         Assertions.assertEquals(prop[0], prop.getOrThrow()[0])
 
         prop[0] = 4
-        Assertions.assertEquals(prop.size(), 1)
-        Assertions.assertEquals(prop[0], 4)
+        Assertions.assertEquals(1, prop.size())
+        Assertions.assertEquals(4, prop[0])
         Assertions.assertEquals(prop[0], prop.getOrThrow()[0])
 
         prop.clear()
-        Assertions.assertEquals(prop.size(), 0)
+        Assertions.assertEquals(0, prop.size())
         Assertions.assertThrows(IndexOutOfBoundsException::class.java) { prop[0] }
 
         val secondProp = ListProperty<Int>(0.id, defaultValue = null)
@@ -114,13 +160,13 @@ class PropertyTests {
         // Most of the tests are already done above
 
         val prop = SetProperty<Int>(0.id)
-        Assertions.assertEquals(prop.size(), 0)
+        Assertions.assertEquals(0, prop.size())
 
         prop.add(5)
-        Assertions.assertEquals(prop.size(), 1)
+        Assertions.assertEquals(1, prop.size())
 
         prop.clear()
-        Assertions.assertEquals(prop.size(), 0)
+        Assertions.assertEquals(0, prop.size())
 
         val secondProp = SetProperty<Int>(0.id, defaultValue = null)
         Assertions.assertThrows(NullPointerException::class.java) { secondProp.add(5) }
@@ -130,7 +176,7 @@ class PropertyTests {
     }
 
     @Test
-    fun hsvTest() {
+    fun testHsvProp() {
         val prop = HsvProperty(1.id, defaultValue = null, currentValue = Hsv.create())
         Assertions.assertEquals(
             prop.id.getID() + AbstractProperty.KEY_VAL_SEPARATOR + prop.getOrThrow().asRawString(),
@@ -143,5 +189,67 @@ class PropertyTests {
                     + AbstractProperty.KEY_VAL_SEPARATOR + "5,1",
             prop.toRawString()
         )
+    }
+
+    @Test
+    @DisplayName("ConditionalProp test")
+    fun testImmutableConditionalProp() {
+        val obj = MyObj()
+        Assertions.assertEquals("", obj.asRawString())
+        Assertions.assertFalse(obj.normalProp.isSerializable())
+        Assertions.assertTrue(obj.normalProp.isDefaultValue())
+        Assertions.assertFalse(obj.conditionalProp.isSerializable())
+
+        obj.normalProp.value = 5
+        // Now, since the normalProp is serializable
+        // the conditional property's predicate will return 'true'
+        Assertions.assertEquals("2,1,1,5", obj.asRawString())
+        Assertions.assertTrue(obj.normalProp.isSerializable())
+        Assertions.assertFalse(obj.normalProp.isDefaultValue())
+        Assertions.assertTrue(obj.conditionalProp.isSerializable())
+    }
+
+    @Test
+    @DisplayName("MutableConditionalProp test")
+    fun testMutableConditionalPropTest() {
+        val obj = MyObj()
+        Assertions.assertEquals("", obj.asRawString())
+        Assertions.assertFalse(obj.normalProp.isSerializable())
+        Assertions.assertTrue(obj.normalProp.isDefaultValue())
+        Assertions.assertFalse(obj.mutableConditionalProp.isSerializable())
+        Assertions.assertTrue(obj.mutableConditionalProp.isDefaultValue())
+
+        // We set mutableConditionalProp in it's "non default state"
+        // but it is still non-serializable because of the 'shouldMutableConditionalPropBeSerializable' flag
+        obj.mutableConditionalProp.value = !obj.mutableConditionalProp.defaultValue!!
+        Assertions.assertEquals("", obj.asRawString())
+        Assertions.assertFalse(obj.normalProp.isSerializable())
+        Assertions.assertTrue(obj.normalProp.isDefaultValue())
+        Assertions.assertFalse(obj.mutableConditionalProp.isSerializable())
+        Assertions.assertFalse(obj.mutableConditionalProp.isDefaultValue())
+
+        obj.normalProp.value = 5
+        // 2,1 is from 'MyObj.conditionalProp'
+        Assertions.assertEquals("2,1,1,5", obj.asRawString())
+        Assertions.assertTrue(obj.normalProp.isSerializable())
+        Assertions.assertFalse(obj.normalProp.isDefaultValue())
+        Assertions.assertFalse(obj.mutableConditionalProp.isSerializable())
+        Assertions.assertFalse(obj.mutableConditionalProp.isDefaultValue())
+
+        shouldMutableConditionalPropBeSerializable = true
+        Assertions.assertEquals("2,1,3,0,1,5", obj.asRawString())
+        Assertions.assertTrue(obj.mutableConditionalProp.isSerializable())
+        Assertions.assertFalse(obj.mutableConditionalProp.isDefaultValue())
+
+        shouldMutableConditionalPropBeSerializable = false
+        Assertions.assertEquals("2,1,1,5", obj.asRawString())
+        Assertions.assertFalse(obj.mutableConditionalProp.isSerializable())
+        Assertions.assertFalse(obj.mutableConditionalProp.isDefaultValue())
+
+        shouldMutableConditionalPropBeSerializable = true
+        obj.normalProp.resetValue()
+        Assertions.assertEquals("3,0", obj.asRawString())
+        Assertions.assertTrue(obj.mutableConditionalProp.isSerializable())
+        Assertions.assertFalse(obj.mutableConditionalProp.isDefaultValue())
     }
 }

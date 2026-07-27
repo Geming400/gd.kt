@@ -60,3 +60,10 @@ fun String.toBooleanFromIntStrictOrNull(): Boolean? {
 
     return this.toBooleanStrictOrNull()
 }
+
+/**
+ * This is not like kotlin's T0DO() function and is instead used for tests to prevent
+ * show useless TODOs from showing up
+ */
+@Suppress("FunctionName")
+fun LACKS_IMPL(): Nothing = throw NotImplementedError("This doesn't have any implementation. This is maybe because we are in a test environment and this has no reason to be implemented.")

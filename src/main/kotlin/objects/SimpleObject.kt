@@ -6,13 +6,8 @@ import fr.geming400.gddotkt.objects.data.Scale
 import fr.geming400.gddotkt.rawstring.Id
 import fr.geming400.gddotkt.rawstring.RawStringFactory
 import fr.geming400.gddotkt.rawstring.id
-import fr.geming400.gddotkt.rawstring.property.AbstractProperty
-import fr.geming400.gddotkt.rawstring.property.BoolProperty
-import fr.geming400.gddotkt.rawstring.property.IntProperty
-import fr.geming400.gddotkt.rawstring.property.FloatProperty
-import fr.geming400.gddotkt.rawstring.property.HsvProperty
-import fr.geming400.gddotkt.rawstring.property.SetProperty
-import fr.geming400.gddotkt.rawstring.property.UIntProperty
+import fr.geming400.gddotkt.rawstring.property.*
+import fr.geming400.gddotkt.rawstring.serializing.Serializers
 
 /**
  * A simple object is a generic geometry dash object in the editor.
@@ -36,8 +31,10 @@ open class SimpleObject : GenericGdObject {
     val warpYangle = FloatProperty(131.id)
     val baseColor = IntProperty(21.id)
     val detailColor = IntProperty(22.id)
-    val baseColorHSV = HsvProperty(43.id).setUsesColorProp(41.id)
-    val detailColorHSV = HsvProperty(44.id).setUsesColorProp(42.id)
+    val baseColorHSV = HsvProperty(43.id)
+    val detailColorHSV = HsvProperty(44.id)
+    val usesBaseColorHSV = ConditionalProperty(41.id, this.baseColorHSV, Serializers.BOOLEAN,{ it.isSerializable() }) { true }
+    val usesDetailColorHSV = ConditionalProperty(42.id, this.detailColorHSV, Serializers.BOOLEAN,{ it.isSerializable() }) { true }
 
     val groups = SetProperty<UInt>(57.id)
     val groupsParent = SetProperty<UInt>(274.id)
