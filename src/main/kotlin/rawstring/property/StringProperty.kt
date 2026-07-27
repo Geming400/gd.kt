@@ -16,8 +16,8 @@ class StringProperty(id: Id, defaultValue: String? = "", currentValue: String? =
 
     fun toRawString(charset: Charset): String =
         this.toRawStringHelper {
-            Base64.UrlSafe.encode(it.toByteArray())
+            Base64.UrlSafe.encode(it.toByteArray(charset))
         }
 
-    override fun toRawString(): String = this.toRawString(Charsets.UTF_8)
+    override fun toRawString(): String = this.toRawString(Charset.defaultCharset())
 }
