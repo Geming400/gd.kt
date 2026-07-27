@@ -4,6 +4,7 @@ import fr.geming400.gddotkt.exceptions.InvalidRawStringException
 import fr.geming400.gddotkt.rawstring.Id
 import fr.geming400.gddotkt.rawstring.RawStringable
 import fr.geming400.gddotkt.rawstring.property.AbstractProperty
+import fr.geming400.gddotkt.rawstring.property.PropertyDefinition
 
 /**
  * Represents an object that can have a conversion to a "geometry dash raw string"
@@ -23,7 +24,7 @@ interface GenericGdObject : RawStringable {
      * Get the property of this geometry dash object by its property id
      * @throws NullPointerException if there is no property at the given id
      */
-    operator fun get(propID: Id): AbstractProperty<*>
+    operator fun get(propID: Id): PropertyDefinition<*>
 
     /**
      * Get the geometry dash raw string representing this object "strictly".

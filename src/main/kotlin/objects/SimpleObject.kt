@@ -105,11 +105,11 @@ open class SimpleObject : GenericGdObject {
      * For more information see [RawStringFactory.asIntMap]
      * @see RawStringFactory.asIntMap
      */
-    fun asMap(): Map<UInt, AbstractProperty<*>> =
+    fun asMap(): Map<UInt, PropertyDefinition<*>> =
         this.rawStringFactory.asIntMap()
 
 
-    override fun get(propID: Id): AbstractProperty<*> =
+    override fun get(propID: Id): PropertyDefinition<*> =
         this.rawStringFactory.properties.first { it.id == propID }
 
 // See why this was removed in RawStringable

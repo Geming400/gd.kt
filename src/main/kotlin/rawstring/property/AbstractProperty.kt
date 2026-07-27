@@ -2,32 +2,32 @@ package fr.geming400.gddotkt.rawstring.property
 
 import fr.geming400.gddotkt.rawstring.Id
 import fr.geming400.gddotkt.rawstring.RawStringable
+import fr.geming400.gddotkt.rawstring.serializing.Serializable
 
-/**
- * The base class for all properties
- * @property id the id of the property. See the [Id] class on how to create an instance
- * @property defaultValue the default value if the property, this affects if it will be serialized or not
- * @property currentValue the value to set by default. It defaults to the property value
- */
-abstract class AbstractProperty<T>(val id: Id, val defaultValue: T? = null, private var currentValue: T? = defaultValue) {
-    companion object {
-        const val KEY_VAL_SEPARATOR: Char = ','
-    }
+interface PropertyDefinition<T> {
+    val id: Id
 
     /**
      * The current value of this property.
-     * The actual value is stored internally and is not meant to be accessed.
      *
-     * If set to `null`, the [defaultValue] will be used instead *(see [resetValue])*
+     * If you are overriding this, setting this as a `var` is allowed and
+     * expected behavior
      */
-    open var value: T?
-        get() {
-            return if (this.currentValue == null)
-                this.defaultValue
-            else
-                this.currentValue
-        }
-        set(value) { this.currentValue = value }
+    val value: T?
+
+    /**
+     * Checks if this property needs to be serialized
+     * @sample samples.rawstring.property.isSerializableSample
+     */
+    fun isSerializable(): Boolean
+
+    /**
+     * Turns this property into the raw string understandable by geometry dash.
+     *
+     * If you are implementing [AbstractProperty], use [AbstractProperty.toRawStringHelper] to make a raw string
+     * @return the raw string in the format `id,value`
+     */
+    fun toRawString(): String
 
     /**
      * Returns the property's [value] or throw if it's `null`.
@@ -66,6 +66,33 @@ abstract class AbstractProperty<T>(val id: Id, val defaultValue: T? = null, priv
             other
         else
             this.value!!
+}
+
+/**
+ * The base class for all properties
+ * @property id the id of the property. See the [Id] class on how to create an instance
+ * @property defaultValue the default value if the property, this affects if it will be serialized or not
+ * @property currentValue the value to set by default. It defaults to the property value
+ */
+abstract class AbstractProperty<T>(final override val id: Id, val defaultValue: T? = null, protected var currentValue: T? = defaultValue) : PropertyDefinition<T> {
+    companion object {
+        const val KEY_VAL_SEPARATOR: Char = ','
+    }
+
+    /**
+     * The current value of this property.
+     * The actual value is stored internally and is not meant to be accessed.
+     *
+     * If set to `null`, the [defaultValue] will be used instead *(see [resetValue])*
+     */
+    override var value: T?
+        get() {
+            return if (this.currentValue == null)
+                this.defaultValue
+            else
+                this.currentValue
+        }
+        set(value) { this.currentValue = value }
 
     /**
      * Checks if this property's [value] is equal to its [default value][defaultValue]
@@ -83,7 +110,7 @@ abstract class AbstractProperty<T>(val id: Id, val defaultValue: T? = null, priv
      * Checks if this property needs to be serialized
      * @sample samples.rawstring.property.isSerializableSample
      */
-    open fun isSerializable(): Boolean {
+    override fun isSerializable(): Boolean {
         // if there's no value, no need to serialize it into a raw string
         if (this.currentValue == null)
             return false

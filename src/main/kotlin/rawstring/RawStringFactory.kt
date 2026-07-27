@@ -2,11 +2,18 @@ package fr.geming400.gddotkt.rawstring
 
 import fr.geming400.gddotkt.objects.GenericGdObject
 import fr.geming400.gddotkt.rawstring.property.AbstractProperty
+import fr.geming400.gddotkt.rawstring.property.PropertyDefinition
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.starProjectedType
 
+/**
+ * A raw string factory allows you to abstract the generation of raw string for [GenericGdObjects][GenericGdObject].
+ * Internally, using reflection it looks for [PropertyDefinitions][PropertyDefinition] and creates the raw string from there.
+ *
+ * Note: this **SHOULD NOT BE** instantiated in the fields (aka "joined with assignment"), and instead should be in the constructor because of reflection.
+ */
 class RawStringFactory {
     companion object {
         const val OBJECTS_SEPARATOR: Char = ';'
@@ -17,10 +24,12 @@ class RawStringFactory {
          */
         fun joinObjectsIntoRawString(objects: Collection<RawStringable>): String =
             objects.joinToString(OBJECTS_SEPARATOR.toString()) { it.asRawString() }
+
+        fun areRawStringEquals(a: String, b: String): Boolean = TODO()
     }
 
     private val parent: GenericGdObject
-    lateinit var properties: Collection<AbstractProperty<*>>
+    lateinit var properties: Collection<PropertyDefinition<*>>
         private set
 
     constructor(parent: GenericGdObject) {
@@ -30,57 +39,19 @@ class RawStringFactory {
         }
     }
 
-    private fun computeProperties(consumer: (List<AbstractProperty<*>>) -> Unit) {
-        val props = mutableListOf<AbstractProperty<*>>()
+    private fun computeProperties(consumer: (List<PropertyDefinition<*>>) -> Unit) {
+        val props = mutableListOf<PropertyDefinition<*>>()
 
         this.parent::class.memberProperties.forEach {
-            if (it.visibility == KVisibility.PUBLIC && it.returnType.isSubtypeOf(AbstractProperty::class.starProjectedType)) {
+            if (it.visibility == KVisibility.PUBLIC && it.returnType.isSubtypeOf(PropertyDefinition::class.starProjectedType)) {
                 val prop = it.getter.call(this.parent)
                 if (prop != null)
-                    props.add(prop as AbstractProperty<*>)
+                    props.add(prop as PropertyDefinition<*>)
             }
         }
 
         consumer(props)
     }
-
-    fun getSerializableProperties(): List<AbstractProperty<*>> =
-        this.properties
-            .stream()
-            .filter { it.isSerializable() }
-            .toList()
-
-    /**
-     * Gets all the properties of this factory's parent in a map
-     * in the format `propID: prop`
-     * @return the properties in a [Map]
-     */
-    fun asMap(): Map<Id, AbstractProperty<*>> {
-        val res = mutableMapOf<Id, AbstractProperty<*>>()
-        this.properties.forEach {
-            res[it.id] = it
-        }
-
-        return res
-    }
-
-    /**
-     * Gets all the properties of this factory's parent in a map
-     * in the format `propID: prop`
-     * @return the properties in a [Map]
-     * @throws NullPointerException if **ANY** of the [numerical ids][Id.numericalID] is `null`
-     */
-    fun asIntMap(): Map<UInt, AbstractProperty<*>> =
-        this.asMap().mapKeys { it.key.getNumericalIdStrict() }
-
-    /**
-     * Gets all the properties of this factory's parent in a map
-     * in the format `propID: prop`
-     * @return the properties in a [Map]
-     * @throws NullPointerException if **ANY** of the [string ids][Id.stringID] is `null`
-     */
-    fun asStringMap(): Map<String, AbstractProperty<*>> =
-        this.asMap().mapKeys { it.key.getStringIdStrict() }
 
     /**
      * Get the raw string of this factory's [parent] by concatenating all
@@ -93,8 +64,46 @@ class RawStringFactory {
             it.toRawString()
         }
 
+    fun getSerializableProperties(): List<PropertyDefinition<*>> =
+        this.properties
+            .stream()
+            .filter { it.isSerializable() }
+            .toList()
+
     /**
-     * Gets all the properties of this factory's parent in a map
+     * Gets all the **serializable** properties of this factory's parent in a map
+     * in the format `propID: prop`
+     * @return the properties in a [Map]
+     */
+    fun asMap(): Map<Id, PropertyDefinition<*>> {
+        val res = mutableMapOf<Id, PropertyDefinition<*>>()
+        this.getSerializableProperties().forEach {
+            res[it.id] = it
+        }
+
+        return res
+    }
+
+    /**
+     * Gets all the **serializable** properties of this factory's parent in a map
+     * in the format `propID: prop`
+     * @return the properties in a [Map]
+     * @throws NullPointerException if **ANY** of the [numerical ids][Id.numericalID] is `null`
+     */
+    fun asIntMap(): Map<UInt, PropertyDefinition<*>> =
+        this.asMap().mapKeys { it.key.getNumericalIdStrict() }
+
+    /**
+     * Gets all the **serializable** properties of this factory's parent in a map
+     * in the format `propID: prop`
+     * @return the properties in a [Map]
+     * @throws NullPointerException if **ANY** of the [string ids][Id.stringID] is `null`
+     */
+    fun asStringMap(): Map<String, PropertyDefinition<*>> =
+        this.asMap().mapKeys { it.key.getStringIdStrict() }
+
+    /**
+     * Gets all the **serializable** properties of this factory's parent in a map
      * in the format `propID: propRawString`
      * @return the properties in a [Map]
      */
@@ -102,7 +111,7 @@ class RawStringFactory {
         this.asMap().mapValues { it.value.toRawString() }
 
     /**
-     * Gets all the properties of this factory's parent in a map
+     * Gets all the **serializable** properties of this factory's parent in a map
      * in the format `propID: propRawString`
      * @return the properties in a [Map]
      * @throws NullPointerException if **ANY** of the [numerical ids][Id.numericalID] is `null`
@@ -111,7 +120,7 @@ class RawStringFactory {
         this.asIntMap().mapValues { it.value.toRawString() }
 
     /**
-     * Gets all the properties of this factory's parent in a map
+     * Gets all the **serializable** properties of this factory's parent in a map
      * in the format `propID: propRawString`
      * @return the properties in a [Map]
      * @throws NullPointerException if **ANY** of the [string ids][Id.stringID] is `null`
