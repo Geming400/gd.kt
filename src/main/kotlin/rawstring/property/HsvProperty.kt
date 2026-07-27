@@ -7,7 +7,12 @@ import fr.geming400.gddotkt.rawstring.serializing.Serializers
 class HsvProperty(id: Id, defaultValue: Hsv? = Hsv.create(), currentValue: Hsv? = defaultValue) : AbstractProperty<Hsv>(id, defaultValue, currentValue) {
     private var usesColorPropID: Id? = null
 
-    // TODO: test this + KDoc
+    /**
+     * Sets the id of the property `uses[Base/Detail]ColorHSV` to be included in the raw string output
+     * @param propID the property id of the `uses[Base/Detail]ColorHSV` property
+     * @return the hsv property object, aka `this`
+     */
+    @Deprecated(message = "This is kept intact but conditional properties should be used in favor")
     fun setUsesColorProp(propID: Id): HsvProperty {
         this.usesColorPropID = propID
         return this

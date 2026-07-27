@@ -183,6 +183,7 @@ class PropertyTests {
             prop.toRawString()
         )
 
+        @Suppress("DEPRECATION")
         prop.setUsesColorProp(5.id)
         Assertions.assertEquals(
             prop.id.getID() + AbstractProperty.KEY_VAL_SEPARATOR + prop.getOrThrow().asRawString()
