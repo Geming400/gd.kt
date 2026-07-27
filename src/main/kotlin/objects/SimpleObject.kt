@@ -14,7 +14,7 @@ import fr.geming400.gddotkt.rawstring.serializing.Serializers
  * This is the class that represents every other objects
  */
 open class SimpleObject : GenericGdObject {
-    protected val rawStringFactory: RawStringFactory
+    val rawStringFactory: RawStringFactory
 
     val objID = UIntProperty(1.id)
     val x = FloatProperty(2.id)
@@ -29,8 +29,8 @@ open class SimpleObject : GenericGdObject {
     val flipVertical = BoolProperty(4.id, defaultValue = false)
     val warpXangle = FloatProperty(132.id)
     val warpYangle = FloatProperty(131.id)
-    val baseColor = IntProperty(21.id)
-    val detailColor = IntProperty(22.id)
+    val baseColorID = UIntProperty(21.id)
+    val detailColorID = UIntProperty(22.id)
     val baseColorHSV = HsvProperty(43.id)
     val detailColorHSV = HsvProperty(44.id)
     val usesBaseColorHSV = ConditionalProperty(41.id, this.baseColorHSV, Serializers.BOOLEAN,{ it.isSerializable() }) { true }
