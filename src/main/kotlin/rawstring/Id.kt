@@ -93,7 +93,7 @@ data class Id private constructor(val numericalID: UInt?, val stringID: String?)
  * Creates a numerical ID for this integer
  * @see Id.ofNumerical
  */
-val Int.id: Id
+inline val Int.id: Id
     get() = Id.ofNumerical(this.coerceAtLeast(1).toUInt())
 
 
@@ -101,12 +101,12 @@ val Int.id: Id
  * Creates a numerical ID for this unsigned integer
  * @see Id.ofNumerical
  */
-val UInt.id: Id
+inline val UInt.id: Id
     get() = Id.ofNumerical(this)
 
 /**
  * Creates a string ID for this string
  * @see Id.ofString
  */
-val String.id: Id
+inline val String.id: Id
     get() = Id.ofString(this)
