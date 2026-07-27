@@ -15,7 +15,7 @@ import kotlin.io.encoding.Base64
 var shouldMutableConditionalPropBeSerializable = false
 
 class MyObj : GenericGdObject {
-    var rawStringFactory: RawStringFactory
+    var rawStringFactory: RawStringFactory = RawStringFactory(this)
 
     val normalProp = IntProperty(1.id, defaultValue = 0)
 
@@ -40,16 +40,6 @@ class MyObj : GenericGdObject {
 
     override fun asRawString(): String =
         this.rawStringFactory.asRawString()
-
-    constructor() {
-        0 + 0 // Useless instruction, but this prevents idea from complaining that
-              // this.rawStringFactory can be joined with its assignment.
-              //
-              // There is a real reason why this is the case, look at RawStringFactory's
-              // KDoc to learn why.
-
-        this.rawStringFactory = RawStringFactory(this)
-    }
 }
 
 class PropertyTests {

@@ -17,7 +17,7 @@ import fr.geming400.gddotkt.rawstring.serializing.Serializers
  * **If you are wondering what any of these properties mean, check the [GD Editor Guide](https://www.robtopgames.com/files/GDEditor.pdf) !**
  */
 open class SimpleObject : GenericGdObject {
-    val rawStringFactory: RawStringFactory
+    val rawStringFactory: RawStringFactory = RawStringFactory(this)
 
     val objID = UIntProperty(1.id, defaultValue = null)
     val x = FloatProperty(2.id, defaultValue = null)
@@ -70,8 +70,6 @@ open class SimpleObject : GenericGdObject {
     constructor(objID: UInt, pos: Position) {
         this.objID.value = objID.coerceAtLeast(1u)
         this.setPos(pos)
-
-        this.rawStringFactory = RawStringFactory(this)
     }
 
     constructor(objID: UInt, x: Float, y: Float) : this(objID, Pos(x, y))

@@ -3,6 +3,7 @@ package fr.geming400.gddotkt.rawstring
 import fr.geming400.gddotkt.objects.GenericGdObject
 import fr.geming400.gddotkt.rawstring.property.AbstractProperty
 import fr.geming400.gddotkt.rawstring.property.PropertyDefinition
+import java.util.Collections
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
@@ -11,8 +12,6 @@ import kotlin.reflect.full.starProjectedType
 /**
  * A raw string factory allows you to abstract the generation of raw string for [GenericGdObjects][GenericGdObject].
  * Internally, using reflection it looks for [PropertyDefinitions][PropertyDefinition] and creates the raw string from there.
- *
- * Note: this **SHOULD NOT BE** instantiated in the fields (aka "joined with assignment"), and instead should be in the constructor because of reflection.
  */
 class RawStringFactory {
     companion object {
@@ -29,15 +28,25 @@ class RawStringFactory {
     }
 
     private val parent: GenericGdObject
-    lateinit var properties: Collection<PropertyDefinition<*>>
-        private set
+    private var cachedProperties: Collection<PropertyDefinition<*>>? = null
 
     constructor(parent: GenericGdObject) {
         this.parent = parent
-        this.computeProperties { props ->
-            this.properties = props
-        }
     }
+
+    /**
+     * The properties of this factory's [parent].
+     * They are cached per-instance and are only cached when this var's getter is called
+     */
+    val properties: Collection<PropertyDefinition<*>>
+        get() {
+            if (this.cachedProperties == null)
+                this.computeProperties { props ->
+                    this.cachedProperties = Collections.unmodifiableCollection(props)
+                }
+
+            return this.cachedProperties!!
+        }
 
     private fun computeProperties(consumer: (List<PropertyDefinition<*>>) -> Unit) {
         val props = mutableListOf<PropertyDefinition<*>>()
