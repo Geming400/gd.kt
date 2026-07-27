@@ -3,7 +3,6 @@ package fr.geming400.gddotkt.objects.data
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-// TODO: finish
 private class HsvTests {
     private fun testHsvCtor(hsv: Hsv, expectedSatAdditive: Boolean, expectedBrightnessAdditive: Boolean) {
         Assertions.assertEquals(hsv.isSatChecked, expectedSatAdditive)
