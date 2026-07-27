@@ -4,19 +4,19 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 // TODO: finish
-private class HsvTest {
+private class HsvTests {
     private fun testHsvCtor(hsv: Hsv, expectedSatAdditive: Boolean, expectedBrightnessAdditive: Boolean) {
         Assertions.assertEquals(hsv.isSatChecked, expectedSatAdditive)
         Assertions.assertEquals(hsv.isBrightnessChecked, expectedBrightnessAdditive)
-        Assertions.assertEquals(hsv.hue, 0)
-        Assertions.assertEquals(hsv.sat, 0f)
-        Assertions.assertEquals(hsv.brightness, 0f)
+        Assertions.assertEquals(0, hsv.hue)
+        Assertions.assertEquals(0f, hsv.sat)
+        Assertions.assertEquals(0f, hsv.brightness)
     }
 
     @Test
     fun rawStringTest() {
         val hsv = Hsv.create(0, 0f, 0f)
-        Assertions.assertEquals(hsv.asRawString(), "0a0.0a0.0a0a0")
+        Assertions.assertEquals("0a0.0a0.0a0a0", hsv.asRawString())
     }
 
     @Test
@@ -35,28 +35,28 @@ private class HsvTest {
         // They are already unchecked, nothing should change
         hsv.isSatChecked = false
         hsv.isBrightnessChecked = false
-        Assertions.assertEquals(hsv.sat, 1f)
-        Assertions.assertEquals(hsv.brightness, 1f)
+        Assertions.assertEquals(1f, hsv.sat)
+        Assertions.assertEquals(1f, hsv.brightness)
 
 
         // When checking we add -1
         hsv.isSatChecked = true
         hsv.isBrightnessChecked = true
-        Assertions.assertEquals(hsv.sat, 0f)
-        Assertions.assertEquals(hsv.brightness, 0f)
+        Assertions.assertEquals(0f, hsv.sat)
+        Assertions.assertEquals(0f, hsv.brightness)
 
         // They are already checked, nothing should change
         hsv.isSatChecked = true
         hsv.isBrightnessChecked = true
-        Assertions.assertEquals(hsv.sat, 0f)
-        Assertions.assertEquals(hsv.brightness, 0f)
+        Assertions.assertEquals(0f, hsv.sat)
+        Assertions.assertEquals(0f, hsv.brightness)
 
 
         // When unchecking we add 1
         hsv.isSatChecked = false
         hsv.isBrightnessChecked = false
-        Assertions.assertEquals(hsv.sat, 1f)
-        Assertions.assertEquals(hsv.brightness, 1f)
+        Assertions.assertEquals(1f, hsv.sat)
+        Assertions.assertEquals(1f, hsv.brightness)
     }
 
     @Test
