@@ -31,7 +31,7 @@ data class Pos(
          * @see gridCentered
          */
         fun gridUncentered(x: Float, y: Float): Pos =
-            Pos(x.grid, y.grid)
+            Pos(x.gridUncentered, y.gridUncentered)
 
         /**
          * Create a [Pos] object on geometry dash's grid
@@ -39,7 +39,7 @@ data class Pos(
          * @see gridUncentered
          */
         fun gridCentered(x: Float, y: Float): Pos =
-            Pos(x.offsetGrid, y.offsetGrid)
+            Pos(x.gridCentered, y.gridCentered)
 
         fun ofPos(pos: Position): Pos =
             Pos(pos.actualX, pos.actualY)
@@ -75,7 +75,7 @@ data class GridPos(
          * @see gridUncentered
          */
         fun gridCentered(x: Float, y: Float): GridPos =
-            GridPos(x + Position.GRID_OFFSET / Position.GRID_UNIT, y + Position.GRID_OFFSET / Position.GRID_UNIT)
+            GridPos(x / Position.GRID_UNIT + Position.GRID_OFFSET / Position.GRID_UNIT, y / Position.GRID_UNIT + Position.GRID_OFFSET / Position.GRID_UNIT)
 
         fun ofPos(pos: Position): GridPos =
             GridPos(pos.actualX / Position.GRID_UNIT, pos.actualY / Position.GRID_UNIT)
@@ -116,10 +116,10 @@ inline val Int.offsetGrid: Int
  * 1 `grid unit` = `30`
  *
  * This is a quick way to multiply this value by `30`
- * @see Float.offsetGrid
+ * @see Float.gridCentered
  * @see Pos.gridUncentered
  */
-inline val Float.grid: Float
+inline val Float.gridUncentered: Float
     get() = this * Position.GRID_UNIT
 
 /**
@@ -127,8 +127,8 @@ inline val Float.grid: Float
  * 1 `grid unit` = `30` and center it on the grid
  *
  * This is equal to `val * 30 + 15`
- * @see Float.grid
+ * @see Float.gridUncentered
  * @see Pos.gridCentered
  */
-inline val Float.offsetGrid: Float
-    get() = this.grid + Position.GRID_OFFSET
+inline val Float.gridCentered: Float
+    get() = this.gridUncentered + Position.GRID_OFFSET
