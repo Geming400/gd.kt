@@ -16,19 +16,19 @@ import fr.geming400.gddotkt.rawstring.serializing.Serializers
 open class SimpleObject : GenericGdObject {
     val rawStringFactory: RawStringFactory
 
-    val objID = UIntProperty(1.id)
-    val x = FloatProperty(2.id)
-    val y = FloatProperty(3.id)
-    val rotation = FloatProperty(6.id, defaultValue = 0f)
+    val objID = UIntProperty(1.id, defaultValue = null)
+    val x = FloatProperty(2.id, defaultValue = null)
+    val y = FloatProperty(3.id, defaultValue = null)
+    val rotation = FloatProperty(6.id)
     // This is now deprecated because in 2.2
     // the editor uses scaleX and scaleY
-    // val scale = FloatProperty(32u, defaultValue = 1f)
+    // val scale = FloatProperty(32u)
     val scaleX = FloatProperty(128.id, defaultValue = 1f)
     val scaleY = FloatProperty(129.id, defaultValue = 1f)
     val flipHorizontal = BoolProperty(5.id, defaultValue = false)
     val flipVertical = BoolProperty(4.id, defaultValue = false)
-    val warpXangle = FloatProperty(132.id)
-    val warpYangle = FloatProperty(131.id)
+    val warpXangle = FloatProperty(132.id, defaultValue = 1f)
+    val warpYangle = FloatProperty(131.id, defaultValue = 1f)
     val baseColorID = UIntProperty(21.id)
     val detailColorID = UIntProperty(22.id)
     val baseColorHSV = HsvProperty(43.id)
@@ -38,14 +38,13 @@ open class SimpleObject : GenericGdObject {
 
     val groups = SetProperty<UInt>(57.id)
     val groupsParent = SetProperty<UInt>(274.id)
-    val editorLayer = IntProperty(20.id, defaultValue = 0)
-    val editorLayer2 = IntProperty(61.id, defaultValue = 0)
-    val zLayer = IntProperty(24.id, defaultValue = 0)
-    val zOrder = IntProperty(25.id, defaultValue = 0)
-    val order = IntProperty(115.id, defaultValue = 0)
-    val channel = IntProperty(170.id, defaultValue = 0)
+    val editorLayer = IntProperty(20.id)
+    val editorLayer2 = IntProperty(61.id)
+    val zOrder = IntProperty(25.id, defaultValue = null)
+    val order = IntProperty(115.id)
+    val channel = IntProperty(170.id)
     // TODO: Make a object class where the 'preview' property is a thing
-    val linkedGroupID = IntProperty(108.id, defaultValue = 0)
+    val linkedGroupID = IntProperty(108.id)
 
     // val customProperties = PropertiesSet<ImplementableProperty<Any>>()
 
