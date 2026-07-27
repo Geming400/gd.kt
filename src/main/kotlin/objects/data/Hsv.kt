@@ -1,6 +1,8 @@
 package fr.geming400.gddotkt.objects.data
 
+import fr.geming400.gddotkt.exceptions.InvalidRawStringException
 import fr.geming400.gddotkt.rawstring.RawStringable
+import fr.geming400.gddotkt.utils.toBooleanFromIntStrict
 import fr.geming400.gddotkt.utils.toInt
 import java.util.Objects
 
@@ -10,13 +12,14 @@ import java.util.Objects
  *
  * | Name | Range (unchecked) | Range (checked) |
  * | --- | --- | --- |
- * | Hue | [-180, 180] | [-180, 180] |
- * | Saturation | [0, 2] | [-1, 1] |
- * | Brightness | [0, 2] | [-1, 1] |
+ * | Hue | `[-180, 180]` | `[-180, 180]` |
+ * | Saturation | `[0, 2]` | `[-1, 1]` |
+ * | Brightness | `[0, 2]` | `[-1, 1]` |
  *
  * Checked values only are an offset, they don't affect the visual output.
  *
  * Do note that in geometry dash, the "value" field is the [brightness].
+ * @see fr.geming400.gddotkt.rawstring.property.HsvProperty
  */
 class Hsv : RawStringable {
     companion object {
@@ -36,6 +39,21 @@ class Hsv : RawStringable {
 
         fun checkedSatBrightness(hue: Int = 0, saturation: Float = 0f, brightness: Float = 0f): Hsv =
             Hsv(hue, saturation, brightness, isSaturationChecked = true, isBrightnessChecked = true)
+
+        fun parseHsv(rawString: String): Hsv {
+            try {
+                val values = rawString.trim().split(SEPARATOR)
+                return Hsv(
+                    values[0].toInt(),
+                    values[1].toFloat(),
+                    values[2].toFloat(),
+                    values[3].toBooleanFromIntStrict(),
+                    values[4].toBooleanFromIntStrict()
+                )
+            } catch (e: RuntimeException) {
+                throw InvalidRawStringException(rawString, e)
+            }
+        }
     }
 
     private var hueValue: Int
@@ -90,7 +108,7 @@ class Hsv : RawStringable {
 //            this.brightnessValue = BRIGHTNESS_RANGE.clamp(this.brightnessValue, this.isBrightnessCheckedValue)
         }
 
-    private constructor(
+    constructor(
         hue: Int,
         saturation: Float,
         brightness: Float,
@@ -146,7 +164,7 @@ class Hsv : RawStringable {
     }
 
     override fun toString(): String {
-        return "${this.getName()}{hue = ${this.hueValue}, sat = ${this.saturationValue}, brightness = ${this.brightnessValue}}"
+        return "${this.getName()}(hue = ${this.hueValue}, sat = ${this.saturationValue}, brightness = ${this.brightnessValue})"
     }
 
     data class HsvRange(
