@@ -2,7 +2,11 @@ package fr.geming400.gddotkt.rawstring
 
 /**
  * An id is a way to store an identifier in a numerical or string type.
- * Numerical types are [unsigned integers][UInt] because in geometry dash, property ids don't go below `1`
+ * Numerical types are [unsigned integers][UInt] because in geometry dash, property ids don't go below `1`.
+ *
+ * You can create an [Id] instance, either by:
+ * - Using [ofNumerical] and [ofString]
+ * - Or use the 3 extensions [Int.id], [UInt.id] and [String.id]
  */
 @ConsistentCopyVisibility
 data class Id private constructor(val numericalID: UInt?, val stringID: String?) {
@@ -63,11 +67,24 @@ data class Id private constructor(val numericalID: UInt?, val stringID: String?)
     }
 }
 
+/**
+ * Creates a numerical ID for this integer
+ * @see Id.ofNumerical
+ */
 val Int.id: Id
     get() = Id.ofNumerical(this.coerceAtLeast(1).toUInt())
 
+
+/**
+ * Creates a numerical ID for this unsigned integer
+ * @see Id.ofNumerical
+ */
 val UInt.id: Id
     get() = Id.ofNumerical(this)
 
+/**
+ * Creates a string ID for this string
+ * @see Id.ofString
+ */
 val String.id: Id
     get() = Id.ofString(this)
