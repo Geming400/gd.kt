@@ -9,7 +9,7 @@ package fr.geming400.gddotkt.rawstring
  * - Or use the 3 extensions [Int.id], [UInt.id] and [String.id]
  */
 @ConsistentCopyVisibility
-data class Id private constructor(val numericalID: UInt?, val stringID: String?) {
+data class Id private constructor(val numericalID: UInt?, val stringID: String?): Comparable<Id> {
     companion object {
         fun ofNumerical(numericalID: UInt) = Id(numericalID.coerceAtLeast(1u), null)
         fun ofString(stringID: String) = Id(null, stringID)
@@ -57,9 +57,32 @@ data class Id private constructor(val numericalID: UInt?, val stringID: String?)
         else
             Type.STRING
 
-    override fun toString(): String {
-        return "${this::class.simpleName}{id = ${this.getID()}}"
+    override fun compareTo(other: Id): Int {
+        if (this.getType() == Type.STRING) {
+            return if (other.getType() == Type.STRING) {
+                // this: STRING ; other: STRING
+                this.getStringIdStrict().compareTo(other.getStringIdStrict())
+            } else {
+                // this: STRING ; other: NUMERICAL
+                this.getStringIdStrict().compareTo(other.getID())
+            }
+        } else {
+            return if (other.getType() == Type.STRING) {
+                // this: NUMERICAL ; other: STRING
+                this.getID().compareTo(other.getStringIdStrict())
+            } else {
+                // this: NUMERICAL ; other: NUMERICAL
+                this.getNumericalIdStrict().compareTo(other.getNumericalIdStrict())
+            }
+        }
     }
+
+    /**
+     * Returns a string representation of the object.
+     * If you are looking to get the **string representation** of the id, use [getID]
+     */
+    override fun toString(): String =
+        "${this::class.simpleName}{id = ${this.getID()}}"
 
     enum class Type {
         NUMERICAL,
