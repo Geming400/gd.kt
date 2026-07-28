@@ -4,10 +4,22 @@ import fr.geming400.gddotkt.rawstring.RawStringable
 import fr.geming400.gddotkt.rawstring.property.GdEnum
 import kotlin.enums.EnumEntries
 
+@FunctionalInterface
 interface Serializable<T> {
+    companion object {
+        /**
+         * @see Any.toString
+         */
+        fun <T> usingToString(): Serializable<T> =
+            object : Serializable<T> {
+                override fun serialize(value: T): String = value.toString()
+            }
+    }
+
     fun serialize(value: T): String
 }
 
+@FunctionalInterface
 interface Parsable<T> {
     fun parse(rawValue: String): T
 }
