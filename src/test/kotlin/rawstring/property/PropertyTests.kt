@@ -1,5 +1,6 @@
 package fr.geming400.gddotkt.rawstring.property
 
+import fr.geming400.gddotkt.CustomAssertions
 import fr.geming400.gddotkt.objects.GenericGdObject
 import fr.geming400.gddotkt.objects.data.Hsv
 import fr.geming400.gddotkt.rawstring.Id
@@ -194,7 +195,7 @@ class PropertyTests {
         obj.normalProp.value = 5
         // Now, since the normalProp is serializable
         // the conditional property's predicate will return 'true'
-        Assertions.assertEquals("2,1,1,5", obj.asRawString())
+        CustomAssertions.assertRawStringEquals("2,1,1,5", obj.asRawString())
         Assertions.assertTrue(obj.normalProp.isSerializable())
         Assertions.assertFalse(obj.normalProp.isDefaultValue())
         Assertions.assertTrue(obj.conditionalProp.isSerializable())
@@ -221,19 +222,19 @@ class PropertyTests {
 
         obj.normalProp.value = 5
         // 2,1 is from 'MyObj.conditionalProp'
-        Assertions.assertEquals("2,1,1,5", obj.asRawString())
+        CustomAssertions.assertRawStringEquals("2,1,1,5", obj.asRawString())
         Assertions.assertTrue(obj.normalProp.isSerializable())
         Assertions.assertFalse(obj.normalProp.isDefaultValue())
         Assertions.assertFalse(obj.mutableConditionalProp.isSerializable())
         Assertions.assertFalse(obj.mutableConditionalProp.isDefaultValue())
 
         shouldMutableConditionalPropBeSerializable = true
-        Assertions.assertEquals("2,1,3,0,1,5", obj.asRawString())
+        CustomAssertions.assertRawStringEquals("2,1,3,0,1,5", obj.asRawString())
         Assertions.assertTrue(obj.mutableConditionalProp.isSerializable())
         Assertions.assertFalse(obj.mutableConditionalProp.isDefaultValue())
 
         shouldMutableConditionalPropBeSerializable = false
-        Assertions.assertEquals("2,1,1,5", obj.asRawString())
+        CustomAssertions.assertRawStringEquals("2,1,1,5", obj.asRawString())
         Assertions.assertFalse(obj.mutableConditionalProp.isSerializable())
         Assertions.assertFalse(obj.mutableConditionalProp.isDefaultValue())
 
