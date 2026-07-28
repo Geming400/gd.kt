@@ -212,7 +212,7 @@ class PropertyTests {
     @Test
     fun testEnumProp() {
         propTest(
-            EnumProperty(0.id, Serializer.createEnumSerializer(MyCoolEnum.entries), defaultValue = MyCoolEnum.FIRST, currentValue = MyCoolEnum.SECOND),
+            EnumProperty(0.id, Serializer.enum(MyCoolEnum.entries), defaultValue = MyCoolEnum.FIRST, currentValue = MyCoolEnum.SECOND),
             testValue = MyCoolEnum.THIRD
         )
     }
