@@ -3,6 +3,10 @@ package fr.geming400.gddotkt.rawstring.property
 import fr.geming400.gddotkt.rawstring.Id
 import fr.geming400.gddotkt.rawstring.serializing.Serializable
 
+
+typealias IndependentConditionalProperty<T> = ConditionalProperty<T, Nothing, AbstractProperty<Nothing>?>
+typealias IndependentMutableConditionalProperty<T> = MutableConditionalProperty<T, Nothing, AbstractProperty<Nothing>?>
+
 /**
  * Dummy / sugar interface which is used to
  * tell conditional properties apart from regular properties
