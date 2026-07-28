@@ -52,3 +52,19 @@ open class SetProperty<T>(
 
     override fun createEmptyCollection(): MutableSet<T> = mutableSetOf()
 }
+
+/**
+ * @see SequencedSet
+ */
+open class SequencedSetProperty<T>(
+    id: Id,
+    collectionCtor: CollectionCtor<SequencedSet<T>> = { linkedSetOf() },
+    defaultValue: SequencedSet<T>? = collectionCtor(),
+    currentValue: SequencedSet<T>? = null,
+    serializer: Serializable<T> = Serializable.usingToString()
+) : AbstractCollectionProperty<T, SequencedSet<T>>(id, defaultValue, currentValue, serializer) {
+    override fun toRawString(): String =
+        this.toRawIterableStringHelper()
+
+    override fun createEmptyCollection(): SequencedSet<T> = linkedSetOf()
+}
