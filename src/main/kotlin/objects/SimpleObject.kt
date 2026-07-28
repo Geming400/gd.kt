@@ -41,7 +41,7 @@ open class SimpleObject : GenericGdObject {
 
     @GDName("Pink groups")
     val groupsParent = SequencedSetProperty<UInt>(274.id)
-    val groups = GroupProperty(57.id, groupParentsProperty = this.groupsParent)
+    val groups = GroupSetProperty(57.id, groupParentsProperty = this.groupsParent)
     val editorLayer = IntProperty(20.id)
     val editorLayer2 = IntProperty(61.id)
     val zOrder = IntProperty(25.id, defaultValue = null)

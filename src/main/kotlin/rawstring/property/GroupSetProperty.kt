@@ -3,7 +3,7 @@ package fr.geming400.gddotkt.rawstring.property
 import fr.geming400.gddotkt.rawstring.Id
 import java.util.SequencedSet
 
-class GroupProperty(
+class GroupSetProperty(
     id: Id,
     val groupParentsProperty: SequencedSetProperty<UInt>,
     collectionCtor: CollectionCtor<SequencedSet<UInt>> = { linkedSetOf() },
