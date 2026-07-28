@@ -153,12 +153,23 @@ class PropertyTests {
         Assertions.assertThrows(IndexOutOfBoundsException::class.java) { prop[0] }
 
         val secondProp = ListProperty<Int>(0.id, defaultValue = null)
-        Assertions.assertThrows(NullPointerException::class.java) { secondProp[0] }
-        Assertions.assertThrows(NullPointerException::class.java) { secondProp[0] = 5 }
-        Assertions.assertThrows(NullPointerException::class.java) { secondProp.add(5) }
-        Assertions.assertThrows(NullPointerException::class.java) { secondProp.size() }
+        Assertions.assertThrows(IndexOutOfBoundsException::class.java) { secondProp[0] }
+        Assertions.assertThrows(IndexOutOfBoundsException::class.java) { secondProp[0] = 5 }
+
+        secondProp.add(2)
+        Assertions.assertDoesNotThrow { secondProp[0] }
+        Assertions.assertDoesNotThrow { secondProp[0] = 5 }
+        Assertions.assertDoesNotThrow { secondProp.add(5) }
+        Assertions.assertEquals(2, secondProp.size())
         Assertions.assertDoesNotThrow { secondProp.clear() }
-        Assertions.assertDoesNotThrow { secondProp.isEmpty() }
+        Assertions.assertTrue(secondProp.isEmpty())
+
+        prop.clear()
+        prop.add(0)
+        prop.add(1)
+        prop.add(2)
+        prop.add(3)
+        Assertions.assertEquals("${prop.id},0.1.2.3", prop.toRawString())
     }
 
     @Test
@@ -175,8 +186,8 @@ class PropertyTests {
         Assertions.assertEquals(0, prop.size())
 
         val secondProp = SetProperty<Int>(0.id, defaultValue = null)
-        Assertions.assertThrows(NullPointerException::class.java) { secondProp.add(5) }
-        Assertions.assertThrows(NullPointerException::class.java) { secondProp.size() }
+        Assertions.assertDoesNotThrow { secondProp.add(5) }
+        Assertions.assertDoesNotThrow { secondProp.size() }
         Assertions.assertDoesNotThrow { secondProp.clear() }
         Assertions.assertDoesNotThrow { secondProp.isEmpty() }
     }
