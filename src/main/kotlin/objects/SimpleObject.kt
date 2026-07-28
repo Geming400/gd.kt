@@ -39,8 +39,9 @@ open class SimpleObject : GenericGdObject {
     val usesBaseColorHSV = ConditionalProperty(41.id, this.baseColorHSV, Serializers.BOOLEAN,{ it.isSerializable() }) { true }
     val usesDetailColorHSV = ConditionalProperty(42.id, this.detailColorHSV, Serializers.BOOLEAN,{ it.isSerializable() }) { true }
 
-    val groups = SetProperty<UInt>(57.id)
-    val groupsParent = SetProperty<UInt>(274.id)
+    @GDName("Pink groups")
+    val groupsParent = SequencedSetProperty<UInt>(274.id)
+    val groups = GroupProperty(57.id, groupParentsProperty = this.groupsParent)
     val editorLayer = IntProperty(20.id)
     val editorLayer2 = IntProperty(61.id)
     val zOrder = IntProperty(25.id, defaultValue = null)
