@@ -6,6 +6,7 @@ import fr.geming400.gddotkt.objects.data.Hsv
 import fr.geming400.gddotkt.rawstring.Id
 import fr.geming400.gddotkt.rawstring.RawStringFactory
 import fr.geming400.gddotkt.rawstring.id
+import fr.geming400.gddotkt.rawstring.serializing.Serializer
 import fr.geming400.gddotkt.rawstring.serializing.Serializers
 import fr.geming400.gddotkt.utils.LACKS_IMPL
 import org.junit.jupiter.api.Assertions
@@ -14,6 +15,20 @@ import org.junit.jupiter.api.Test
 import kotlin.io.encoding.Base64
 
 var shouldMutableConditionalPropBeSerializable = false
+
+enum class MyCoolEnum : GdEnum {
+    FIRST {
+        override fun getValue(): Int = 0
+    },
+
+    SECOND {
+        override fun getValue(): Int = 1
+    },
+
+    THIRD {
+        override fun getValue(): Int = 2
+    }
+}
 
 class MyObj : GenericGdObject {
     var rawStringFactory: RawStringFactory = RawStringFactory(this)
@@ -180,6 +195,14 @@ class PropertyTests {
             prop.id.getID() + AbstractProperty.KEY_VAL_SEPARATOR + prop.getOrThrow().asRawString()
                     + AbstractProperty.KEY_VAL_SEPARATOR + "5,1",
             prop.toRawString()
+        )
+    }
+
+    @Test
+    fun testEnumProp() {
+        propTest(
+            EnumProperty(0.id, Serializer.createEnumSerializer(MyCoolEnum.entries), defaultValue = MyCoolEnum.FIRST, currentValue = MyCoolEnum.SECOND),
+            testValue = MyCoolEnum.THIRD
         )
     }
 

@@ -1,6 +1,8 @@
 package fr.geming400.gddotkt.rawstring.serializing
 
 import fr.geming400.gddotkt.rawstring.RawStringable
+import fr.geming400.gddotkt.rawstring.property.GdEnum
+import kotlin.enums.EnumEntries
 
 interface Serializable<T> {
     fun serialize(value: T): String
@@ -27,5 +29,12 @@ interface Serializer<T> : Serializable<T>, Parsable<T> {
                 override fun parse(rawValue: String): T = parser(rawValue)
             }
         }
+
+        @Suppress("UNCHECKED_CAST", "MoveLambdaOutsideParentheses")
+        fun <T> createEnumSerializer(enumEntries: EnumEntries<T>): Serializer<T> where T : Enum<T>, T : GdEnum =
+            create(
+                Any::toString,
+                { str -> enumEntries.first { it.getValue() == str.toInt() } }
+            )
     }
 }
