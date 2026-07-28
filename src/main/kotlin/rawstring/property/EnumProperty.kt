@@ -1,9 +1,9 @@
 package fr.geming400.gddotkt.rawstring.property
 
 import fr.geming400.gddotkt.rawstring.Id
-import fr.geming400.gddotkt.rawstring.serializing.Serializer
+import fr.geming400.gddotkt.rawstring.serializing.Serializable
 
-class EnumProperty<T>(id: Id, val serializer: Serializer<T>, defaultValue: T? = null, currentValue: T? = defaultValue) : AbstractProperty<T>(id, defaultValue, currentValue) where T : Enum<T>, T : GdEnum {
+class EnumProperty<T>(id: Id, val serializer: Serializable<T>, defaultValue: T? = null, currentValue: T? = null) : AbstractProperty<T>(id, defaultValue, currentValue) where T : Enum<T>, T : GdEnum {
     override fun toRawString(): String =
         toRawStringHelper(this.serializer)
 }

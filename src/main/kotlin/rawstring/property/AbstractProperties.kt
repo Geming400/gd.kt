@@ -74,7 +74,7 @@ interface PropertyDefinition<T> {
  * @property defaultValue the default value if the property, this affects if it will be serialized or not
  * @property currentValue the value to set by default. It defaults to the property value
  */
-abstract class AbstractProperty<T>(final override val id: Id, val defaultValue: T? = null, protected var currentValue: T? = defaultValue) : PropertyDefinition<T> {
+abstract class AbstractProperty<T>(final override val id: Id, open val defaultValue: T? = null, protected var currentValue: T? = null) : PropertyDefinition<T> {
     companion object {
         const val KEY_VAL_SEPARATOR: Char = ','
 
@@ -100,6 +100,16 @@ abstract class AbstractProperty<T>(final override val id: Id, val defaultValue: 
      * The actual value is stored internally and is not meant to be accessed.
      *
      * If set to `null`, the [defaultValue] will be used instead *(see [resetValue])*
+     *
+     * Do note that this variable **may be dangerous to modify** (eg: adding elements to a collection)
+     * because this variable returns the [defaultValue] if the property's [internal value][currentValue] is `null`, so
+     * in that case you might modify it indirectly.
+     * This is why your custom properties should contain calls that do not
+     * directly access [value] to prevent from modifying the default value (ex: to add an elem in a collection).
+     * You can look at how this was done in [AbstractCollectionProperty] which has to in a way fight
+     * against this limitation using [AbstractCollectionProperty.getOrCreateCollection].
+     *
+     * This is why the best practice for properties is to **contain immutable types** ! (ex: primitive types)
      */
     override var value: T?
         get() {
@@ -195,76 +205,105 @@ abstract class AbstractProperty<T>(final override val id: Id, val defaultValue: 
     }
 }
 
+typealias CollectionCtor<T> = () -> T
+
 /**
  * The base class for all properties backed by a [Collection]
  * @property id the id of the property. It's unsigned because no properties have negative IDs.
  *              Also in geometry dash, no id goes below 1
- * @property defaultValue the default value if the property, this affects if it will be serialized or not
+ * @property defaultValue the default value if the property, this affects if it will be serialized or not.
+ *                        It is represented by a [MutableCollection] but **it is not advised to modify it in any way !**
  * @property currentValue the value to set by default. It defaults to the property value
+ * @property serializer the [serializer][Serializable] used to serialize the value. Defaults to [Serializable.usingToString]
+ * @param T the type of the collection's content
+ * @param C the collection type
  */
-abstract class AbstractCollectionProperty<T, C>(id: Id, defaultValue: C? = null, currentValue: C? = defaultValue) : AbstractProperty<C>(id, defaultValue, currentValue) where C : MutableCollection<T> {
+abstract class AbstractCollectionProperty<T, C>(
+    id: Id,
+    defaultValue: C? = null,
+    currentValue: C? = null,
+    val serializer: Serializable<T> = Serializable.usingToString()
+) : AbstractProperty<C>(id, defaultValue, currentValue) where C : MutableCollection<T> {
     companion object {
         const val ELEMENT_SEPARATOR: Char = '.'
     }
+
+    protected abstract fun createEmptyCollection(): C
+
+    protected fun getOrCreateCollection(): C {
+        if (this.currentValue == null) {
+            val collection = createEmptyCollection()
+            this.defaultValue?.let(collection::addAll)
+            this.currentValue = collection
+        }
+
+        return this.currentValue!!
+    }
+
+    override var value: C?
+        get() =
+            if (this.currentValue == null)
+                this.defaultValue
+            else
+                this.currentValue
+        set(value) {
+            super.value = value
+        }
 
     /**
      * Returns if the underlying collection is [empty][Collection.isEmpty]
      * @see Collection.isEmpty
      */
-    fun isEmpty(): Boolean {
-        if (this.value == null)
-            return true
-
-        return this.value!!.isEmpty()
-    }
+    fun isEmpty(): Boolean =
+        this.value == null || this.value!!.isEmpty()
 
     /**
-     * Removes all the elements from the underlying collection. If the collection is `null` nothing will happen
+     * Removes all the elements from the underlying collection
      * @see MutableCollection.clear
      */
-    fun clear() = this.value?.clear()
+    fun clear() = this.getOrCreateCollection().clear()
 
     /**
      * Adds the specified element to the collection.
      * @return `true` if the element has been added, `false` if the collection does not support duplicates
      * and the element is already contained in the collection.
-     * @throws NullPointerException if the collection [value] is null
      * @see MutableCollection.add
     */
-    fun add(element: T): Boolean = this.getOrThrow().add(element)
+    fun add(element: T): Boolean = this.getOrCreateCollection().add(element)
 
     /**
      * Removes a single instance of the specified element from this
      * collection, if the collection contains it.
      * @return `true` if the element has been successfully removed; `false` if it was not contained in the collection.
-     * @throws NullPointerException if the collection [value] is null
      * @see MutableCollection.remove
      */
-    fun remove(element: T): Boolean = this.getOrThrow().remove(element)
+    fun remove(element: T): Boolean = this.getOrCreateCollection().remove(element)
 
     /**
      * The size of the underlying collection
-     * @throws NullPointerException if the collection [value] is null
      * @see Collection.size
      */
-    fun size(): Int = this.getOrThrow().size
+    fun size(): Int = this.getOrCreateCollection().size
 
     /**
      * See [toRawStringHelper] for more info
      * @see [toRawStringHelper]
      */
-    protected fun toRawIterableStringHelper(value: Collection<T>? = this.value, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT, transform: ((T?) -> CharSequence)? = null): String {
-        if (value != null || this.isEmpty() || !this.isSerializable()) {
-            return ""
-        } else if (this.value != null) {
+    protected fun toRawIterableStringHelper(
+        value: Collection<T>? = this.value,
+        suffix: String = "",
+        suffixMode: SuffixMode = SuffixMode.DEFAULT,
+        transform: ((T) -> CharSequence)? = this.serializer::serialize
+    ): String {
+        return if (value == null || this.isEmpty() || !this.isSerializable()) {
+            ""
+        } else {
             this.toRawStringHelper(
-                this.value!!.joinToString(ELEMENT_SEPARATOR.toString(), transform = transform),
+                value.joinToString(ELEMENT_SEPARATOR.toString(), transform = transform),
                 suffix,
                 suffixMode
             )
         }
-
-        return ""
     }
 }
 
