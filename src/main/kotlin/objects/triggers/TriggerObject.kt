@@ -13,7 +13,7 @@ TODO: Triggers that needs to be made:
 - [x] alpha trigger
 - [x] toggle trigger
 - move trigger
-- color trigger
+- [x] color trigger
  */
 
 /**
@@ -24,7 +24,6 @@ TODO: Triggers that needs to be made:
 abstract class TriggerObject : ComplexObject {
     val spawnTriggered = BoolProperty(62.id, false)
     val touchTriggered = BoolProperty(11.id, false)
-//    val multiTriggered = BoolProperty(87.id, false)
     val multiTriggered: IndependentMutableConditionalProperty<Boolean> =
         MutableConditionalProperty.createIndependent(87.id, defaultValue = false, serializer = Serializers.BOOLEAN) {
             this@TriggerObject.spawnTriggered.isSerializable() || this@TriggerObject.touchTriggered.isSerializable()

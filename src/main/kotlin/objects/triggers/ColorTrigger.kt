@@ -1,0 +1,74 @@
+package fr.geming400.gddotkt.objects.triggers
+
+import fr.geming400.gddotkt.annotations.GDName
+import fr.geming400.gddotkt.objects.data.Position
+import fr.geming400.gddotkt.objects.propertycontainers.TriggerProperties
+import fr.geming400.gddotkt.rawstring.id
+import fr.geming400.gddotkt.rawstring.property.BoolProperty
+import fr.geming400.gddotkt.rawstring.property.UByteProperty
+import fr.geming400.gddotkt.rawstring.property.UIntProperty
+import java.awt.Color
+
+class ColorTrigger : TriggerObject {
+    companion object {
+        const val OBJ_ID = 889u
+    }
+
+    val fadeTime = TriggerProperties.DURATION
+    val red = UByteProperty(7.id)
+    val green = UByteProperty(8.id)
+    val blue = UByteProperty(9.id)
+    val opacity = TriggerProperties.OPACITY
+    val blending = BoolProperty(17.id, false)
+    val playerColor1 = BoolProperty(15.id, false)
+    val playerColor2 = BoolProperty(16.id, false)
+    @GDName("Color ID")
+    val channelID = UIntProperty(23.id)
+    @GDName("Channel ID")
+    val copiedColorChannel = UIntProperty(50.id)
+    val legacyHsv = BoolProperty(210.id, false)
+    val hsv = TriggerProperties.HSV
+    val copyOpacity = BoolProperty(60.id, false)
+
+    var playerColor: PlayerColor
+        get() =
+            if (this.playerColor1.value == true)
+                PlayerColor.PLAYER_1
+            else if (this.playerColor2.value == true)
+                PlayerColor.PLAYER_2
+            else
+                PlayerColor.NONE
+        set(value) {
+            when (value) {
+                PlayerColor.NONE -> {
+                    this.playerColor1.value = false
+                    this.playerColor2.value = false
+                }
+                PlayerColor.PLAYER_1 -> {
+                    this.playerColor1.value = true
+                    this.playerColor2.value = false
+                }
+                else -> {
+                    this.playerColor1.value = false
+                    this.playerColor2.value = true
+                }
+            }
+        }
+
+    var color: Color
+        get() = Color(this.red.getOrThrow().toInt(), this.red.getOrThrow().toInt(), this.red.getOrThrow().toInt())
+        set(value) {
+            this.red.value = value.red.toUByte()
+            this.green.value = value.green.toUByte()
+            this.blue.value = value.blue.toUByte()
+        }
+
+    constructor(pos: Position) : super(OBJ_ID, pos)
+    constructor(x: Float, y: Float) : super(OBJ_ID, x, y)
+}
+
+enum class PlayerColor {
+    NONE,
+    PLAYER_1,
+    PLAYER_2
+}
