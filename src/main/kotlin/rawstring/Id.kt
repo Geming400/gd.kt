@@ -36,6 +36,13 @@ data class Id private constructor(val numericalID: UInt?, val stringID: String?)
         }
     }
 
+    val type: Type
+        get() =
+            if (this.numericalID == null)
+                Type.STRING
+            else
+                Type.NUMERICAL
+
     /**
      * Gets the [numerical id][numericalID] of this ID.
      * However, if it's `null` an exception gets thrown
@@ -44,7 +51,7 @@ data class Id private constructor(val numericalID: UInt?, val stringID: String?)
      */
     fun getNumericalIdStrict(): UInt {
         if (this.numericalID == null)
-            throw NullPointerException("Tried getting numerical id of $this but failed because it's null.")
+            throw NullPointerException("Tried getting numerical id $this but failed because this id object is a string id and not a numerical id.")
 
         return this.numericalID
     }
@@ -57,7 +64,7 @@ data class Id private constructor(val numericalID: UInt?, val stringID: String?)
      */
     fun getStringIdStrict(): String {
         if (this.stringID == null)
-            throw NullPointerException("Tried getting string id of $this but failed because it's null.")
+            throw NullPointerException("Tried getting string id $this but failed because this id object is a numerical id and not a string id.")
 
         return this.stringID
     }
@@ -72,15 +79,9 @@ data class Id private constructor(val numericalID: UInt?, val stringID: String?)
         else
             this.numericalID.toString()
 
-    fun getType(): Type =
-        if (this.numericalID == null)
-            Type.NUMERICAL
-        else
-            Type.STRING
-
     override fun compareTo(other: Id): Int {
-        if (this.getType() == Type.STRING) {
-            return if (other.getType() == Type.STRING) {
+        if (this.type == Type.STRING) {
+            return if (other.type == Type.STRING) {
                 // this: STRING ; other: STRING
                 this.getStringIdStrict().compareTo(other.getStringIdStrict())
             } else {
@@ -88,7 +89,7 @@ data class Id private constructor(val numericalID: UInt?, val stringID: String?)
                 this.getStringIdStrict().compareTo(other.getID())
             }
         } else {
-            return if (other.getType() == Type.STRING) {
+            return if (other.type == Type.STRING) {
                 // this: NUMERICAL ; other: STRING
                 this.getID().compareTo(other.getStringIdStrict())
             } else {
