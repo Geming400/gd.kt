@@ -218,6 +218,19 @@ class PropertyTests {
     }
 
     @Test
+    fun testGDDurationProp() {
+        val durationProp = GDDurationProperty(1.id)
+        durationProp.value = -1f
+        Assertions.assertEquals(-1f, durationProp.value)
+
+        durationProp.value = 5f
+        Assertions.assertEquals(5f, durationProp.value)
+
+        durationProp.value = -2f // Should get clamped to 0f
+        Assertions.assertEquals(0f, durationProp.value)
+    }
+
+    @Test
     @DisplayName("ConditionalProp test")
     fun testImmutableConditionalProp() {
         val obj = MyObj()
