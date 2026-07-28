@@ -42,6 +42,18 @@ interface Serializer<T> : Serializable<T>, Parsable<T> {
             }
         }
 
+        fun clampedInt(range: IntRange): Serializer<Int> =
+            create(
+                { it.coerceIn(range).toString() },
+                { it.toInt().coerceIn(range) }
+            )
+
+        fun clampedFloat(range: ClosedFloatingPointRange<Float>): Serializer<Float> =
+            create(
+                { it.coerceIn(range).toString() },
+                { it.toFloat().coerceIn(range) }
+            )
+
         @Suppress("UNCHECKED_CAST", "MoveLambdaOutsideParentheses")
         fun <T> createEnumSerializer(enumEntries: EnumEntries<T>): Serializer<T> where T : Enum<T>, T : GdEnum =
             create(
