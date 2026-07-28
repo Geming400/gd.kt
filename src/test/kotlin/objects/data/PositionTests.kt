@@ -29,8 +29,11 @@ private class PositionTests {
     @Test
     @DisplayName("Pos -> GridPos test")
     fun posToGridPosTest() {
-        val pos = Pos(X, Y)
-        Assertions.assertEquals(GridPos.gridCentered(X, Y), pos.gridPos)
+        val pos = Pos.gridUncentered(X, Y)
+        Assertions.assertEquals(GridPos.gridUncentered(X, Y), pos.gridPos)
+
+        val pos2 = Pos.gridCentered(X, Y)
+        Assertions.assertEquals(GridPos.gridCentered(X, Y), pos2.gridPos)
     }
 
 
@@ -53,7 +56,10 @@ private class PositionTests {
     @Test
     @DisplayName("GridPos -> Pos test")
     fun gridPosToGridPosTest() {
-        val pos = GridPos(X, Y)
+        val pos = GridPos.gridUncentered(X, Y)
         Assertions.assertEquals(Pos.gridUncentered(X, Y), pos.gdPos)
+
+        val pos2 = GridPos.gridCentered(X, Y)
+        Assertions.assertEquals(Pos.gridCentered(X, Y), pos2.gdPos)
     }
 }
