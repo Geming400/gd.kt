@@ -10,7 +10,7 @@ class EnumProperty<T>(id: Id, val serializer: Serializable<T>, defaultValue: T? 
 
 /**
  * Represents a geometry dash enum. This is used for serializing
- * @see fr.geming400.gddotkt.rawstring.serializing.Serializer.createEnumSerializer
+ * @see fr.geming400.gddotkt.rawstring.serializing.Serializer.enum
  */
 interface GdEnum {
     /**

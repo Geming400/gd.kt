@@ -55,7 +55,7 @@ interface Serializer<T> : Serializable<T>, Parsable<T> {
             )
 
         @Suppress("UNCHECKED_CAST", "MoveLambdaOutsideParentheses")
-        fun <T> createEnumSerializer(enumEntries: EnumEntries<T>): Serializer<T> where T : Enum<T>, T : GdEnum =
+        fun <T> enum(enumEntries: EnumEntries<T>): Serializer<T> where T : Enum<T>, T : GdEnum =
             create(
                 Any::toString,
                 { str -> enumEntries.first { it.getValue() == str.toInt() } }

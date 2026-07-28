@@ -47,7 +47,7 @@ open class ComplexObject : SimpleObject {
     val material = IntProperty(446.id)
     val controlID = IntProperty(534.id)
 
-    val singleColorType = EnumProperty(497.id, Serializer.createEnumSerializer(SingleColorType.entries))
+    val singleColorType = EnumProperty(497.id, Serializer.enum(SingleColorType.entries))
 
     constructor(objID: UInt, pos: Position) : super(objID, pos)
     constructor(objID: UInt, x: Float, y: Float) : super(objID, x, y)
