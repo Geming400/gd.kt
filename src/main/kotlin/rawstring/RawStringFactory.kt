@@ -1,5 +1,6 @@
 package fr.geming400.gddotkt.rawstring
 
+import fr.geming400.gddotkt.exceptions.InvalidRawStringException
 import fr.geming400.gddotkt.objects.GenericGdObject
 import fr.geming400.gddotkt.rawstring.property.AbstractProperty
 import fr.geming400.gddotkt.rawstring.property.PropertyDefinition
@@ -21,10 +22,65 @@ class RawStringFactory {
          * Joins multiple objects into a larger raw string understandable by geometry dash.
          * Each entry is separated by a semicolon.
          */
-        fun joinObjectsIntoRawString(objects: Collection<RawStringable>): String =
+        fun joinRawStrings(objects: Collection<RawStringable>): String =
             objects.joinToString(OBJECTS_SEPARATOR.toString()) { it.asRawString() }
 
-        fun areRawStringEquals(a: String, b: String): Boolean = TODO()
+        /**
+         * Joins multiple objects into a larger raw string understandable by geometry dash.
+         * Each entry is separated by a semicolon.
+         */
+        fun joinRawStrings(vararg objects: RawStringable): String =
+            joinRawStrings(objects = listOf(*objects))
+
+        /**
+         * Joins multiple objects' raw strings into a larger raw string understandable by geometry dash.
+         * Each entry is separated by a semicolon.
+         */
+        @JvmName("joinRawStringsFromCharSequence")
+        fun joinRawStrings(objects: Collection<CharSequence>): String =
+            objects.joinToString(OBJECTS_SEPARATOR.toString())
+
+        /**
+         * Joins multiple objects' raw strings into a larger raw string understandable by geometry dash.
+         * Each entry is separated by a semicolon.
+         */
+        @JvmName("joinRawStringsFromCharSequence")
+        fun joinRawStrings(vararg objects: CharSequence): String =
+            joinRawStrings(objects = listOf(*objects))
+
+        /**
+         * Turns a raw string into a [Map] in the format `propID: value`
+         * @param rawString the raw string to turn into a map
+         * @param separator the separator used to separate the raw string (ex, in `1,10,2,20,3,30` the separator is `,`)
+         * @return the map output where keys are [ids][Id] and the values the prop's value
+         * @throws InvalidRawStringException if the raw string is invalid *(see [GenericGdObject.isValidObjectString])*
+         * @throws IllegalArgumentException if any of the parsed [ids][Id] are below `0` (exclusive, so `< 0`)
+         */
+        fun rawStringToMap(rawString: String, separator: Char = AbstractProperty.KEY_VAL_SEPARATOR): Map<Id, String> {
+            return if (GenericGdObject.isValidObjectString(rawString, separator)) {
+                val rawStrAsPairs = rawString.split(separator).chunked(2) {
+                    AbstractProperty.rawStringToPairID(it.joinToString(separator.toString()))
+                }.toTypedArray()
+
+                mapOf(*rawStrAsPairs)
+            } else {
+                throw InvalidRawStringException(rawString)
+            }
+        }
+
+        /**
+         * Checks the equality of 2 possible raw strings. If any of the raw strings are malformed `false` is returned
+         * @sample samples.rawstring.areRawStringEqualsSample
+         */
+        fun areRawStringEquals(a: String, b: String, separator: Char = AbstractProperty.KEY_VAL_SEPARATOR): Boolean {
+            return try {
+                rawStringToMap(a, separator) == rawStringToMap(b, separator)
+            } catch (_: InvalidRawStringException) {
+                false
+            } catch (_: IllegalArgumentException) {
+                false
+            }
+        }
     }
 
     private val parent: GenericGdObject
@@ -59,7 +115,7 @@ class RawStringFactory {
             }
         }
 
-        consumer(props)
+        consumer(props.sortedBy { it.id })
     }
 
     /**
