@@ -30,6 +30,11 @@ object Serializers {
         String::toUInt
     )
 
+    val UBYTE: Serializer<UByte> = Serializer.create(
+        UByte::toString,
+        String::toUByte
+    )
+
     val FLOAT: Serializer<Float> = Serializer.create(
         Float::toString,
         String::toFloat

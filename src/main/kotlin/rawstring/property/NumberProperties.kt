@@ -30,6 +30,11 @@ open class UIntProperty(id: Id, defaultValue: UInt? = 0u, currentValue: UInt? = 
         this.toRawStringHelper(Serializers.UINT)
 }
 
+open class UByteProperty(id: Id, defaultValue: UByte? = 0u, currentValue: UByte? = null) : NumberProperty<UByte>(id, defaultValue, currentValue) {
+    override fun toRawString(): String =
+        this.toRawStringHelper(Serializers.UBYTE)
+}
+
 open class FloatProperty(id: Id, defaultValue: Float? = 0f, currentValue: Float? = null) : NumberProperty<Float>(id, defaultValue, currentValue) {
     companion object {
         fun ranged(id: Id, range: ClosedFloatingPointRange<Float>, defaultValue: Float? = 0f, currentValue: Float? = null): RangedFloatProperty =
