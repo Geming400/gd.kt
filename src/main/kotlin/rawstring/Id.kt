@@ -12,7 +12,28 @@ package fr.geming400.gddotkt.rawstring
 data class Id private constructor(val numericalID: UInt?, val stringID: String?): Comparable<Id> {
     companion object {
         fun ofNumerical(numericalID: UInt) = Id(numericalID.coerceAtLeast(1u), null)
+
         fun ofString(stringID: String) = Id(null, stringID)
+
+        /**
+         * Creates a numerical or string [Id] object.
+         * It tries converting your [id] to an int, and depending on if it fails
+         * or not it will return an id with the correct underlying [type]
+         * @throws IllegalArgumentException if the given [id] is below `0` (exclusive, so `< 0`)
+         */
+        fun ofUnknown(id: String): Id {
+            val asUInt = id.toUIntOrNull()
+            return if (asUInt == null) {
+                val asInt = id.toIntOrNull()
+                if (asInt == null) {
+                    ofString(id)
+                } else {
+                    throw IllegalArgumentException("Id argument (= $id) isn't a valid UInt", NumberFormatException("Invalid number format: '$id'"))
+                }
+            } else {
+                ofNumerical(asUInt)
+            }
+        }
     }
 
     /**
