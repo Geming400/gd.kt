@@ -77,6 +77,22 @@ interface PropertyDefinition<T> {
 abstract class AbstractProperty<T>(final override val id: Id, val defaultValue: T? = null, protected var currentValue: T? = defaultValue) : PropertyDefinition<T> {
     companion object {
         const val KEY_VAL_SEPARATOR: Char = ','
+
+        fun rawStringToPair(propRawString: String): Pair<String, String> {
+            val data = propRawString.split(KEY_VAL_SEPARATOR, limit = 2)
+            return Pair(data[0], data[1])
+        }
+
+        /**
+         * Turns a raw string into a pair of format `propID: propValue` where `propID`
+         * is a parsed [Id]
+         * @throws IllegalArgumentException if the prop's [Id] is below `0` (exclusive, so `< 0`)
+         * @see Id.ofUnknown
+         */
+        fun rawStringToPairID(propRawString: String): Pair<Id, String> {
+            val data = propRawString.split(KEY_VAL_SEPARATOR, limit = 2)
+            return Pair(Id.ofUnknown(data[0]), data[1])
+        }
     }
 
     /**
