@@ -59,7 +59,7 @@ open class ConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
             serializer: Serializable<T>,
             predicate: () -> Boolean,
             valueGetter: () -> T?
-        ): ConditionalProperty<T, Nothing, AbstractProperty<Nothing>?> =
+        ): IndependentConditionalProperty<T> =
             ConditionalProperty(id = id, dependantOn = null, serializer = serializer, predicate = { predicate() }, valueGetter = { valueGetter() })
     }
 
@@ -101,6 +101,7 @@ open class ConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
  * @property dependantOn the [property][AbstractProperty] on which this conditional property is dependent on.
  *                       It cannot be another conditional property
  * @property serializer the [Serializer][Serializable] used to serialize the obtained [value]
+ * @param valueChanger used to change the value if needed when setting it (ex: clamping)
  * @property predicate this predicate decides if this conditional property should be enabled.
  *                     If it returns `false`, the [raw string output][toRawString] will be empty *(= `""`)*
  * @param T the type of the conditional property
@@ -115,6 +116,7 @@ open class MutableConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
     currentValue: T? = null,
     val dependantOn: P,
     val serializer: Serializable<T>,
+    val valueChanger: (T) -> T = { it },
     val predicate: (P) -> Boolean
 ) : AbstractProperty<T>(id, defaultValue, currentValue), IsConditional {
     companion object {
@@ -124,6 +126,7 @@ open class MutableConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
          * @param defaultValue the default value if the property, this affects if it will be serialized or not
          * @param currentValue the value to set by default. It defaults to the property value
          * @param serializer the [Serializer][Serializable] used to serialize the obtained [value]
+         * @param valueChanger used to change the value if needed when setting it (ex: clamping)
          * @param predicate this predicate decides if this conditional property should be enabled.
          *                  If it returns `false`, the [raw string output][toRawString] will be empty *(= `""`)*
          * @param T the type of the conditional property
@@ -133,9 +136,18 @@ open class MutableConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
             defaultValue: T? = null,
             currentValue: T? = null,
             serializer: Serializable<T>,
+            valueChanger: (T) -> T = { it },
             predicate: () -> Boolean
-        ): MutableConditionalProperty<T, Nothing, AbstractProperty<Nothing>?> =
-            MutableConditionalProperty(id = id, defaultValue = defaultValue, currentValue = currentValue, dependantOn = null, serializer = serializer, predicate = { predicate() })
+        ): IndependentMutableConditionalProperty<T> =
+            MutableConditionalProperty(
+                id = id,
+                defaultValue = defaultValue,
+                currentValue = currentValue,
+                dependantOn = null,
+                serializer = serializer,
+                valueChanger = valueChanger,
+                predicate = { predicate() }
+            )
     }
 
     /**
@@ -149,7 +161,12 @@ open class MutableConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
      */
     final override var value: T?
         get() = super.value
-        set(value) { super.value = value }
+        set(value) {
+            if (value == null)
+                super.value = null
+            else
+                super.value = this.valueChanger(value)
+        }
 
     /**
      * Checks if this property needs to be serialized.
