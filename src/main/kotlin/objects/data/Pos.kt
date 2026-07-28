@@ -18,7 +18,7 @@ sealed interface Position {
 
 /**
  * The position for a geometry dash object.
- * 1 `grid unit` = `30`
+ * 1 `grid unit` = 30 `space units`
  */
 data class Pos(
     val x: Float,
@@ -75,7 +75,7 @@ data class GridPos(
          * @see gridUncentered
          */
         fun gridCentered(x: Float, y: Float): GridPos =
-            GridPos(x / Position.GRID_UNIT + Position.GRID_OFFSET / Position.GRID_UNIT, y / Position.GRID_UNIT + Position.GRID_OFFSET / Position.GRID_UNIT)
+            GridPos(x + Position.GRID_OFFSET.toFloat() / Position.GRID_UNIT, y + Position.GRID_OFFSET.toFloat() / Position.GRID_UNIT)
 
         fun ofPos(pos: Position): GridPos =
             GridPos(pos.actualX / Position.GRID_UNIT, pos.actualY / Position.GRID_UNIT)
