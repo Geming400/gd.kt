@@ -22,7 +22,7 @@ interface GenericGdObject : RawStringable {
 
     /**
      * Get the property of this geometry dash object by its property id
-     * @throws NullPointerException if there is no property at the given id
+     * @throws NoSuchElementException if there is no property at the given id
      */
     operator fun get(propID: Id): PropertyDefinition<*>
 
