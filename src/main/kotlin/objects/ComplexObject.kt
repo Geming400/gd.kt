@@ -2,14 +2,17 @@ package fr.geming400.gddotkt.objects
 
 import fr.geming400.gddotkt.annotations.GDName
 import fr.geming400.gddotkt.objects.data.Position
+import fr.geming400.gddotkt.objects.data.enums.SingleColorType
 import fr.geming400.gddotkt.rawstring.id
 import fr.geming400.gddotkt.rawstring.property.BoolProperty
+import fr.geming400.gddotkt.rawstring.property.EnumProperty
 import fr.geming400.gddotkt.rawstring.property.IntProperty
+import fr.geming400.gddotkt.rawstring.serializing.Serializer
 
 /**
  * A complex object, as the name suggests is "more complex".
  * Complex objects store properties which are present inside the `extra` and `extra2` tabs in the
- * "Edit Object" tab.
+ * "Edit Group" tab.
  *
  * **If you are wondering what any of these properties mean, check the [GD Editor Guide](https://www.robtopgames.com/files/GDEditor.pdf) !**
  */
@@ -43,6 +46,8 @@ open class ComplexObject : SimpleObject {
     val enterChannel = IntProperty(343.id)
     val material = IntProperty(446.id)
     val controlID = IntProperty(534.id)
+
+    val singleColorType = EnumProperty(497.id, Serializer.createEnumSerializer(SingleColorType.entries))
 
     constructor(objID: UInt, pos: Position) : super(objID, pos)
     constructor(objID: UInt, x: Float, y: Float) : super(objID, x, y)
