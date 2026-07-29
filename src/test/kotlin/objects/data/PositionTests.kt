@@ -2,11 +2,13 @@ package fr.geming400.gddotkt.objects.data
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 const val X = 5f
 const val Y = 7f
 
+@Tag("editor")
 private class PositionTests {
     @Test
     @DisplayName("Pos class 'actual poses' test")

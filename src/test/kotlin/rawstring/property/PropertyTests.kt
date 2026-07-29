@@ -11,6 +11,7 @@ import fr.geming400.gddotkt.rawstring.serializing.Serializers
 import fr.geming400.gddotkt.utils.LACKS_IMPL
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import kotlin.io.encoding.Base64
 
@@ -58,6 +59,7 @@ class MyObj : GenericGdObject {
         this.rawStringFactory.asRawString()
 }
 
+@Tag("editor")
 class PropertyTests {
     fun <T> propTest(
         prop: AbstractProperty<T>,

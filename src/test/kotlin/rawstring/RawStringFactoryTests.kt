@@ -5,8 +5,10 @@ import fr.geming400.gddotkt.exceptions.InvalidRawStringException
 import fr.geming400.gddotkt.objects.SimpleObject
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import kotlin.test.Test
 
+@Tag("editor")
 private class RawStringFactoryTests {
     // Every other .asMap related functions all depend on
     // RawStringFactory.asMap so there's no need to make tests
