@@ -6,7 +6,7 @@ import java.nio.charset.Charset
 import kotlin.io.encoding.Base64
 
 /**
- * A string property is used to store text in base 64 format. Geometry dash only understands text in this format
+ * A string property is used to store text in base64 format. Geometry dash only understands text in this format
  * @see Base64.UrlSafe
  */
 class StringProperty(id: Id, defaultValue: String? = "", currentValue: String? = null) : AbstractProperty<String>(id, defaultValue, currentValue) {
@@ -22,5 +22,6 @@ class StringProperty(id: Id, defaultValue: String? = "", currentValue: String? =
             Base64.UrlSafe.encode(it.toByteArray(charset))
         }
 
-    override fun toRawString(): String = this.toRawString(Charset.defaultCharset())
+    override fun toRawString(): String =
+        this.toRawString(Charset.defaultCharset())
 }
