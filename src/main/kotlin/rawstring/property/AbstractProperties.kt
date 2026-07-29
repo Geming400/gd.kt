@@ -3,9 +3,11 @@ package fr.geming400.gddotkt.rawstring.property
 import fr.geming400.gddotkt.rawstring.Id
 import fr.geming400.gddotkt.rawstring.RawStringable
 import fr.geming400.gddotkt.rawstring.serializing.Serializable
+import fr.geming400.gddotkt.rawstring.serializing.Serializer
 
 interface PropertyDefinition<T> {
     val id: Id
+    val serializer: Serializer<T>
 
     /**
      * The current value of this property.
@@ -214,7 +216,7 @@ typealias CollectionCtor<T> = () -> T
  * @property defaultValue the default value if the property, this affects if it will be serialized or not.
  *                        It is represented by a [MutableCollection] but **it is not advised to modify it in any way !**
  * @property currentValue the value to set by default. It defaults to the property value
- * @property serializer the [serializer][Serializable] used to serialize the value. Defaults to [Serializable.usingToString]
+ * @property elemSerializer the [serializer][Serializable] used to serialize the collection's values. See [Serializer.collectionSerializer]
  * @param T the type of the collection's content
  * @param C the collection type
  */
@@ -222,11 +224,13 @@ abstract class AbstractCollectionProperty<T, C>(
     id: Id,
     defaultValue: C? = null,
     currentValue: C? = null,
-    val serializer: Serializable<T> = Serializable.usingToString()
+    val elemSerializer: Serializer<T>
 ) : AbstractProperty<C>(id, defaultValue, currentValue) where C : MutableCollection<T> {
     companion object {
         const val ELEMENT_SEPARATOR: Char = '.'
     }
+
+    override val serializer: Serializer<C> = Serializer.collectionSerializer(this::createEmptyCollection, this.elemSerializer)
 
     protected abstract fun createEmptyCollection(): C
 
@@ -292,14 +296,13 @@ abstract class AbstractCollectionProperty<T, C>(
     protected fun toRawIterableStringHelper(
         value: Collection<T>? = this.value,
         suffix: String = "",
-        suffixMode: SuffixMode = SuffixMode.DEFAULT,
-        transform: ((T) -> CharSequence)? = this.serializer::serialize
+        suffixMode: SuffixMode = SuffixMode.DEFAULT
     ): String {
         return if (value == null || this.isEmpty() || !this.isSerializable()) {
             ""
         } else {
             this.toRawStringHelper(
-                value.joinToString(ELEMENT_SEPARATOR.toString(), transform = transform),
+                this.serializer,
                 suffix,
                 suffixMode
             )

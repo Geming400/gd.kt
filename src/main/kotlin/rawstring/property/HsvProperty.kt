@@ -5,6 +5,8 @@ import fr.geming400.gddotkt.rawstring.Id
 import fr.geming400.gddotkt.rawstring.serializing.Serializers
 
 class HsvProperty(id: Id, defaultValue: Hsv? = Hsv.create(), currentValue: Hsv? = null) : AbstractProperty<Hsv>(id, defaultValue, currentValue) {
+    override val serializer = Serializers.HSV
+
     private var usesColorPropID: Id? = null
 
     /**

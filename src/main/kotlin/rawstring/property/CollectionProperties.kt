@@ -1,7 +1,7 @@
 package fr.geming400.gddotkt.rawstring.property
 
 import fr.geming400.gddotkt.rawstring.Id
-import fr.geming400.gddotkt.rawstring.serializing.Serializable
+import fr.geming400.gddotkt.rawstring.serializing.Serializer
 import java.util.*
 
 /**
@@ -12,8 +12,8 @@ open class ListProperty<T>(
     collectionCtor: CollectionCtor<MutableList<T>> = { arrayListOf() },
     defaultValue: MutableList<T>? = collectionCtor(),
     currentValue: MutableList<T>? = null,
-    serializer: Serializable<T> = Serializable.usingToString()
-) : AbstractCollectionProperty<T, MutableList<T>>(id, defaultValue, currentValue, serializer) {
+    elemSerializer: Serializer<T>
+) : AbstractCollectionProperty<T, MutableList<T>>(id, defaultValue, currentValue, elemSerializer) {
     override fun createEmptyCollection(): MutableList<T> = arrayListOf()
 
     /**
@@ -45,8 +45,8 @@ open class SetProperty<T>(
     collectionCtor: CollectionCtor<MutableSet<T>> = { mutableSetOf() },
     defaultValue: MutableSet<T>? = collectionCtor(),
     currentValue: MutableSet<T>? = null,
-    serializer: Serializable<T> = Serializable.usingToString()
-) : AbstractCollectionProperty<T, MutableSet<T>>(id, defaultValue, currentValue, serializer) {
+    elemSerializer: Serializer<T>
+) : AbstractCollectionProperty<T, MutableSet<T>>(id, defaultValue, currentValue, elemSerializer) {
     override fun toRawString(): String =
         this.toRawIterableStringHelper()
 
@@ -61,8 +61,8 @@ open class SequencedSetProperty<T>(
     collectionCtor: CollectionCtor<SequencedSet<T>> = { linkedSetOf() },
     defaultValue: SequencedSet<T>? = collectionCtor(),
     currentValue: SequencedSet<T>? = null,
-    serializer: Serializable<T> = Serializable.usingToString()
-) : AbstractCollectionProperty<T, SequencedSet<T>>(id, defaultValue, currentValue, serializer) {
+    elemSerializer: Serializer<T>
+) : AbstractCollectionProperty<T, SequencedSet<T>>(id, defaultValue, currentValue, elemSerializer) {
     override fun toRawString(): String =
         this.toRawIterableStringHelper()
 

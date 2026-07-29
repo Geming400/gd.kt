@@ -1,6 +1,7 @@
 package fr.geming400.gddotkt.rawstring.property
 
 import fr.geming400.gddotkt.rawstring.Id
+import fr.geming400.gddotkt.rawstring.serializing.Serializers
 import java.util.SequencedSet
 
 class GroupSetProperty(
@@ -9,7 +10,7 @@ class GroupSetProperty(
     collectionCtor: CollectionCtor<SequencedSet<UInt>> = { linkedSetOf() },
     defaultValue: SequencedSet<UInt>? = collectionCtor(),
     currentValue: SequencedSet<UInt>? = null
-) : SequencedSetProperty<UInt>(id, defaultValue =  defaultValue, currentValue = currentValue) {
+) : SequencedSetProperty<UInt>(id, defaultValue =  defaultValue, currentValue = currentValue, elemSerializer = Serializers.UINT) {
     override var value: SequencedSet<UInt>?
         get() {
             val linkedSet = linkedSetOf<UInt>()

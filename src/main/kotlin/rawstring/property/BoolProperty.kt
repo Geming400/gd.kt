@@ -1,10 +1,13 @@
 package fr.geming400.gddotkt.rawstring.property
 
 import fr.geming400.gddotkt.rawstring.Id
+import fr.geming400.gddotkt.rawstring.serializing.Serializers
 import fr.geming400.gddotkt.utils.toInt
 import org.intellij.lang.annotations.MagicConstant
 
 class BoolProperty(id: Id, defaultValue: Boolean? = null, currentValue: Boolean? = null) : AbstractProperty<Boolean>(id, defaultValue, currentValue) {
+    override val serializer = Serializers.BOOLEAN
+
     override fun toRawString(): String {
         val boolValue = when (this.value) {
             null -> null

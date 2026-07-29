@@ -135,7 +135,7 @@ class PropertyTests {
 
     @Test
     fun testListProp() {
-        val prop = ListProperty<Int>(0.id)
+        val prop = ListProperty(0.id, elemSerializer = Serializers.INT)
         Assertions.assertEquals(0, prop.size())
 
         prop.add(5)
@@ -152,7 +152,7 @@ class PropertyTests {
         Assertions.assertEquals(0, prop.size())
         Assertions.assertThrows(IndexOutOfBoundsException::class.java) { prop[0] }
 
-        val secondProp = ListProperty<Int>(0.id, defaultValue = null)
+        val secondProp = ListProperty(0.id, defaultValue = null, elemSerializer = Serializers.INT)
         Assertions.assertThrows(IndexOutOfBoundsException::class.java) { secondProp[0] }
         Assertions.assertThrows(IndexOutOfBoundsException::class.java) { secondProp[0] = 5 }
 
@@ -176,7 +176,7 @@ class PropertyTests {
     fun testSetProp() {
         // Most of the tests are already done above
 
-        val prop = SetProperty<Int>(0.id)
+        val prop = SetProperty(0.id, elemSerializer = Serializers.INT)
         Assertions.assertEquals(0, prop.size())
 
         prop.add(5)
@@ -185,7 +185,7 @@ class PropertyTests {
         prop.clear()
         Assertions.assertEquals(0, prop.size())
 
-        val secondProp = SetProperty<Int>(0.id, defaultValue = null)
+        val secondProp = SetProperty(0.id, defaultValue = null, elemSerializer = Serializers.INT)
         Assertions.assertDoesNotThrow { secondProp.add(5) }
         Assertions.assertDoesNotThrow { secondProp.size() }
         Assertions.assertDoesNotThrow { secondProp.clear() }
