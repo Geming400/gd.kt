@@ -17,7 +17,7 @@ import fr.geming400.gddotkt.rawstring.serializing.Serializers
 
 abstract class AbstractMoveTrigger : TriggerObject {
     companion object {
-        const val OBJ_ID = 1007u
+        const val OBJ_ID = 901u
     }
 
     val moveTime = TriggerProperties.DURATION
