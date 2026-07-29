@@ -17,18 +17,10 @@ import kotlin.io.encoding.Base64
 
 var shouldMutableConditionalPropBeSerializable = false
 
-enum class MyCoolEnum : GdEnum {
-    FIRST {
-        override fun getValue(): Int = 0
-    },
-
-    SECOND {
-        override fun getValue(): Int = 1
-    },
-
-    THIRD {
-        override fun getValue(): Int = 2
-    }
+enum class MyCoolEnum(override val value: Int) : GdEnum {
+    FIRST(0),
+    SECOND(1),
+    THIRD(2)
 }
 
 class MyObj : GenericGdObject {

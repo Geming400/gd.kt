@@ -76,7 +76,7 @@ interface Serializer<T> : Serializable<T>, Parsable<T> {
         fun <T> enum(enumEntries: EnumEntries<T>): Serializer<T> where T : Enum<T>, T : GdEnum =
             create(
                 Any::toString,
-                { str -> enumEntries.first { it.getValue() == str.toInt() } }
+                { str -> enumEntries.first { it.value == str.toInt() } }
             )
     }
 }

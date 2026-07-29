@@ -13,8 +13,5 @@ class EnumProperty<T>(id: Id, override val serializer: Serializer<T>, defaultVal
  * @see fr.geming400.gddotkt.rawstring.serializing.Serializer.enum
  */
 interface GdEnum {
-    /**
-     * Gets the value of this enum entry
-     */
-    fun getValue(): Int
+    val value: Int
 }
