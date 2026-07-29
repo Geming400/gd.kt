@@ -1,5 +1,6 @@
 package fr.geming400.gddotkt.objects.triggers
 
+import fr.geming400.gddotkt.objects.data.Pos
 import fr.geming400.gddotkt.objects.data.Position
 import fr.geming400.gddotkt.objects.propertycontainers.TriggerProperties
 import fr.geming400.gddotkt.rawstring.id
@@ -21,4 +22,10 @@ class ToggleTrigger : TriggerObject {
 
     constructor(pos: Position) : super(OBJ_ID, pos)
     constructor(x: Float, y: Float) : super(OBJ_ID, x, y)
+
+    constructor(pos: Position, targetGroup: UInt = 0u, activateGroup: Boolean = false) : this(pos) {
+        this.targetGroup.value = targetGroup
+        this.activateGroup.value = activateGroup
+    }
+    constructor(x: Float, y: Float, targetGroup: UInt = 0u, activateGroup: Boolean = false) : this(Pos(x, y), targetGroup, activateGroup)
 }

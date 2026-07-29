@@ -72,6 +72,12 @@ class ColorTrigger : TriggerObject {
 
     constructor(pos: Position) : super(OBJ_ID, pos)
     constructor(x: Float, y: Float) : super(OBJ_ID, x, y)
+
+    constructor(pos: Position, color: Color, colorChannel: UInt) : this(pos) {
+        this.color = color
+        this.channelID.value = colorChannel
+    }
+    constructor(x: Float, y: Float, color: Color, colorChannel: UInt) : this(Pos(x, y), color, colorChannel)
 }
 
 enum class PlayerColor {
