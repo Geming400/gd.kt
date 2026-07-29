@@ -5,7 +5,7 @@ import fr.geming400.gddotkt.rawstring.serializing.Serializers
 import fr.geming400.gddotkt.utils.toInt
 import org.intellij.lang.annotations.MagicConstant
 
-class BoolProperty(id: Id, defaultValue: Boolean? = null, currentValue: Boolean? = null) : AbstractProperty<Boolean>(id, defaultValue, currentValue) {
+class BoolProperty(id: Id, defaultValue: Boolean? = false, currentValue: Boolean? = null) : AbstractProperty<Boolean>(id, defaultValue, currentValue) {
     override val serializer = Serializers.BOOLEAN
 
     override fun toRawString(): String {
