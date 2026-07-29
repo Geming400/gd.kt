@@ -1,6 +1,8 @@
 package fr.geming400.gddotkt.rawstring.serializing
 
 import fr.geming400.gddotkt.rawstring.RawStringable
+import fr.geming400.gddotkt.rawstring.property.AbstractCollectionProperty
+import fr.geming400.gddotkt.rawstring.property.CollectionCtor
 import fr.geming400.gddotkt.rawstring.property.GdEnum
 import kotlin.enums.EnumEntries
 
@@ -41,6 +43,22 @@ interface Serializer<T> : Serializable<T>, Parsable<T> {
                 override fun parse(rawValue: String): T = parser(rawValue)
             }
         }
+
+        fun <T, C> collectionSerializer(
+            collectionCtor: CollectionCtor<C>,
+            elemSerializer: Serializer<T>,
+            elemSeparator: Char = AbstractCollectionProperty.ELEMENT_SEPARATOR
+        ): Serializer<C> where C : MutableCollection<T> =
+            create(
+                { it.joinToString(elemSeparator.toString(), transform = elemSerializer::serialize) },
+                {
+                    val coll = collectionCtor()
+                    val parsedElems = it.split(elemSeparator).map(elemSerializer::parse)
+                    coll.addAll(parsedElems)
+
+                    return@create coll
+                }
+            )
 
         fun clampedInt(range: IntRange): Serializer<Int> =
             create(
