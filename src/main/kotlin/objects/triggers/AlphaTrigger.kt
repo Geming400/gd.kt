@@ -4,6 +4,12 @@ import fr.geming400.gddotkt.annotations.GDName
 import fr.geming400.gddotkt.objects.data.Position
 import fr.geming400.gddotkt.objects.propertycontainers.TriggerProperties
 
+/**
+ * An alpha trigger allows to change the opacity of any objects linked to the [target group][targetGroup].
+ *
+ * **If you are wondering what any of these properties mean, check the [GD Editor Guide](https://www.robtopgames.com/files/GDEditor.pdf) !**
+ * @see ToggleTrigger
+ */
 class AlphaTrigger : TriggerObject {
     companion object {
         const val OBJ_ID = 1007u

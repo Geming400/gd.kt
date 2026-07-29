@@ -1,6 +1,7 @@
 package fr.geming400.gddotkt.objects.triggers
 
 import fr.geming400.gddotkt.annotations.GDName
+import fr.geming400.gddotkt.objects.data.Pos
 import fr.geming400.gddotkt.objects.data.Position
 import fr.geming400.gddotkt.objects.propertycontainers.TriggerProperties
 import fr.geming400.gddotkt.rawstring.id
@@ -9,6 +10,12 @@ import fr.geming400.gddotkt.rawstring.property.UByteProperty
 import fr.geming400.gddotkt.rawstring.property.UIntProperty
 import java.awt.Color
 
+/**
+ * A color trigger allows to change the color of any objects / color channels linked to the [color channel ID][channelID].
+ *
+ * **If you are wondering what any of these properties mean, check the [GD Editor Guide](https://www.robtopgames.com/files/GDEditor.pdf) !**
+ * @see ToggleTrigger
+ */
 class ColorTrigger : TriggerObject {
     companion object {
         const val OBJ_ID = 889u

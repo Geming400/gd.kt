@@ -5,6 +5,12 @@ import fr.geming400.gddotkt.objects.propertycontainers.TriggerProperties
 import fr.geming400.gddotkt.rawstring.id
 import fr.geming400.gddotkt.rawstring.property.BoolProperty
 
+/**
+ * A toggle trigger allows for any [targeted objects][targetGroup] to be toggled on or on depending on the [activateGroup] property.
+ *
+ * **If you are wondering what any of these properties mean, check the [GD Editor Guide](https://www.robtopgames.com/files/GDEditor.pdf) !**
+ * @see AlphaTrigger
+ */
 class ToggleTrigger : TriggerObject {
     companion object {
         const val OBJ_ID = 1049u
