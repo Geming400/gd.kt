@@ -11,6 +11,8 @@ sealed interface RangedProperty<T : Comparable<T>, R : ClosedRange<T>> {
 
 
 open class IntProperty(id: Id, defaultValue: Int? = 0, currentValue: Int? = null) : NumberProperty<Int>(id, defaultValue, currentValue) {
+    override val serializer = Serializers.INT
+
     companion object {
         fun ranged(id: Id, range: IntRange, defaultValue: Int? = 0, currentValue: Int? = null): RangedIntProperty =
             RangedIntProperty(id, range, defaultValue, currentValue)
@@ -21,6 +23,8 @@ open class IntProperty(id: Id, defaultValue: Int? = 0, currentValue: Int? = null
 }
 
 open class UIntProperty(id: Id, defaultValue: UInt? = 0u, currentValue: UInt? = null) : NumberProperty<UInt>(id, defaultValue, currentValue) {
+    override val serializer = Serializers.UINT
+
     companion object {
         fun ranged(id: Id, range: UIntRange, defaultValue: UInt? = 0u, currentValue: UInt? = null): RangedUIntProperty =
             RangedUIntProperty(id, range, defaultValue, currentValue)
@@ -31,11 +35,15 @@ open class UIntProperty(id: Id, defaultValue: UInt? = 0u, currentValue: UInt? = 
 }
 
 open class UByteProperty(id: Id, defaultValue: UByte? = 0u, currentValue: UByte? = null) : NumberProperty<UByte>(id, defaultValue, currentValue) {
+    override val serializer = Serializers.UBYTE
+
     override fun toRawString(): String =
         this.toRawStringHelper(Serializers.UBYTE)
 }
 
 open class FloatProperty(id: Id, defaultValue: Float? = 0f, currentValue: Float? = null) : NumberProperty<Float>(id, defaultValue, currentValue) {
+    override val serializer = Serializers.FLOAT
+
     companion object {
         fun ranged(id: Id, range: ClosedFloatingPointRange<Float>, defaultValue: Float? = 0f, currentValue: Float? = null): RangedFloatProperty =
             RangedFloatProperty(id, range, defaultValue, currentValue)
