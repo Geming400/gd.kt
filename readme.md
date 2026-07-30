@@ -2,7 +2,7 @@
 
 *(This is actually the lib I've remade the most)*
 
-This is the 3rd gd.<lang> lib I've made (it's predecessor is [gddotpy v2](https://github.com/Geming400/gddotpy-v2)).
+This is the 3rd gd.lang lib I've made (it's predecessor is [gddotpy v2](https://github.com/Geming400/gddotpy-v2)).
 This is mostly just to do a bit more kotlin and learn it more deeply.
 
 This is not really made to be used !!!
