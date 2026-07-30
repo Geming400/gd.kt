@@ -1,6 +1,7 @@
 package fr.geming400.gddotkt.objects.triggers
 
 import fr.geming400.gddotkt.annotations.GDName
+import fr.geming400.gddotkt.objects.data.Pos
 import fr.geming400.gddotkt.objects.data.Position
 import fr.geming400.gddotkt.objects.propertycontainers.TriggerProperties
 
@@ -22,4 +23,11 @@ class AlphaTrigger : TriggerObject {
 
     constructor(pos: Position) : super(OBJ_ID, pos)
     constructor(x: Float, y: Float) : super(OBJ_ID, x, y)
+
+    constructor(pos: Position, targetGroup: UInt, opacity: Float, fadeTime: Float) : this(pos) {
+        this.targetGroup.value = targetGroup
+        this.opacity.value = opacity
+        this.fadeTime.value = fadeTime
+    }
+    constructor(x: Float, y: Float, targetGroup: UInt, opacity: Float, fadeTime: Float) : this(Pos(x, y), targetGroup, opacity, fadeTime)
 }
