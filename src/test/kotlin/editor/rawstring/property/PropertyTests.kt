@@ -1,25 +1,12 @@
-package fr.geming400.gddotkt.rawstring.property
+package fr.geming400.gddotkt.editor.rawstring.property
 
 import fr.geming400.gddotkt.CustomAssertions
 import fr.geming400.gddotkt.TestTags
 import fr.geming400.gddotkt.editor.objects.GenericGdObject
 import fr.geming400.gddotkt.editor.objects.data.Hsv
-import fr.geming400.gddotkt.editor.rawstring.property.EnumProperty
-import fr.geming400.gddotkt.editor.rawstring.property.GdEnum
 import fr.geming400.gddotkt.editor.rawstring.Id
 import fr.geming400.gddotkt.editor.rawstring.RawStringFactory
 import fr.geming400.gddotkt.editor.rawstring.id
-import fr.geming400.gddotkt.editor.rawstring.property.AbstractProperty
-import fr.geming400.gddotkt.editor.rawstring.property.BoolProperty
-import fr.geming400.gddotkt.editor.rawstring.property.ConditionalProperty
-import fr.geming400.gddotkt.editor.rawstring.property.GDDurationProperty
-import fr.geming400.gddotkt.editor.rawstring.property.HsvProperty
-import fr.geming400.gddotkt.editor.rawstring.property.IntProperty
-import fr.geming400.gddotkt.editor.rawstring.property.ListProperty
-import fr.geming400.gddotkt.editor.rawstring.property.MutableConditionalProperty
-import fr.geming400.gddotkt.editor.rawstring.property.PropertyDefinition
-import fr.geming400.gddotkt.editor.rawstring.property.SetProperty
-import fr.geming400.gddotkt.editor.rawstring.property.StringProperty
 import fr.geming400.gddotkt.editor.rawstring.serializing.Serializer
 import fr.geming400.gddotkt.editor.rawstring.serializing.Serializers
 import fr.geming400.gddotkt.utils.LACKS_IMPL

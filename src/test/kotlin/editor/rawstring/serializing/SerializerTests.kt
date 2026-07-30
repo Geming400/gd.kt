@@ -1,9 +1,7 @@
-package fr.geming400.gddotkt.rawstring.serializing
+package fr.geming400.gddotkt.editor.rawstring.serializing
 
 import fr.geming400.gddotkt.TestTags
 import fr.geming400.gddotkt.editor.objects.data.Hsv
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializer
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializers
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag

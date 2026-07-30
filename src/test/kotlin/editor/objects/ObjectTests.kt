@@ -1,17 +1,9 @@
-package fr.geming400.gddotkt.objects
+package fr.geming400.gddotkt.editor.objects
 
 import fr.geming400.gddotkt.TestTags
-import fr.geming400.gddotkt.editor.objects.SimpleObject
 import fr.geming400.gddotkt.editor.objects.data.Pos
 import fr.geming400.gddotkt.editor.objects.data.Scale
-import fr.geming400.gddotkt.editor.objects.triggers.AlphaTrigger
-import fr.geming400.gddotkt.editor.objects.triggers.ColorTrigger
-import fr.geming400.gddotkt.editor.objects.triggers.DirectionMoveTrigger
-import fr.geming400.gddotkt.editor.objects.triggers.LockOn
-import fr.geming400.gddotkt.editor.objects.triggers.MoveTrigger
-import fr.geming400.gddotkt.editor.objects.triggers.PlayerColor
-import fr.geming400.gddotkt.editor.objects.triggers.TargetMoveTrigger
-import fr.geming400.gddotkt.editor.objects.triggers.ToggleTrigger
+import fr.geming400.gddotkt.editor.objects.triggers.*
 import fr.geming400.gddotkt.editor.rawstring.id
 import fr.geming400.gddotkt.editor.rawstring.property.UIntProperty
 import org.junit.jupiter.api.Assertions
