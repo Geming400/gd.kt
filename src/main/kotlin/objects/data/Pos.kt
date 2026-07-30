@@ -25,6 +25,9 @@ data class Pos(
     val y: Float
 ) : Position {
     companion object {
+        val ZERO: Pos
+            get() = Pos()
+
         /**
          * Create a [Pos] object on the intersections of geometry dash's grid
          * @return the [Pos] object with the grid coordinates
@@ -45,6 +48,12 @@ data class Pos(
             Pos(pos.actualX, pos.actualY)
     }
 
+    /**
+     * Creates an empty [Pos] at the coordinates `(0, 0)`
+     * @see ZERO
+     */
+    constructor() : this(0f, 0f)
+
     override val actualX = this.x
     override val actualY = this.y
 
@@ -61,6 +70,9 @@ data class GridPos(
     val y: Float
 ) : Position {
     companion object {
+        val ZERO: GridPos
+            get() = GridPos()
+
         /**
          * Create a [GridPos] object on the intersections of geometry dash's grid
          * @return the [GridPos] object with the grid coordinates
@@ -80,6 +92,12 @@ data class GridPos(
         fun ofPos(pos: Position): GridPos =
             GridPos(pos.actualX / Position.GRID_UNIT, pos.actualY / Position.GRID_UNIT)
     }
+
+    /**
+     * Creates an empty [GridPos] at the coordinates `(0, 0)`
+     * @see ZERO
+     */
+    constructor() : this(0f, 0f)
 
     override val actualX = this.x * Position.GRID_UNIT
     override val actualY = this.y * Position.GRID_UNIT
