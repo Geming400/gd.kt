@@ -137,17 +137,8 @@ class Hsv : RawStringable {
         arrayOf<Number>(this.hue, this.sat, this.brightness, this.isSatChecked.toInt(), this.isBrightnessChecked.toInt())
             .joinToString(SEPARATOR.toString())
 
-    override fun equals(other: Any?): Boolean {
-        if (other is Hsv) {
-            return this.hueValue == other.hueValue
-                    && this.saturationValue == other.saturationValue
-                    && this.brightnessValue == other.brightnessValue
-                    && this.isSaturationCheckedValue == other.isSaturationCheckedValue
-                    && this.isBrightnessCheckedValue == other.isBrightnessCheckedValue
-        }
-
-        return super.equals(other)
-    }
+    override fun equals(other: Any?): Boolean =
+        other is Hsv && this.asRawString() == other.asRawString()
 
     override fun hashCode(): Int {
         return Objects.hash(this.hueValue, this.saturationValue, this.brightnessValue, this.isSaturationCheckedValue, this.isBrightnessCheckedValue)
