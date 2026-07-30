@@ -8,3 +8,16 @@ This is mostly just to do a bit more kotlin and learn it more deeply.
 This is not really made to be used !!!
 
 Cool info explorer to see property ids: https://flowvix.github.io/gd-info-explorer/props
+
+## Installation
+
+You can install this lib via JitPack:
+```kts
+repositories {
+    maven { url = uri("https://jitpack.io") }
+}
+
+dependencies {
+    implementation("com.github.Geming400:gd.kt:<version tag>")
+}
+```
