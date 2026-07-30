@@ -8,6 +8,11 @@ group = "fr.geming400.gddotkt"
 version = "1.0-SNAPSHOT"
 val samplesDir = "src/samples/kotlin"
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_22
+    targetCompatibility = JavaVersion.VERSION_22
+}
+
 repositories {
     mavenCentral()
 }
