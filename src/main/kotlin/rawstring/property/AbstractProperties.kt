@@ -103,7 +103,7 @@ abstract class AbstractProperty<T>(final override val id: Id, open val defaultVa
      *
      * If set to `null`, the [defaultValue] will be used instead *(see [resetValue])*
      *
-     * Do note that this variable **may be dangerous to modify** (eg: adding elements to a collection)
+     * Do note that this variable **may be dangerous to modify** (changing the variable is not tho !!) (eg: adding elements to a collection)
      * because this variable returns the [defaultValue] if the property's [internal value][currentValue] is `null`, so
      * in that case you might modify it indirectly.
      * This is why your custom properties should contain calls that do not
