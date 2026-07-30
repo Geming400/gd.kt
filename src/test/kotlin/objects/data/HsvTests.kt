@@ -1,10 +1,11 @@
 package fr.geming400.gddotkt.objects.data
 
+import fr.geming400.gddotkt.TestTags
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
-@Tag("editor")
+@Tag(TestTags.EDITOR)
 private class HsvTests {
     private fun testHsvCtor(hsv: Hsv, expectedSatAdditive: Boolean, expectedBrightnessAdditive: Boolean) {
         Assertions.assertEquals(hsv.isSatChecked, expectedSatAdditive)

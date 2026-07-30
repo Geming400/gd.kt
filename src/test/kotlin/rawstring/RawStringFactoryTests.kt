@@ -1,6 +1,7 @@
 package fr.geming400.gddotkt.rawstring
 
 import fr.geming400.gddotkt.CustomAssertions
+import fr.geming400.gddotkt.TestTags
 import fr.geming400.gddotkt.exceptions.InvalidRawStringException
 import fr.geming400.gddotkt.objects.SimpleObject
 import org.junit.jupiter.api.Assertions
@@ -8,7 +9,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import kotlin.test.Test
 
-@Tag("editor")
+@Tag(TestTags.EDITOR)
 private class RawStringFactoryTests {
     // Every other .asMap related functions all depend on
     // RawStringFactory.asMap so there's no need to make tests

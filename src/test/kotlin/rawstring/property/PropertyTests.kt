@@ -1,6 +1,7 @@
 package fr.geming400.gddotkt.rawstring.property
 
 import fr.geming400.gddotkt.CustomAssertions
+import fr.geming400.gddotkt.TestTags
 import fr.geming400.gddotkt.objects.GenericGdObject
 import fr.geming400.gddotkt.objects.data.Hsv
 import fr.geming400.gddotkt.rawstring.Id
@@ -51,7 +52,7 @@ class MyObj : GenericGdObject {
         this.rawStringFactory.asRawString()
 }
 
-@Tag("editor")
+@Tag(TestTags.EDITOR)
 class PropertyTests {
     fun <T> propTest(
         prop: AbstractProperty<T>,
@@ -207,7 +208,8 @@ class PropertyTests {
     fun testEnumProp() {
         propTest(
             EnumProperty(0.id, Serializer.enum(MyCoolEnum.entries), defaultValue = MyCoolEnum.FIRST, currentValue = MyCoolEnum.SECOND),
-            testValue = MyCoolEnum.THIRD
+            testValue = MyCoolEnum.THIRD,
+            testRawStringValue = MyCoolEnum.THIRD.value
         )
     }
 

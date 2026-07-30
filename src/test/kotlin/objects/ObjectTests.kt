@@ -1,5 +1,6 @@
 package fr.geming400.gddotkt.objects
 
+import fr.geming400.gddotkt.TestTags
 import fr.geming400.gddotkt.objects.data.Pos
 import fr.geming400.gddotkt.objects.data.Scale
 import fr.geming400.gddotkt.rawstring.id
@@ -9,8 +10,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import kotlin.test.Test
 
-@Tag("editor")
-private class ObjectTests {
+@Tag(TestTags.EDITOR)
+private class SimpleObjectTests {
     @Test
     @DisplayName("GenericGdObject.get operator test")
     fun getOperatorTest() {
