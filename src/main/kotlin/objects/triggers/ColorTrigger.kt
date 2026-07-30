@@ -11,7 +11,7 @@ import fr.geming400.gddotkt.rawstring.property.UIntProperty
 import java.awt.Color
 
 /**
- * A color trigger allows to change the color of any objects / color channels linked to the [color channel ID][channelID].
+ * A color trigger allows to change the color of any objects / color channels linked to the [color channel ID][colorChannel].
  *
  * **If you are wondering what any of these properties mean, check the [GD Editor Guide](https://www.robtopgames.com/files/GDEditor.pdf) !**
  * @see ToggleTrigger
@@ -30,7 +30,7 @@ class ColorTrigger : TriggerObject {
     val playerColor1 = BoolProperty(15.id, false)
     val playerColor2 = BoolProperty(16.id, false)
     @GDName("Color ID")
-    val channelID = UIntProperty(23.id)
+    val colorChannel = UIntProperty(23.id)
     @GDName("Channel ID")
     val copiedColorChannel = UIntProperty(50.id)
     val legacyHsv = BoolProperty(210.id, false)
@@ -63,7 +63,11 @@ class ColorTrigger : TriggerObject {
         }
 
     var color: Color
-        get() = Color(this.red.getOrThrow().toInt(), this.red.getOrThrow().toInt(), this.red.getOrThrow().toInt())
+        get() = Color(
+            this.red.getOrThrow().toInt(),
+            this.green.getOrThrow().toInt(),
+            this.blue.getOrThrow().toInt()
+        )
         set(value) {
             this.red.value = value.red.toUByte()
             this.green.value = value.green.toUByte()
@@ -75,7 +79,7 @@ class ColorTrigger : TriggerObject {
 
     constructor(pos: Position, color: Color, colorChannel: UInt) : this(pos) {
         this.color = color
-        this.channelID.value = colorChannel
+        this.colorChannel.value = colorChannel
     }
     constructor(x: Float, y: Float, color: Color, colorChannel: UInt) : this(Pos(x, y), color, colorChannel)
 }

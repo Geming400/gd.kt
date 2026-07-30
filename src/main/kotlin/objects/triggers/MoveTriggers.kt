@@ -136,7 +136,7 @@ open class MoveTrigger : AbstractMoveTrigger {
                 }
                 LockOn.CAMERA -> {
                     this.lockOnPlayerX.value = false
-                    this.lockOnCameraX.value = false
+                    this.lockOnCameraX.value = true
                 }
             }
         }
@@ -169,7 +169,7 @@ open class MoveTrigger : AbstractMoveTrigger {
     constructor(pos: Position) : super(pos)
     constructor(x: Float, y: Float) : super(x, y)
 
-    constructor(pos: Position, targetGroup: UInt) : super(pos)
+    constructor(pos: Position, targetGroup: UInt) : super(pos, targetGroup)
     constructor(x: Float, y: Float, targetGroup: UInt) : super(x, y, targetGroup)
 }
 
@@ -207,7 +207,7 @@ sealed class HasTargetMoveTrigger : MoveTrigger {
     constructor(pos: Position) : super(pos)
     constructor(x: Float, y: Float) : super(x, y)
 
-    constructor(pos: Position, targetGroup: UInt) : super(pos)
+    constructor(pos: Position, targetGroup: UInt) : super(pos, targetGroup)
     constructor(x: Float, y: Float, targetGroup: UInt) : super(x, y, targetGroup)
 }
 
@@ -227,7 +227,7 @@ class DirectionMoveTrigger : HasTargetMoveTrigger {
     constructor(pos: Position) : super(pos)
     constructor(x: Float, y: Float) : super(x, y)
 
-    constructor(pos: Position, targetGroup: UInt) : super(pos)
+    constructor(pos: Position, targetGroup: UInt) : super(pos, targetGroup)
     constructor(x: Float, y: Float, targetGroup: UInt) : super(x, y, targetGroup)
 }
 
@@ -247,7 +247,7 @@ class TargetMoveTrigger : HasTargetMoveTrigger {
     constructor(pos: Position) : super(pos)
     constructor(x: Float, y: Float) : super(x, y)
 
-    constructor(pos: Position, targetGroup: UInt) : super(pos)
+    constructor(pos: Position, targetGroup: UInt) : super(pos, targetGroup)
     constructor(x: Float, y: Float, targetGroup: UInt) : super(x, y, targetGroup)
 }
 
