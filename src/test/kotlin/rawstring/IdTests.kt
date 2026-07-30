@@ -1,6 +1,8 @@
 package fr.geming400.gddotkt.rawstring
 
 import fr.geming400.gddotkt.TestTags
+import fr.geming400.gddotkt.editor.rawstring.Id
+import fr.geming400.gddotkt.editor.rawstring.id
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag

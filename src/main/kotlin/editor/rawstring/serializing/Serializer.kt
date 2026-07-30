@@ -1,0 +1,82 @@
+package fr.geming400.gddotkt.editor.rawstring.serializing
+
+import fr.geming400.gddotkt.editor.rawstring.RawStringable
+import fr.geming400.gddotkt.editor.rawstring.property.AbstractCollectionProperty
+import fr.geming400.gddotkt.editor.rawstring.property.CollectionCtor
+import fr.geming400.gddotkt.editor.rawstring.property.GdEnum
+import kotlin.enums.EnumEntries
+
+@FunctionalInterface
+interface Serializable<T> {
+    companion object {
+        /**
+         * @see toString
+         */
+        fun <T> usingToString(): Serializable<T> =
+            object : Serializable<T> {
+                override fun serialize(value: T): String = value.toString()
+            }
+    }
+
+    fun serialize(value: T): String
+}
+
+@FunctionalInterface
+interface Parsable<T> {
+    fun parse(rawValue: String): T
+}
+
+interface Serializer<T> : Serializable<T>, Parsable<T> {
+    companion object {
+        fun <T> create(serializer: (T) -> String, parser: (String) -> T): Serializer<T> {
+            return object : Serializer<T> {
+                override fun serialize(value: T): String = serializer(value)
+
+                override fun parse(rawValue: String): T = parser(rawValue)
+            }
+        }
+
+        fun <T : RawStringable> fromRawstringable(parser: (String) -> T): Serializer<T> {
+            return object : Serializer<T> {
+                override fun serialize(value: T): String = value.asRawString()
+
+                override fun parse(rawValue: String): T = parser(rawValue)
+            }
+        }
+
+        fun <T, C> collectionSerializer(
+            collectionCtor: CollectionCtor<C>,
+            elemSerializer: Serializer<T>,
+            elemSeparator: Char = AbstractCollectionProperty.ELEMENT_SEPARATOR
+        ): Serializer<C> where C : MutableCollection<T> =
+            create(
+                { it.joinToString(elemSeparator.toString(), transform = elemSerializer::serialize) },
+                {
+                    val coll = collectionCtor()
+                    val parsedElems = it.split(elemSeparator).map(elemSerializer::parse)
+                    coll.addAll(parsedElems)
+
+                    return@create coll
+                }
+            )
+
+        fun clampedInt(range: IntRange): Serializer<Int> =
+            create(
+                { it.coerceIn(range).toString() },
+                { it.toInt().coerceIn(range) }
+            )
+
+        fun clampedFloat(range: ClosedFloatingPointRange<Float>): Serializer<Float> =
+            create(
+                { it.coerceIn(range).toString() },
+                { it.toFloat().coerceIn(range) }
+            )
+
+        @Suppress("UNCHECKED_CAST", "MoveLambdaOutsideParentheses")
+        fun <T> enum(enumEntries: EnumEntries<T>): Serializer<T> where T : Enum<T>, T : GdEnum =
+            create(
+                { it.value.toString() },
+                { str -> enumEntries.first { it.value == str.toInt() } }
+            )
+    }
+}

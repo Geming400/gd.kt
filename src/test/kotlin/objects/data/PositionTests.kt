@@ -1,6 +1,11 @@
 package fr.geming400.gddotkt.objects.data
 
 import fr.geming400.gddotkt.TestTags
+import fr.geming400.gddotkt.editor.objects.data.GridPos
+import fr.geming400.gddotkt.editor.objects.data.Pos
+import fr.geming400.gddotkt.editor.objects.data.Position
+import fr.geming400.gddotkt.editor.objects.data.gridCentered
+import fr.geming400.gddotkt.editor.objects.data.gridUncentered
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag

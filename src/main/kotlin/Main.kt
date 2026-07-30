@@ -1,8 +1,8 @@
 package fr.geming400.gddotkt
 
-import fr.geming400.gddotkt.objects.SimpleObject
-import fr.geming400.gddotkt.objects.data.GridPos
-import fr.geming400.gddotkt.objects.data.Hsv
+import fr.geming400.gddotkt.editor.objects.SimpleObject
+import fr.geming400.gddotkt.editor.objects.data.GridPos
+import fr.geming400.gddotkt.editor.objects.data.Hsv
 
 // TODO: Once this is actually more closer to being finished delete this temporary main function
 private fun main() {
