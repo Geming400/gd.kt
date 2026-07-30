@@ -10,7 +10,7 @@ import kotlin.io.encoding.Base64
  * @see Base64.UrlSafe
  */
 class StringProperty(id: Id, defaultValue: String? = "", currentValue: String? = null) : AbstractProperty<String>(id, defaultValue, currentValue) {
-    override val serializer = Serializers.STRING
+    override val serializer = Serializers.B64STRING
 
     companion object {
         fun ofCharSequence(id: Id, defaultValue: CharSequence? = "", currentValue: CharSequence? = null): StringProperty =
