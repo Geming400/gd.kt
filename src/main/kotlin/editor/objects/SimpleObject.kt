@@ -122,6 +122,21 @@ open class SimpleObject : GenericGdObject {
     override fun get(propID: Id): PropertyDefinition<*> =
         this.rawStringFactory.properties.first { it.id == propID }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is SimpleObject) return false
+
+        return this.asRawString() == other.asRawString()
+    }
+
+    override fun hashCode(): Int {
+        return this.asRawString().hashCode()
+    }
+
+    override fun toString(): String {
+        return "${this::class.simpleName}(objID = ${this.objID.value}, x = ${this.x.value}, y = ${this.y.value})"
+    }
+
 // See why this was removed in RawStringable
 //    override fun <T> set(propID: UInt, value: T) {
 //        @Suppress("UNCHECKED_CAST")

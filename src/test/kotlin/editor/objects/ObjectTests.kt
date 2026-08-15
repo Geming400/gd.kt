@@ -61,6 +61,21 @@ private class SimpleObjectTests {
         Assertions.assertEquals(3f, obj.scaleY.value)
         Assertions.assertEquals(Scale(6f, 3f), obj.scale)
     }
+
+    @Test
+    fun equalityTest() {
+        val firstObj = SimpleObject(0u, 0f, 0f)
+        val secondObj = SimpleObject(0u, 0f, 0f)
+
+        Assertions.assertTrue(firstObj == secondObj)
+        Assertions.assertFalse(firstObj === secondObj)
+
+        firstObj.linkedGroupID.value = 5
+        Assertions.assertFalse(firstObj == secondObj)
+
+        secondObj.linkedGroupID.value = 5
+        Assertions.assertTrue(firstObj == secondObj)
+    }
 }
 
 @Tag(TestTags.EDITOR)
