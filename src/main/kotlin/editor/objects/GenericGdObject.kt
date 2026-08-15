@@ -1,6 +1,5 @@
 package fr.geming400.gddotkt.editor.objects
 
-import fr.geming400.gddotkt.exceptions.InvalidRawStringException
 import fr.geming400.gddotkt.editor.rawstring.Id
 import fr.geming400.gddotkt.editor.rawstring.RawStringable
 import fr.geming400.gddotkt.editor.rawstring.property.AbstractProperty
@@ -25,25 +24,6 @@ interface GenericGdObject : RawStringable {
      * @throws NoSuchElementException if there is no property at the given id
      */
     operator fun get(propID: Id): PropertyDefinition<*>
-
-    /**
-     * Get the geometry dash raw string representing this object "strictly".
-     * If the raw string happens to be invalid it throws an exception
-     * @return the raw string representing this object
-     * @throws InvalidRawStringException if the raw string is invalid
-     * @see isValidObjectString
-     */
-    fun asRawStringStrict(): String {
-        val rawString = this.asRawString()
-        if (rawString == "") {
-            return rawString
-        } else {
-            if (isValidObjectString(rawString))
-                return rawString
-
-            throw InvalidRawStringException(rawString)
-        }
-    }
 
 // Old function, removed because of type unsafety
 // (you can more easily assign the wrong type to the value var, yes, you can assign the WRONG TYPE)
