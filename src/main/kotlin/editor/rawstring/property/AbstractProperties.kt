@@ -71,12 +71,22 @@ interface PropertyDefinition<T> {
 }
 
 /**
+ * Represents a property that is mutable
+ */
+interface MutableProperty<T> : PropertyDefinition<T> {
+    /**
+     * The current value of the property
+     */
+    override var value: T?
+}
+
+/**
  * The base class for all properties
  * @property id the id of the property. See the [Id] class on how to create an instance
  * @property defaultValue the default value if the property, this affects if it will be serialized or not
  * @property currentValue the value to set by default. It defaults to the property value
  */
-abstract class AbstractProperty<T>(final override val id: Id, open val defaultValue: T? = null, protected var currentValue: T? = null) : PropertyDefinition<T> {
+abstract class AbstractProperty<T>(final override val id: Id, open val defaultValue: T? = null, protected var currentValue: T? = null) : MutableProperty<T> {
     companion object {
         const val KEY_VAL_SEPARATOR: Char = ','
 
