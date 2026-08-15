@@ -1,7 +1,7 @@
-package fr.geming400.gddotkt.editor.rawstring.property
+package editor.rawstring.property
 
-import fr.geming400.gddotkt.editor.rawstring.Id
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializers
+import editor.rawstring.Id
+import editor.rawstring.serializing.Serializers
 
 sealed class NumberProperty<T>(id: Id, defaultValue: T? = null, currentValue: T? = null) : AbstractProperty<T>(id, defaultValue, currentValue)
 

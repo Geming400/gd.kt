@@ -1,6 +1,6 @@
-package fr.geming400.gddotkt.editor.objects.data
+package editor.objects.data
 
-import fr.geming400.gddotkt.TestTags
+import TestTags
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test

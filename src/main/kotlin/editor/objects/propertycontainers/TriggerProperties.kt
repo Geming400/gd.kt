@@ -1,15 +1,15 @@
-package fr.geming400.gddotkt.editor.objects.propertycontainers
+package editor.objects.propertycontainers
 
-import fr.geming400.gddotkt.editor.objects.data.enums.Easing
-import fr.geming400.gddotkt.editor.rawstring.id
-import fr.geming400.gddotkt.editor.rawstring.property.EnumProperty
-import fr.geming400.gddotkt.editor.rawstring.property.FloatProperty
-import fr.geming400.gddotkt.editor.rawstring.property.GDDurationProperty
-import fr.geming400.gddotkt.editor.rawstring.property.HsvProperty
-import fr.geming400.gddotkt.editor.rawstring.property.MutableConditionalProperty
-import fr.geming400.gddotkt.editor.rawstring.property.RangedFloatProperty
-import fr.geming400.gddotkt.editor.rawstring.property.UIntProperty
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializer
+import editor.objects.data.enums.Easing
+import editor.rawstring.id
+import editor.rawstring.property.EnumProperty
+import editor.rawstring.property.FloatProperty
+import editor.rawstring.property.GDDurationProperty
+import editor.rawstring.property.HsvProperty
+import editor.rawstring.property.MutableConditionalProperty
+import editor.rawstring.property.RangedFloatProperty
+import editor.rawstring.property.UIntProperty
+import editor.rawstring.serializing.Serializer
 
 object TriggerProperties {
     val EASING_RATE_RANGE = 0.1f..20f

@@ -1,8 +1,8 @@
-package fr.geming400.gddotkt.editor.rawstring.property
+package editor.rawstring.property
 
-import fr.geming400.gddotkt.editor.rawstring.Id
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializers
-import fr.geming400.gddotkt.utils.toInt
+import editor.rawstring.Id
+import editor.rawstring.serializing.Serializers
+import utils.toInt
 import org.intellij.lang.annotations.MagicConstant
 
 class BoolProperty(id: Id, defaultValue: Boolean? = false, currentValue: Boolean? = null) : AbstractProperty<Boolean>(id, defaultValue, currentValue) {

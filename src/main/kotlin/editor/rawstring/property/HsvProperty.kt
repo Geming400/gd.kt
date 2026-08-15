@@ -1,8 +1,8 @@
-package fr.geming400.gddotkt.editor.rawstring.property
+package editor.rawstring.property
 
-import fr.geming400.gddotkt.editor.objects.data.Hsv
-import fr.geming400.gddotkt.editor.rawstring.Id
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializers
+import editor.objects.data.Hsv
+import editor.rawstring.Id
+import editor.rawstring.serializing.Serializers
 
 class HsvProperty(id: Id, defaultValue: Hsv? = Hsv.create(), currentValue: Hsv? = null) : AbstractProperty<Hsv>(id, defaultValue, currentValue) {
     override val serializer = Serializers.HSV

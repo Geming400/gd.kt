@@ -1,11 +1,11 @@
-package fr.geming400.gddotkt.editor.objects.common
+package editor.objects.common
 
-import fr.geming400.gddotkt.editor.objects.ComplexObject
-import fr.geming400.gddotkt.editor.objects.data.Pos
-import fr.geming400.gddotkt.editor.objects.data.Position
-import fr.geming400.gddotkt.editor.rawstring.id
-import fr.geming400.gddotkt.editor.rawstring.property.IntProperty
-import fr.geming400.gddotkt.editor.rawstring.property.StringProperty
+import editor.objects.ComplexObject
+import editor.objects.data.Pos
+import editor.objects.data.Position
+import editor.rawstring.id
+import editor.rawstring.property.IntProperty
+import editor.rawstring.property.StringProperty
 
 class TextObject : ComplexObject {
     companion object {

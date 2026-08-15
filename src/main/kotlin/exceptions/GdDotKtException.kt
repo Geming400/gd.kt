@@ -1,4 +1,4 @@
-package fr.geming400.gddotkt.exceptions
+package exceptions
 
 /**
  * Descendant of every exception for the `gd.kt` lib

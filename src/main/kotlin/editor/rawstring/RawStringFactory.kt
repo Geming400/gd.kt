@@ -1,9 +1,9 @@
-package fr.geming400.gddotkt.editor.rawstring
+package editor.rawstring
 
-import fr.geming400.gddotkt.exceptions.InvalidRawStringException
-import fr.geming400.gddotkt.editor.objects.GenericGdObject
-import fr.geming400.gddotkt.editor.rawstring.property.AbstractProperty
-import fr.geming400.gddotkt.editor.rawstring.property.PropertyDefinition
+import exceptions.InvalidRawStringException
+import editor.objects.GenericGdObject
+import editor.rawstring.property.AbstractProperty
+import editor.rawstring.property.PropertyDefinition
 import java.util.Collections
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubtypeOf

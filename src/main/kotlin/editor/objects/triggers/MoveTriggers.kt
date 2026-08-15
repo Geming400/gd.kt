@@ -1,19 +1,19 @@
-package fr.geming400.gddotkt.editor.objects.triggers
+package editor.objects.triggers
 
-import fr.geming400.gddotkt.annotations.GDName
-import fr.geming400.gddotkt.editor.objects.data.Pos
-import fr.geming400.gddotkt.editor.objects.data.Position
-import fr.geming400.gddotkt.editor.objects.propertycontainers.TriggerProperties
-import fr.geming400.gddotkt.editor.rawstring.id
-import fr.geming400.gddotkt.editor.rawstring.property.BoolProperty
-import fr.geming400.gddotkt.editor.rawstring.property.ConstantProperty
-import fr.geming400.gddotkt.editor.rawstring.property.EnumProperty
-import fr.geming400.gddotkt.editor.rawstring.property.GdEnum
-import fr.geming400.gddotkt.editor.rawstring.property.IntProperty
-import fr.geming400.gddotkt.editor.rawstring.property.MutableConditionalProperty
-import fr.geming400.gddotkt.editor.rawstring.property.UIntProperty
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializer
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializers
+import annotations.GDName
+import editor.objects.data.Pos
+import editor.objects.data.Position
+import editor.objects.propertycontainers.TriggerProperties
+import editor.rawstring.id
+import editor.rawstring.property.BoolProperty
+import editor.rawstring.property.ConstantProperty
+import editor.rawstring.property.EnumProperty
+import editor.rawstring.property.GdEnum
+import editor.rawstring.property.IntProperty
+import editor.rawstring.property.MutableConditionalProperty
+import editor.rawstring.property.UIntProperty
+import editor.rawstring.serializing.Serializer
+import editor.rawstring.serializing.Serializers
 
 abstract class AbstractMoveTrigger : TriggerObject {
     companion object {

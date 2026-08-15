@@ -1,15 +1,15 @@
-package fr.geming400.gddotkt.editor.rawstring.property
+package editor.rawstring.property
 
-import fr.geming400.gddotkt.CustomAssertions
-import fr.geming400.gddotkt.TestTags
-import fr.geming400.gddotkt.editor.objects.GenericGdObject
-import fr.geming400.gddotkt.editor.objects.data.Hsv
-import fr.geming400.gddotkt.editor.rawstring.Id
-import fr.geming400.gddotkt.editor.rawstring.RawStringFactory
-import fr.geming400.gddotkt.editor.rawstring.id
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializer
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializers
-import fr.geming400.gddotkt.utils.LACKS_IMPL
+import CustomAssertions
+import TestTags
+import editor.objects.GenericGdObject
+import editor.objects.data.Hsv
+import editor.rawstring.Id
+import editor.rawstring.RawStringFactory
+import editor.rawstring.id
+import editor.rawstring.serializing.Serializer
+import editor.rawstring.serializing.Serializers
+import utils.LACKS_IMPL
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -27,7 +27,8 @@ enum class MyCoolEnum(override val value: Int) : GdEnum {
 class MyObj : GenericGdObject {
     var rawStringFactory: RawStringFactory = RawStringFactory(this)
 
-    val normalProp = IntProperty(1.id, defaultValue = 0)
+    val normalProp =
+        IntProperty(1.id, defaultValue = 0)
 
     val conditionalProp = ConditionalProperty(
         id = 2.id,
@@ -38,13 +39,14 @@ class MyObj : GenericGdObject {
         true
     }
 
-    val mutableConditionalProp = MutableConditionalProperty(
-        id = 3.id,
-        defaultValue = true,
-        dependantOn = this.normalProp,
-        serializer = Serializers.BOOLEAN,
-        predicate = { shouldMutableConditionalPropBeSerializable }
-    )
+    val mutableConditionalProp =
+        MutableConditionalProperty(
+            id = 3.id,
+            defaultValue = true,
+            dependantOn = this.normalProp,
+            serializer = Serializers.BOOLEAN,
+            predicate = { shouldMutableConditionalPropBeSerializable }
+        )
 
     override fun get(propID: Id): PropertyDefinition<*> = LACKS_IMPL()
 
@@ -122,7 +124,11 @@ class PropertyTests {
     @Test
     fun testStringProp() {
         propTest(
-            StringProperty(0.id, defaultValue = "", currentValue = "Hii !!"),
+            StringProperty(
+                0.id,
+                defaultValue = "",
+                currentValue = "Hii !!"
+            ),
             testValue = "Bye :(",
             testRawStringValue = Base64.UrlSafe.encode("Bye :(".toByteArray())
         )
@@ -130,7 +136,10 @@ class PropertyTests {
 
     @Test
     fun testListProp() {
-        val prop = ListProperty(0.id, elemSerializer = Serializers.INT)
+        val prop = ListProperty(
+            0.id,
+            elemSerializer = Serializers.INT
+        )
         Assertions.assertEquals(0, prop.size())
 
         prop.add(5)
@@ -147,7 +156,11 @@ class PropertyTests {
         Assertions.assertEquals(0, prop.size())
         Assertions.assertThrows(IndexOutOfBoundsException::class.java) { prop[0] }
 
-        val secondProp = ListProperty(0.id, defaultValue = null, elemSerializer = Serializers.INT)
+        val secondProp = ListProperty(
+            0.id,
+            defaultValue = null,
+            elemSerializer = Serializers.INT
+        )
         Assertions.assertThrows(IndexOutOfBoundsException::class.java) { secondProp[0] }
         Assertions.assertThrows(IndexOutOfBoundsException::class.java) { secondProp[0] = 5 }
 
@@ -171,7 +184,10 @@ class PropertyTests {
     fun testSetProp() {
         // Most of the tests are already done above
 
-        val prop = SetProperty(0.id, elemSerializer = Serializers.INT)
+        val prop = SetProperty(
+            0.id,
+            elemSerializer = Serializers.INT
+        )
         Assertions.assertEquals(0, prop.size())
 
         prop.add(5)
@@ -180,7 +196,11 @@ class PropertyTests {
         prop.clear()
         Assertions.assertEquals(0, prop.size())
 
-        val secondProp = SetProperty(0.id, defaultValue = null, elemSerializer = Serializers.INT)
+        val secondProp = SetProperty(
+            0.id,
+            defaultValue = null,
+            elemSerializer = Serializers.INT
+        )
         Assertions.assertDoesNotThrow { secondProp.add(5) }
         Assertions.assertDoesNotThrow { secondProp.size() }
         Assertions.assertDoesNotThrow { secondProp.clear() }
@@ -189,7 +209,11 @@ class PropertyTests {
 
     @Test
     fun testHsvProp() {
-        val prop = HsvProperty(1.id, defaultValue = null, currentValue = Hsv.create())
+        val prop = HsvProperty(
+            1.id,
+            defaultValue = null,
+            currentValue = Hsv.create()
+        )
         Assertions.assertEquals(
             prop.id.getID() + AbstractProperty.KEY_VAL_SEPARATOR + prop.getOrThrow().asRawString(),
             prop.toRawString()

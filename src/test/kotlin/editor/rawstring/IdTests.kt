@@ -1,6 +1,6 @@
-package fr.geming400.gddotkt.editor.rawstring
+package editor.rawstring
 
-import fr.geming400.gddotkt.TestTags
+import TestTags
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag

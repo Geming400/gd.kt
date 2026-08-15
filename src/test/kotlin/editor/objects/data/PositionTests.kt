@@ -1,6 +1,6 @@
-package fr.geming400.gddotkt.editor.objects.data
+package editor.objects.data
 
-import fr.geming400.gddotkt.TestTags
+import TestTags
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -22,11 +22,23 @@ private class PositionTests {
     @Test
     @DisplayName("Pos constructor test")
     fun posCtorTest() {
-        Assertions.assertEquals(Pos.gridCentered(0f, 1f), Pos(15f, 45f))
-        Assertions.assertEquals(Pos.gridUncentered(1f, 2f), Pos(30f, 60f))
+        Assertions.assertEquals(
+            Pos.gridCentered(0f, 1f),
+            Pos(15f, 45f)
+        )
+        Assertions.assertEquals(
+            Pos.gridUncentered(1f, 2f),
+            Pos(30f, 60f)
+        )
 
-        Assertions.assertEquals(Pos.gridCentered(0f, 0f), Pos(0f.gridCentered, 0f.gridCentered))
-        Assertions.assertEquals(Pos.gridUncentered(0f, 0f), Pos(0f.gridUncentered, 0f.gridUncentered))
+        Assertions.assertEquals(
+            Pos.gridCentered(0f, 0f),
+            Pos(0f.gridCentered, 0f.gridCentered)
+        )
+        Assertions.assertEquals(
+            Pos.gridUncentered(0f, 0f),
+            Pos(0f.gridUncentered, 0f.gridUncentered)
+        )
     }
 
     @Test

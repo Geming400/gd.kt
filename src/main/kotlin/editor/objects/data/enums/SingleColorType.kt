@@ -1,6 +1,6 @@
-package fr.geming400.gddotkt.editor.objects.data.enums
+package editor.objects.data.enums
 
-import fr.geming400.gddotkt.editor.rawstring.property.GdEnum
+import editor.rawstring.property.GdEnum
 
 /**
  * The "single color type" value changes if single color objects are treated as base or detail.

@@ -1,10 +1,9 @@
-package fr.geming400.gddotkt.editor.objects
+package editor.objects
 
-import fr.geming400.gddotkt.editor.rawstring.Id
-import fr.geming400.gddotkt.editor.rawstring.RawStringFactory
-import fr.geming400.gddotkt.editor.rawstring.property.AbstractProperty
-import fr.geming400.gddotkt.editor.rawstring.property.MutableProperty
-import fr.geming400.gddotkt.exceptions.InvalidRawStringException
+import editor.rawstring.Id
+import editor.rawstring.RawStringFactory
+import editor.rawstring.property.AbstractProperty
+import editor.rawstring.property.MutableProperty
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.isSubtypeOf
@@ -19,7 +18,7 @@ object ObjectParser {
      * @param toFill the instance to fill
      * @param separator the separator used to separate the raw string (ex, in `1,10,2,20,3,30` the separator is `,`)
      * @return returns the final instance, aka the same as [toFill]
-     * @throws InvalidRawStringException if the raw string is invalid *(see [GenericGdObject.isValidObjectString])*
+     * @throws exceptions.InvalidRawStringException if the raw string is invalid *(see [GenericGdObject.isValidObjectString])*
      * @throws IllegalArgumentException if any of the parsed [ids][Id] are below `0` (exclusive, so `< 0`)
      */
     inline fun <reified T : Any> parse(rawString: String, toFill: T = T::class.createInstance(), separator: Char = AbstractProperty.KEY_VAL_SEPARATOR): T {

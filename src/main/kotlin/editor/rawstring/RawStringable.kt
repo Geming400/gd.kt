@@ -1,4 +1,4 @@
-package fr.geming400.gddotkt.editor.rawstring
+package editor.rawstring
 
 /**
  * Represents something that can have a conversion to a "geometry dash raw string"

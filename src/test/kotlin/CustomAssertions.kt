@@ -1,6 +1,4 @@
-package fr.geming400.gddotkt
-
-import fr.geming400.gddotkt.editor.rawstring.RawStringFactory
+import editor.rawstring.RawStringFactory
 import org.opentest4j.AssertionFailedError
 
 object CustomAssertions {

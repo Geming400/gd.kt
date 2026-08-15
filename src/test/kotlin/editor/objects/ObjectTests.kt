@@ -1,11 +1,18 @@
-package fr.geming400.gddotkt.editor.objects
+package editor.objects
 
-import fr.geming400.gddotkt.TestTags
-import fr.geming400.gddotkt.editor.objects.data.Pos
-import fr.geming400.gddotkt.editor.objects.data.Scale
-import fr.geming400.gddotkt.editor.objects.triggers.*
-import fr.geming400.gddotkt.editor.rawstring.id
-import fr.geming400.gddotkt.editor.rawstring.property.UIntProperty
+import TestTags
+import editor.objects.triggers.AlphaTrigger
+import editor.objects.triggers.ColorTrigger
+import editor.objects.triggers.DirectionMoveTrigger
+import editor.objects.triggers.LockOn
+import editor.objects.triggers.MoveTrigger
+import editor.objects.triggers.PlayerColor
+import editor.objects.triggers.TargetMoveTrigger
+import editor.objects.triggers.ToggleTrigger
+import editor.objects.data.Pos
+import editor.objects.data.Scale
+import editor.rawstring.id
+import editor.rawstring.property.UIntProperty
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag

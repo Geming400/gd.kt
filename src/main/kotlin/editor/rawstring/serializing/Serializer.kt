@@ -1,9 +1,9 @@
-package fr.geming400.gddotkt.editor.rawstring.serializing
+package editor.rawstring.serializing
 
-import fr.geming400.gddotkt.editor.rawstring.RawStringable
-import fr.geming400.gddotkt.editor.rawstring.property.AbstractCollectionProperty
-import fr.geming400.gddotkt.editor.rawstring.property.CollectionCtor
-import fr.geming400.gddotkt.editor.rawstring.property.GdEnum
+import editor.rawstring.RawStringable
+import editor.rawstring.property.AbstractCollectionProperty
+import editor.rawstring.property.CollectionCtor
+import editor.rawstring.property.GdEnum
 import kotlin.enums.EnumEntries
 
 @FunctionalInterface

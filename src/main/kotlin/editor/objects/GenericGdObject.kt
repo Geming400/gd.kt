@@ -1,9 +1,9 @@
-package fr.geming400.gddotkt.editor.objects
+package editor.objects
 
-import fr.geming400.gddotkt.editor.rawstring.Id
-import fr.geming400.gddotkt.editor.rawstring.RawStringable
-import fr.geming400.gddotkt.editor.rawstring.property.AbstractProperty
-import fr.geming400.gddotkt.editor.rawstring.property.PropertyDefinition
+import editor.rawstring.Id
+import editor.rawstring.RawStringable
+import editor.rawstring.property.AbstractProperty
+import editor.rawstring.property.PropertyDefinition
 
 /**
  * Represents an object that can have a conversion to a "geometry dash raw string"

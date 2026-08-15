@@ -1,13 +1,13 @@
 package samples.editor.rawstring.property
 
-import fr.geming400.gddotkt.editor.objects.GenericGdObject
-import fr.geming400.gddotkt.editor.rawstring.Id
-import fr.geming400.gddotkt.editor.rawstring.id
-import fr.geming400.gddotkt.editor.rawstring.property.ConditionalProperty
-import fr.geming400.gddotkt.editor.rawstring.property.IntProperty
-import fr.geming400.gddotkt.editor.rawstring.property.MutableConditionalProperty
-import fr.geming400.gddotkt.editor.rawstring.property.PropertyDefinition
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializers
+import editor.objects.GenericGdObject
+import editor.rawstring.Id
+import editor.rawstring.id
+import editor.rawstring.property.ConditionalProperty
+import editor.rawstring.property.IntProperty
+import editor.rawstring.property.MutableConditionalProperty
+import editor.rawstring.property.PropertyDefinition
+import editor.rawstring.serializing.Serializers
 
 private fun isSerializableSample() {
     val prop = IntProperty(1.id, defaultValue = 5, currentValue = 5)

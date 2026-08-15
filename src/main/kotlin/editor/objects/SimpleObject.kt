@@ -1,22 +1,22 @@
-package fr.geming400.gddotkt.editor.objects
+package editor.objects
 
-import fr.geming400.gddotkt.annotations.GDName
-import fr.geming400.gddotkt.editor.objects.data.Pos
-import fr.geming400.gddotkt.editor.objects.data.Position
-import fr.geming400.gddotkt.editor.objects.data.Scale
-import fr.geming400.gddotkt.editor.rawstring.property.GroupSetProperty
-import fr.geming400.gddotkt.editor.rawstring.Id
-import fr.geming400.gddotkt.editor.rawstring.RawStringFactory
-import fr.geming400.gddotkt.editor.rawstring.id
-import fr.geming400.gddotkt.editor.rawstring.property.BoolProperty
-import fr.geming400.gddotkt.editor.rawstring.property.ConditionalProperty
-import fr.geming400.gddotkt.editor.rawstring.property.FloatProperty
-import fr.geming400.gddotkt.editor.rawstring.property.HsvProperty
-import fr.geming400.gddotkt.editor.rawstring.property.IntProperty
-import fr.geming400.gddotkt.editor.rawstring.property.PropertyDefinition
-import fr.geming400.gddotkt.editor.rawstring.property.SequencedSetProperty
-import fr.geming400.gddotkt.editor.rawstring.property.UIntProperty
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializers
+import annotations.GDName
+import editor.objects.data.Pos
+import editor.objects.data.Position
+import editor.objects.data.Scale
+import editor.rawstring.property.GroupSetProperty
+import editor.rawstring.Id
+import editor.rawstring.RawStringFactory
+import editor.rawstring.id
+import editor.rawstring.property.BoolProperty
+import editor.rawstring.property.ConditionalProperty
+import editor.rawstring.property.FloatProperty
+import editor.rawstring.property.HsvProperty
+import editor.rawstring.property.IntProperty
+import editor.rawstring.property.PropertyDefinition
+import editor.rawstring.property.SequencedSetProperty
+import editor.rawstring.property.UIntProperty
+import editor.rawstring.serializing.Serializers
 
 /**
  * A simple object is a generic geometry dash object in the editor.

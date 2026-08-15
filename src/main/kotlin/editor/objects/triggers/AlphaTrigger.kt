@@ -1,9 +1,9 @@
-package fr.geming400.gddotkt.editor.objects.triggers
+package editor.objects.triggers
 
-import fr.geming400.gddotkt.annotations.GDName
-import fr.geming400.gddotkt.editor.objects.data.Pos
-import fr.geming400.gddotkt.editor.objects.data.Position
-import fr.geming400.gddotkt.editor.objects.propertycontainers.TriggerProperties
+import annotations.GDName
+import editor.objects.data.Pos
+import editor.objects.data.Position
+import editor.objects.propertycontainers.TriggerProperties
 
 /**
  * An alpha trigger allows to change the opacity of any objects linked to the [target group][targetGroup].

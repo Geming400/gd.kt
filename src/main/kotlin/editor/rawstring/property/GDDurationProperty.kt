@@ -1,6 +1,6 @@
-package fr.geming400.gddotkt.editor.rawstring.property
+package editor.rawstring.property
 
-import fr.geming400.gddotkt.editor.rawstring.Id
+import editor.rawstring.Id
 
 /**
  * A duration property is like a [FloatProperty] except its allowed values are:

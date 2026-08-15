@@ -1,6 +1,6 @@
 package samples.editor.rawstring
 
-import fr.geming400.gddotkt.editor.objects.GenericGdObject
+import editor.objects.GenericGdObject
 
 private fun isValidObjectStringSample() {
     // This will return true

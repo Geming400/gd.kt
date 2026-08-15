@@ -1,11 +1,11 @@
-package fr.geming400.gddotkt.editor.objects.triggers
+package editor.objects.triggers
 
-import fr.geming400.gddotkt.editor.objects.ComplexObject
-import fr.geming400.gddotkt.editor.objects.data.Position
-import fr.geming400.gddotkt.editor.rawstring.id
-import fr.geming400.gddotkt.editor.rawstring.property.BoolProperty
-import fr.geming400.gddotkt.editor.rawstring.property.MutableConditionalProperty
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializers
+import editor.objects.ComplexObject
+import editor.objects.data.Position
+import editor.rawstring.id
+import editor.rawstring.property.BoolProperty
+import editor.rawstring.property.MutableConditionalProperty
+import editor.rawstring.serializing.Serializers
 
 /**
  * A trigger object is the base class for every trigger.

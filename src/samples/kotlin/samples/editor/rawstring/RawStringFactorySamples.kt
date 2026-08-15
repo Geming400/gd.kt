@@ -1,6 +1,6 @@
 package samples.editor.rawstring
 
-import fr.geming400.gddotkt.editor.rawstring.RawStringFactory
+import editor.rawstring.RawStringFactory
 
 private fun areRawStringEqualsSample() {
     val rawString1 = "1,10,2,20,3,30"

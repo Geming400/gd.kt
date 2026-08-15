@@ -1,4 +1,4 @@
-package fr.geming400.gddotkt.editor.rawstring
+package editor.rawstring
 
 /**
  * An id is a way to store an identifier in a numerical or string type.

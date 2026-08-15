@@ -1,9 +1,9 @@
-package fr.geming400.gddotkt.editor.objects.data
+package editor.objects.data
 
-import fr.geming400.gddotkt.exceptions.InvalidRawStringException
-import fr.geming400.gddotkt.editor.rawstring.RawStringable
-import fr.geming400.gddotkt.utils.toBooleanFromIntStrict
-import fr.geming400.gddotkt.utils.toInt
+import exceptions.InvalidRawStringException
+import editor.rawstring.RawStringable
+import utils.toBooleanFromIntStrict
+import utils.toInt
 import java.util.Objects
 
 /**
@@ -19,7 +19,7 @@ import java.util.Objects
  * Checked values only are an offset, they don't affect the visual output.
  *
  * Do note that in geometry dash, the "value" field is the [brightness].
- * @see fr.geming400.gddotkt.editor.rawstring.property.HsvProperty
+ * @see editor.rawstring.property.HsvProperty
  */
 class Hsv : RawStringable {
     companion object {

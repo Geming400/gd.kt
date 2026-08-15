@@ -1,4 +1,4 @@
-package fr.geming400.gddotkt.client
+package client
 
 /**
  * A list of secrets used for requests

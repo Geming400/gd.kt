@@ -1,6 +1,6 @@
-package fr.geming400.gddotkt.editor.objects.data.enums
+package editor.objects.data.enums
 
-import fr.geming400.gddotkt.editor.rawstring.property.GdEnum
+import editor.rawstring.property.GdEnum
 
 /**
  * Enum class containing all of geometry dash's easings.

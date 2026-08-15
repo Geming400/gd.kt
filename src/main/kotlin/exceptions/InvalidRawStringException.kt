@@ -1,4 +1,4 @@
-package fr.geming400.gddotkt.exceptions
+package exceptions
 
 class InvalidRawStringException : GdDotKtException {
     val rawString: String?

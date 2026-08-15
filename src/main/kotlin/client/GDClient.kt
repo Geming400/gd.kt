@@ -1,4 +1,4 @@
-package fr.geming400.gddotkt.client
+package client
 
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl

@@ -1,6 +1,6 @@
-package fr.geming400.gddotkt.utils
+package utils
 
-import fr.geming400.gddotkt.exceptions.IllegalTypeException
+import exceptions.IllegalTypeException
 import okhttp3.FormBody
 import okhttp3.RequestBody
 

@@ -1,9 +1,9 @@
-package fr.geming400.gddotkt.editor.rawstring.property
+package editor.rawstring.property
 
-import fr.geming400.gddotkt.editor.rawstring.Id
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializable
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializer
-import fr.geming400.gddotkt.editor.rawstring.RawStringable
+import editor.rawstring.Id
+import editor.rawstring.serializing.Serializable
+import editor.rawstring.serializing.Serializer
+import editor.rawstring.RawStringable
 
 interface PropertyDefinition<T> {
     val id: Id
@@ -99,7 +99,7 @@ abstract class AbstractProperty<T>(final override val id: Id, open val defaultVa
          * Turns a raw string into a pair of format `propID: propValue` where `propID`
          * is a parsed [Id]
          * @throws IllegalArgumentException if the prop's [Id] is below `0` (exclusive, so `< 0`)
-         * @see Id.Companion.ofUnknown
+         * @see Id.ofUnknown
          */
         fun rawStringToPairID(propRawString: String): Pair<Id, String> {
             val data = propRawString.split(KEY_VAL_SEPARATOR, limit = 2)
@@ -226,7 +226,7 @@ typealias CollectionCtor<T> = () -> T
  * @property defaultValue the default value if the property, this affects if it will be serialized or not.
  *                        It is represented by a [MutableCollection] but **it is not advised to modify it in any way !**
  * @property currentValue the value to set by default. It defaults to the property value
- * @property elemSerializer the [serializer][Serializable] used to serialize the collection's values. See [Serializer.Companion.collectionSerializer]
+ * @property elemSerializer the [serializer][Serializable] used to serialize the collection's values. See [Serializer.collectionSerializer]
  * @param T the type of the collection's content
  * @param C the collection type
  */

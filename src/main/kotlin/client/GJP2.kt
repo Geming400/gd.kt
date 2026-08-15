@@ -1,4 +1,4 @@
-package fr.geming400.gddotkt.client
+package client
 
 import org.apache.commons.codec.digest.DigestUtils
 

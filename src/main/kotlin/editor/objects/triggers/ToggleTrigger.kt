@@ -1,10 +1,10 @@
-package fr.geming400.gddotkt.editor.objects.triggers
+package editor.objects.triggers
 
-import fr.geming400.gddotkt.editor.objects.data.Pos
-import fr.geming400.gddotkt.editor.objects.data.Position
-import fr.geming400.gddotkt.editor.objects.propertycontainers.TriggerProperties
-import fr.geming400.gddotkt.editor.rawstring.id
-import fr.geming400.gddotkt.editor.rawstring.property.BoolProperty
+import editor.objects.data.Pos
+import editor.objects.data.Position
+import editor.objects.propertycontainers.TriggerProperties
+import editor.rawstring.id
+import editor.rawstring.property.BoolProperty
 
 /**
  * A toggle trigger allows for any [targeted objects][targetGroup] to be toggled on or on depending on the [activateGroup] property.

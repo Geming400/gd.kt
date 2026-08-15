@@ -1,7 +1,7 @@
-package fr.geming400.gddotkt.editor.rawstring.serializing
+package editor.rawstring.serializing
 
-import fr.geming400.gddotkt.editor.objects.data.Hsv
-import fr.geming400.gddotkt.utils.toBooleanFromIntStrict
+import editor.objects.data.Hsv
+import utils.toBooleanFromIntStrict
 import kotlin.io.encoding.Base64
 
 object Serializers {

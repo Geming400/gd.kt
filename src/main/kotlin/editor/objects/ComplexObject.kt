@@ -1,13 +1,13 @@
-package fr.geming400.gddotkt.editor.objects
+package editor.objects
 
-import fr.geming400.gddotkt.annotations.GDName
-import fr.geming400.gddotkt.editor.objects.data.Position
-import fr.geming400.gddotkt.editor.objects.data.enums.SingleColorType
-import fr.geming400.gddotkt.editor.rawstring.id
-import fr.geming400.gddotkt.editor.rawstring.property.BoolProperty
-import fr.geming400.gddotkt.editor.rawstring.property.EnumProperty
-import fr.geming400.gddotkt.editor.rawstring.property.IntProperty
-import fr.geming400.gddotkt.editor.rawstring.serializing.Serializer
+import annotations.GDName
+import editor.objects.data.Position
+import editor.objects.data.enums.SingleColorType
+import editor.rawstring.id
+import editor.rawstring.property.BoolProperty
+import editor.rawstring.property.EnumProperty
+import editor.rawstring.property.IntProperty
+import editor.rawstring.serializing.Serializer
 
 /**
  * A complex object, as the name suggests is "more complex".

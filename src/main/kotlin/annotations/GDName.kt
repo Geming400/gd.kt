@@ -1,4 +1,4 @@
-package fr.geming400.gddotkt.annotations
+package annotations
 
 /**
  * Represents the actual name of the property in geometry dash. Some properties don't have names (eg: obj id)

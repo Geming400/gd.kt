@@ -1,9 +1,9 @@
-package fr.geming400.gddotkt.editor.rawstring
+package editor.rawstring
 
-import fr.geming400.gddotkt.CustomAssertions
-import fr.geming400.gddotkt.TestTags
-import fr.geming400.gddotkt.editor.objects.SimpleObject
-import fr.geming400.gddotkt.exceptions.InvalidRawStringException
+import CustomAssertions
+import TestTags
+import editor.objects.SimpleObject
+import exceptions.InvalidRawStringException
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
