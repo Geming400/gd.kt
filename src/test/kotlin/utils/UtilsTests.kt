@@ -1,8 +1,7 @@
-package fr.geming400.gddotkt
+package fr.geming400.gddotkt.utils
 
+import fr.geming400.gddotkt.TestTags
 import fr.geming400.gddotkt.exceptions.IllegalTypeException
-import fr.geming400.gddotkt.utils.Utils
-import fr.geming400.gddotkt.utils.toFormRequestBody
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
