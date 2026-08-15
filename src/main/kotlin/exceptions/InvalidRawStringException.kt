@@ -1,13 +1,13 @@
 package fr.geming400.gddotkt.exceptions
 
-class InvalidRawStringException : RuntimeException {
+class InvalidRawStringException : GdDotKtException {
     val rawString: String?
 
     constructor(rawString: String?) : super(getErrorMessage(rawString)) {
         this.rawString = rawString
     }
 
-    constructor(rawString: String?, cause: Throwable?) : super(getErrorMessage(rawString), cause) {
+    constructor(rawString: String?, cause: Throwable) : super(getErrorMessage(rawString), cause) {
         this.rawString = rawString
     }
 
