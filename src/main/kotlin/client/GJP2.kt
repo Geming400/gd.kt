@@ -14,7 +14,7 @@ value class GJP2 internal constructor(val encryptedPassword: String) {
         fun create(password: String): GJP2 =
             GJP2(encryptPassword(password))
 
-        fun createFromGJP2(gjp2: String): GJP2 =
+        fun fromGJP2(gjp2: String): GJP2 =
             GJP2(gjp2)
     }
 }
