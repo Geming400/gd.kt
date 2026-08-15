@@ -1,7 +1,6 @@
 package fr.geming400.gddotkt.client
 
 import org.apache.commons.codec.digest.DigestUtils
-import java.security.MessageDigest
 
 @JvmInline
 value class GJP2 internal constructor(val encryptedPassword: String) {

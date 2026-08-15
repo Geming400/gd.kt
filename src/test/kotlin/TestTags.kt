@@ -9,4 +9,9 @@ object TestTags {
      * - ...
      */
     const val EDITOR = "editor"
+
+    /**
+     * This tag represents all the tests related to the client and web requests.
+     */
+    const val CLIENT = "client"
 }
