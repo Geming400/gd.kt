@@ -20,6 +20,8 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
+    implementation("com.squareup.okhttp3:okhttp:5.4.0")
+    implementation("commons-codec:commons-codec:1.22.1")
 }
 
 kotlin {
