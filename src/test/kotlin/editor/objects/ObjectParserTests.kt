@@ -15,7 +15,7 @@ class NotGenericObject {
     val listProperty = ListProperty(2.id, elemSerializer = Serializers.INT, defaultValue = mutableListOf(5, 4, 3, 2))
 
     fun asRawString(): String =
-        "${intProperty.toRawString()},${listProperty.toRawString()}"
+        "${intProperty.asRawString()},${listProperty.asRawString()}"
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

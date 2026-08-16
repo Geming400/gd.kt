@@ -76,14 +76,14 @@ class PropertyTests {
 
         val defaultValTest = {
             Assertions.assertEquals(prop.value, prop.defaultValue)
-            Assertions.assertEquals("", prop.toRawString())
+            Assertions.assertEquals("", prop.asRawString())
             Assertions.assertTrue(prop.isDefaultValue())
 
             Assertions.assertEquals(prop.value, prop.defaultValue)
             Assertions.assertEquals(prop.defaultValue, prop.getOrElse(testValue))
             Assertions.assertEquals(prop.defaultValue, prop.getOrNullableElse(null))
             Assertions.assertDoesNotThrow { prop.getOrThrow() }
-            Assertions.assertEquals("", prop.toRawString())
+            Assertions.assertEquals("", prop.asRawString())
         }
 
         prop.resetValue()
@@ -96,7 +96,7 @@ class PropertyTests {
         prop.value = testValue
         Assertions.assertEquals(testValue, prop.value)
 
-        Assertions.assertEquals("${prop.id.getID()},$testRawStringValue", prop.toRawString())
+        Assertions.assertEquals("${prop.id.getID()},$testRawStringValue", prop.asRawString())
     }
 
     @Test
@@ -110,15 +110,15 @@ class PropertyTests {
     @Test
     fun testBoolProp() {
         val prop = BoolProperty(1.id, null)
-        Assertions.assertEquals("", prop.toRawString())
+        Assertions.assertEquals("", prop.asRawString())
 
         prop.value = true
         Assertions.assertEquals(1, prop.asGdBool())
-        Assertions.assertEquals("${prop.id.getID()},1", prop.toRawString())
+        Assertions.assertEquals("${prop.id.getID()},1", prop.asRawString())
 
         prop.value = false
         Assertions.assertEquals(0, prop.asGdBool())
-        Assertions.assertEquals("${prop.id.getID()},0", prop.toRawString())
+        Assertions.assertEquals("${prop.id.getID()},0", prop.asRawString())
     }
 
     @Test
@@ -177,7 +177,7 @@ class PropertyTests {
         prop.add(1)
         prop.add(2)
         prop.add(3)
-        Assertions.assertEquals("${prop.id},0.1.2.3", prop.toRawString())
+        Assertions.assertEquals("${prop.id},0.1.2.3", prop.asRawString())
     }
 
     @Test
@@ -216,7 +216,7 @@ class PropertyTests {
         )
         Assertions.assertEquals(
             prop.id.getID() + AbstractProperty.KEY_VAL_SEPARATOR + prop.getOrThrow().asRawString(),
-            prop.toRawString()
+            prop.asRawString()
         )
 
         @Suppress("DEPRECATION")
@@ -224,7 +224,7 @@ class PropertyTests {
         Assertions.assertEquals(
             prop.id.getID() + AbstractProperty.KEY_VAL_SEPARATOR + prop.getOrThrow().asRawString()
                     + AbstractProperty.KEY_VAL_SEPARATOR + "5,1",
-            prop.toRawString()
+            prop.asRawString()
         )
     }
 

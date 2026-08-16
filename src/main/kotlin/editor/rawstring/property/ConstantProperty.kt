@@ -13,6 +13,6 @@ class ConstantProperty<T>(override val id: Id, val constantValue: T, override va
 
     override fun isSerializable(): Boolean = true
 
-    override fun toRawString(): String =
+    override fun asRawString(): String =
         this.id.getID() + AbstractProperty.KEY_VAL_SEPARATOR + this.serializer.serialize(this.constantValue)
 }

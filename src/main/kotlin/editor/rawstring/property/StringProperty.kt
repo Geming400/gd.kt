@@ -22,6 +22,6 @@ class StringProperty(id: Id, defaultValue: String? = "", currentValue: String? =
             Base64.UrlSafe.encode(it.toByteArray(charset))
         }
 
-    override fun toRawString(): String =
+    override fun asRawString(): String =
         this.toRawString(Charset.defaultCharset())
 }

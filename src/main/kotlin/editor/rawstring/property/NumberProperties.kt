@@ -18,7 +18,7 @@ open class IntProperty(id: Id, defaultValue: Int? = 0, currentValue: Int? = null
             RangedIntProperty(id, range, defaultValue, currentValue)
     }
 
-    override fun toRawString(): String =
+    override fun asRawString(): String =
         this.toRawStringHelper(Serializers.INT)
 }
 
@@ -30,14 +30,14 @@ open class UIntProperty(id: Id, defaultValue: UInt? = 0u, currentValue: UInt? = 
             RangedUIntProperty(id, range, defaultValue, currentValue)
     }
 
-    override fun toRawString(): String =
+    override fun asRawString(): String =
         this.toRawStringHelper(Serializers.UINT)
 }
 
 open class UByteProperty(id: Id, defaultValue: UByte? = 0u, currentValue: UByte? = null) : NumberProperty<UByte>(id, defaultValue, currentValue) {
     override val serializer = Serializers.UBYTE
 
-    override fun toRawString(): String =
+    override fun asRawString(): String =
         this.toRawStringHelper(Serializers.UBYTE)
 }
 
@@ -49,7 +49,7 @@ open class FloatProperty(id: Id, defaultValue: Float? = 0f, currentValue: Float?
             RangedFloatProperty(id, range, defaultValue, currentValue)
     }
 
-    override fun toRawString(): String =
+    override fun asRawString(): String =
         this.toRawStringHelper(Serializers.FLOAT)
 }
 

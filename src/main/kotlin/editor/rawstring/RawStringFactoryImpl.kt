@@ -45,11 +45,11 @@ internal class RawStringFactoryImpl : RawStringFactory {
      * Get the raw string of this factory's [parent] by concatenating all
      * properties' raw strings
      * @return the raw string of this factory's [parent]
-     * @see PropertyDefinition.toRawString
+     * @see PropertyDefinition.asRawString
      */
     override fun asRawString(): String =
         this.getSerializableProperties().joinToString(AbstractProperty.KEY_VAL_SEPARATOR.toString()) {
-            it.toRawString()
+            it.asRawString()
         }
 
     /**

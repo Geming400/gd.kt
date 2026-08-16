@@ -28,7 +28,7 @@ interface IsConditional
  *                       It cannot be another conditional property
  * @property serializer the [Serializer] used to serialize the obtained [value][valueGetter]
  * @property predicate this predicate decides if this conditional property should be enabled.
- *                     If it returns `false`, the [raw string output][toRawString] will be empty *(= `""`)*
+ *                     If it returns `false`, the [raw string output][asRawString] will be empty *(= `""`)*
  * @property valueGetter the lambda used to get the value of this conditional property.
  *                       It can only be obtained if the conditional property is "enabled" *(refer to [predicate])*
  * @param T the type of the conditional property
@@ -50,7 +50,7 @@ open class ConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
          * @param id the id of the property. See the [Id] class on how to create an instance
          * @param serializer the [Serializer] used to serialize the obtained [value][valueGetter]
          * @param predicate this predicate decides if this conditional property should be enabled.
-         *                  If it returns `false`, the [raw string output][toRawString] will be empty *(= `""`)*
+         *                  If it returns `false`, the [raw string output][asRawString] will be empty *(= `""`)*
          * @param valueGetter the lambda used to get the value of this conditional property.
          * @param T the type of the conditional property
          */
@@ -78,7 +78,7 @@ open class ConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
      */
     override fun isSerializable(): Boolean = this.predicate(this.dependantOn)
 
-    override fun toRawString(): String {
+    override fun asRawString(): String {
         val propValue = this.value
         return if (this.isSerializable() && propValue != null)
             this.id.getID() + AbstractProperty.KEY_VAL_SEPARATOR + this.serializer.serialize(propValue)
@@ -103,7 +103,7 @@ open class ConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
  * @property serializer the [Serializer] used to serialize the obtained [value]
  * @param valueChanger used to change the value if needed when setting it (ex: clamping)
  * @property predicate this predicate decides if this conditional property should be enabled.
- *                     If it returns `false`, the [raw string output][toRawString] will be empty *(= `""`)*
+ *                     If it returns `false`, the [raw string output][asRawString] will be empty *(= `""`)*
  * @param T the type of the conditional property
  * @param PT the type of the dependant property (ex: [Int])
  * @param P the class of the dependant property (ex: [IntProperty])
@@ -128,7 +128,7 @@ open class MutableConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
          * @param serializer the [Serializer] used to serialize the obtained [value]
          * @param valueChanger used to change the value if needed when setting it (ex: clamping)
          * @param predicate this predicate decides if this conditional property should be enabled.
-         *                  If it returns `false`, the [raw string output][toRawString] will be empty *(= `""`)*
+         *                  If it returns `false`, the [raw string output][asRawString] will be empty *(= `""`)*
          * @param T the type of the conditional property
          */
         fun <T> createIndependent(
@@ -176,7 +176,7 @@ open class MutableConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
     override fun isSerializable(): Boolean =
         this.predicate(this.dependantOn) && super.isSerializable()
 
-    override fun toRawString(): String {
+    override fun asRawString(): String {
         val propValue = this.value
         return if (this.isSerializable() && propValue != null)
             this.id.getID() + KEY_VAL_SEPARATOR + this.serializer.serialize(propValue)

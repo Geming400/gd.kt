@@ -5,7 +5,7 @@ import editor.rawstring.serializing.Serializable
 import editor.rawstring.serializing.Serializer
 import editor.rawstring.RawStringable
 
-interface PropertyDefinition<T> {
+interface PropertyDefinition<T> : RawStringable {
     val id: Id
     val serializer: Serializer<T>
 
@@ -29,7 +29,7 @@ interface PropertyDefinition<T> {
      * If you are implementing [AbstractProperty], use [AbstractProperty.toRawStringHelper] to make a raw string
      * @return the raw string in the format `id,value`
      */
-    fun toRawString(): String
+    override fun asRawString(): String
 
     /**
      * Returns the property's [value] or throw if it's `null`.
@@ -167,7 +167,7 @@ abstract class AbstractProperty<T>(final override val id: Id, open val defaultVa
      *         However, an empty string can be returned if [value] is `null` or if
      *         this property is [not serializable][isSerializable]
      * @see RawStringable
-     * @see toRawString
+     * @see asRawString
      */
     protected open fun toRawStringHelper(value: Any? = this.value, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT): String {
         return if (this.isSerializable() && value != null) {
@@ -187,7 +187,7 @@ abstract class AbstractProperty<T>(final override val id: Id, open val defaultVa
      *         However, an empty string can be returned if [value] is `null` or if
      *         this property is [not serializable][isSerializable]
      * @see RawStringable
-     * @see toRawString
+     * @see asRawString
      */
     protected open fun toRawStringHelper(suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT, valueGetter: (T) -> Any): String {
         return if (this.isSerializable()) {
@@ -207,7 +207,7 @@ abstract class AbstractProperty<T>(final override val id: Id, open val defaultVa
      *         However, an empty string can be returned if [value] is `null` or if
      *         this property is [not serializable][isSerializable]
      * @see RawStringable
-     * @see toRawString
+     * @see asRawString
      */
     protected open fun toRawStringHelper(serializer: Serializable<T>, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT): String =
         this.toRawStringHelper(suffix, suffixMode) { serializer.serialize(it) }

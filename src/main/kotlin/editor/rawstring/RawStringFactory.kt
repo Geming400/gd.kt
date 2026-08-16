@@ -94,11 +94,11 @@ interface RawStringFactory {
      * Get the raw string of this factory's linked obj by concatenating all
      * properties' raw strings
      * @return the raw string of this factory's linked obj
-     * @see PropertyDefinition.toRawString
+     * @see PropertyDefinition.asRawString
      */
     fun asRawString(): String =
         this.getSerializableProperties().joinToString(AbstractProperty.KEY_VAL_SEPARATOR.toString()) {
-            it.toRawString()
+            it.asRawString()
         }
 
     fun getSerializableProperties(): List<PropertyDefinition<*>> =
@@ -138,7 +138,7 @@ interface RawStringFactory {
      * @return the properties in a [Map]
      */
     fun asRawStringMap(): Map<Id, String> =
-        this.asMap().mapValues { it.value.toRawString() }
+        this.asMap().mapValues { it.value.asRawString() }
 
     /**
      * Gets all the **serializable** properties of this factory's parent in a map
@@ -147,7 +147,7 @@ interface RawStringFactory {
      * @throws NullPointerException if **ANY** of the [numerical ids][Id.numericalID] is `null`
      */
     fun asRawStringIntMap(): Map<UInt, String> =
-        this.asIntMap().mapValues { it.value.toRawString() }
+        this.asIntMap().mapValues { it.value.asRawString() }
 
     /**
      * Gets all the **serializable** properties of this factory's parent in a map
@@ -156,5 +156,5 @@ interface RawStringFactory {
      * @throws NullPointerException if **ANY** of the [string ids][Id.stringID] is `null`
      */
     fun asRawStringStringMap(): Map<String, String> =
-        this.asStringMap().mapValues { it.value.toRawString() }
+        this.asStringMap().mapValues { it.value.asRawString() }
 }

@@ -20,7 +20,7 @@ class HsvProperty(id: Id, defaultValue: Hsv? = Hsv.create(), currentValue: Hsv? 
         return this
     }
 
-    override fun toRawString(): String {
+    override fun asRawString(): String {
         val suffix =
             if (this.usesColorPropID == null)
                 ""
