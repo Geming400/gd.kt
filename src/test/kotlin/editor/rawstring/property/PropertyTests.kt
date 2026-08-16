@@ -25,7 +25,7 @@ enum class MyCoolEnum(override val value: Int) : GdEnum {
 }
 
 class MyObj : GenericGdObject {
-    var rawStringFactory: RawStringFactory = RawStringFactory(this)
+    override var rawStringFactory: RawStringFactory = RawStringFactory.create(this)
 
     val normalProp =
         IntProperty(1.id, defaultValue = 0)

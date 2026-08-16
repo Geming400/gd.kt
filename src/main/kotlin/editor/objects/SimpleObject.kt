@@ -4,18 +4,9 @@ import annotations.GDName
 import editor.objects.data.Pos
 import editor.objects.data.Position
 import editor.objects.data.Scale
-import editor.rawstring.property.GroupSetProperty
-import editor.rawstring.Id
 import editor.rawstring.RawStringFactory
 import editor.rawstring.id
-import editor.rawstring.property.BoolProperty
-import editor.rawstring.property.ConditionalProperty
-import editor.rawstring.property.FloatProperty
-import editor.rawstring.property.HsvProperty
-import editor.rawstring.property.IntProperty
-import editor.rawstring.property.PropertyDefinition
-import editor.rawstring.property.SequencedSetProperty
-import editor.rawstring.property.UIntProperty
+import editor.rawstring.property.*
 import editor.rawstring.serializing.Serializers
 
 /**
@@ -25,7 +16,7 @@ import editor.rawstring.serializing.Serializers
  * **If you are wondering what any of these properties mean, check the [GD Editor Guide](https://www.robtopgames.com/files/GDEditor.pdf) !**
  */
 open class SimpleObject : GenericGdObject {
-    val rawStringFactory: RawStringFactory = RawStringFactory(this)
+    override val rawStringFactory: RawStringFactory = RawStringFactory.create(this)
 
     val objID = UIntProperty(1.id, defaultValue = null)
     val x = FloatProperty(2.id, defaultValue = null)
@@ -101,9 +92,6 @@ open class SimpleObject : GenericGdObject {
     }
 
 
-    override fun asRawString(): String =
-        this.rawStringFactory.asRawString()
-
     /**
      * For more information see [RawStringFactory.asRawStringIntMap]
      * @see RawStringFactory.asRawStringIntMap
@@ -118,9 +106,6 @@ open class SimpleObject : GenericGdObject {
     fun asMap(): Map<UInt, PropertyDefinition<*>> =
         this.rawStringFactory.asIntMap()
 
-
-    override fun get(propID: Id): PropertyDefinition<*> =
-        this.rawStringFactory.properties.first { it.id == propID }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

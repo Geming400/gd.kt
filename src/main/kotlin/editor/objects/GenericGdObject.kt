@@ -1,6 +1,7 @@
 package editor.objects
 
 import editor.rawstring.Id
+import editor.rawstring.RawStringFactory
 import editor.rawstring.RawStringable
 import editor.rawstring.property.AbstractProperty
 import editor.rawstring.property.PropertyDefinition
@@ -19,11 +20,17 @@ interface GenericGdObject : RawStringable {
             rawStr.count { it == separator } % 2 == 1
     }
 
+    val rawStringFactory: RawStringFactory
+
     /**
      * Get the property of this geometry dash object by its property id
      * @throws NoSuchElementException if there is no property at the given id
      */
-    operator fun get(propID: Id): PropertyDefinition<*>
+    operator fun get(propID: Id): PropertyDefinition<*> =
+        this.rawStringFactory.properties.first { it.id == propID }
+
+    override fun asRawString(): String =
+        this.rawStringFactory.asRawString()
 
 // Old function, removed because of type unsafety
 // (you can more easily assign the wrong type to the value var, yes, you can assign the WRONG TYPE)

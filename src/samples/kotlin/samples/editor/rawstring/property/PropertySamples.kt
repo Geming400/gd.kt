@@ -1,12 +1,11 @@
 package samples.editor.rawstring.property
 
 import editor.objects.GenericGdObject
-import editor.rawstring.Id
+import editor.rawstring.RawStringFactory
 import editor.rawstring.id
 import editor.rawstring.property.ConditionalProperty
 import editor.rawstring.property.IntProperty
 import editor.rawstring.property.MutableConditionalProperty
-import editor.rawstring.property.PropertyDefinition
 import editor.rawstring.serializing.Serializers
 
 private fun isSerializableSample() {
@@ -35,6 +34,8 @@ private fun conditionalPropertySample() {
     // Here is an example:
 
     class MyObj : GenericGdObject {
+        override val rawStringFactory: RawStringFactory = RawStringFactory.create(this)
+
         val normalProp = IntProperty(1.id, defaultValue = 0)
         val conditionalProp = ConditionalProperty(
             id = 2.id,
@@ -44,9 +45,6 @@ private fun conditionalPropertySample() {
         ) {
             true // We always return 'true' as our value (aka "1" in geometry dash)
         }        // This also mean this is a "boolean" (conditional) property
-
-        override fun get(propID: Id): PropertyDefinition<*> = TODO()
-        override fun asRawString(): String = TODO()
     }
 
     // Then, we can take a look at the raw string:
@@ -69,6 +67,8 @@ private fun mutableConditionalPropertySample() {
     // Here is an example:
 
     class MyObj : GenericGdObject {
+        override val rawStringFactory: RawStringFactory = RawStringFactory.create(this)
+
         val normalProp = IntProperty(1.id, defaultValue = 0)
         val conditionalProp = MutableConditionalProperty(
             id = 2.id,
@@ -78,9 +78,6 @@ private fun mutableConditionalPropertySample() {
             serializer = Serializers.BOOLEAN,
             predicate = { it.isSerializable() }
         )
-
-        override fun get(propID: Id): PropertyDefinition<*> = TODO()
-        override fun asRawString(): String = TODO()
     }
 
     // Then, we can take a look at the raw string:
