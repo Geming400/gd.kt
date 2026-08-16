@@ -1,3 +1,4 @@
+@file:JvmName("GdDotKTUtils")
 package utils
 
 import exceptions.IllegalTypeException

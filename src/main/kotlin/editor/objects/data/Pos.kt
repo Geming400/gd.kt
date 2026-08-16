@@ -25,6 +25,8 @@ data class Pos(
     val y: Float
 ) : Position {
     companion object {
+        @JvmStatic
+        @get:JvmName("ZERO")
         val ZERO: Pos
             get() = Pos()
 
@@ -33,6 +35,7 @@ data class Pos(
          * @return the [Pos] object with the grid coordinates
          * @see gridCentered
          */
+        @JvmStatic
         fun gridUncentered(x: Float, y: Float): Pos =
             Pos(x.gridUncentered, y.gridUncentered)
 
@@ -41,9 +44,11 @@ data class Pos(
          * @return the [Pos] object with the grid coordinates
          * @see gridUncentered
          */
+        @JvmStatic
         fun gridCentered(x: Float, y: Float): Pos =
             Pos(x.gridCentered, y.gridCentered)
 
+        @JvmStatic
         fun ofPos(pos: Position): Pos =
             Pos(pos.actualX, pos.actualY)
     }
@@ -70,6 +75,8 @@ data class GridPos(
     val y: Float
 ) : Position {
     companion object {
+        @JvmStatic
+        @get:JvmName("ZERO")
         val ZERO: GridPos
             get() = GridPos()
 
@@ -78,6 +85,7 @@ data class GridPos(
          * @return the [GridPos] object with the grid coordinates
          * @see gridCentered
          */
+        @JvmStatic
         fun gridUncentered(x: Float, y: Float): GridPos =
             GridPos(x, y)
 
@@ -86,9 +94,11 @@ data class GridPos(
          * @return the [GridPos] object with the grid coordinates
          * @see gridUncentered
          */
+        @JvmStatic
         fun gridCentered(x: Float, y: Float): GridPos =
             GridPos(x + Position.GRID_OFFSET.toFloat() / Position.GRID_UNIT, y + Position.GRID_OFFSET.toFloat() / Position.GRID_UNIT)
 
+        @JvmStatic
         fun ofPos(pos: Position): GridPos =
             GridPos(pos.actualX / Position.GRID_UNIT, pos.actualY / Position.GRID_UNIT)
     }
