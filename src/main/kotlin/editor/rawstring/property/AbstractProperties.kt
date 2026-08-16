@@ -215,6 +215,24 @@ abstract class AbstractProperty<T>(final override val id: Id, open val defaultVa
     override fun toString(): String {
         return "${this::class.simpleName!!}(id = ${this.id}, defaultValue = ${this.defaultValue}, value = ${this.value})"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is AbstractProperty<*>) return false
+
+        if (this.id != other.id) return false
+        if (this.defaultValue != other.defaultValue) return false
+        if (this.value != other.value) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = this.id.hashCode()
+        result = 31 * result + this.defaultValue.hashCode()
+        result = 31 * result + this.value.hashCode()
+        return result
+    }
 }
 
 typealias CollectionCtor<T> = () -> T
