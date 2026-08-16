@@ -1,11 +1,10 @@
-import editor.objects.SimpleObject
-import editor.objects.data.GridPos
-import editor.objects.data.Hsv
+import client.GDClient
+import client.GJP2
 
 // TODO: Once this is actually more closer to being finished delete this temporary main function
-// TODO: Store sentitive infos in system properties
 private fun main() {
-    val obj = SimpleObject(1u, GridPos.gridCentered(0f, 0f))
-    obj.baseColorHSV.value = Hsv.checkedBrightness()
-    println("Raw string is: ${obj.asRawString()}")
+    val username = System.getenv("USERNAME")!!
+    val password = System.getenv("PASSWORD")!!
+
+    val client = GDClient(username, GJP2.create(password))
 }
