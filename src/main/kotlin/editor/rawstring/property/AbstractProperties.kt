@@ -108,8 +108,8 @@ abstract class AbstractProperty<T>(final override val id: Id, open val defaultVa
          * @throws IllegalArgumentException if the prop's [Id] is below `0` (exclusive, so `< 0`)
          * @see Id.ofUnknown
          */
-        fun rawStringToPairID(propRawString: String): Pair<Id, String> {
-            val data = propRawString.split(KEY_VAL_SEPARATOR, limit = 2)
+        fun rawStringToPairID(propRawString: String, separator: Char = KEY_VAL_SEPARATOR): Pair<Id, String> {
+            val data = propRawString.split(separator, limit = 2)
             return Pair(Id.ofUnknown(data[0]), data[1])
         }
     }

@@ -60,7 +60,7 @@ interface RawStringFactory {
         fun rawStringToMap(rawString: String, separator: Char = AbstractProperty.KEY_VAL_SEPARATOR): Map<Id, String> {
             return if (GenericGdObject.isValidObjectString(rawString, separator)) {
                 val rawStrAsPairs = rawString.split(separator).chunked(2) {
-                    AbstractProperty.rawStringToPairID(it.joinToString(separator.toString()))
+                    AbstractProperty.rawStringToPairID(it.joinToString(separator.toString()), separator)
                 }.toTypedArray()
 
                 mapOf(*rawStrAsPairs)
