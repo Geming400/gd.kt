@@ -9,13 +9,8 @@ import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.starProjectedType
 
-internal class RawStringFactoryImpl : RawStringFactory {
-    private val parent: GenericGdObject
+internal class RawStringFactoryImpl(private val parent: GenericGdObject, val keyValSeparator: Char = AbstractProperty.KEY_VAL_SEPARATOR) : RawStringFactory {
     private var cachedProperties: Collection<PropertyDefinition<*>>? = null
-
-    constructor(parent: GenericGdObject) {
-        this.parent = parent
-    }
 
     override val properties: Collection<PropertyDefinition<*>>
         get() {
@@ -49,7 +44,7 @@ internal class RawStringFactoryImpl : RawStringFactory {
      */
     override fun asRawString(): String =
         this.getSerializableProperties().joinToString(AbstractProperty.KEY_VAL_SEPARATOR.toString()) {
-            it.asRawString()
+            it.asRawString(this.keyValSeparator)
         }
 
     /**

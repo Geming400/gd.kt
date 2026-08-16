@@ -16,8 +16,8 @@ interface RawStringFactory {
         /**
          * Creates the default implementation for a raw string factory
          */
-        fun create(parent: GenericGdObject): RawStringFactory =
-            RawStringFactoryImpl(parent)
+        fun create(parent: GenericGdObject, keyValSeparator: Char = AbstractProperty.KEY_VAL_SEPARATOR): RawStringFactory =
+            RawStringFactoryImpl(parent, keyValSeparator)
 
         /**
          * Joins multiple objects into a larger raw string understandable by geometry dash.
