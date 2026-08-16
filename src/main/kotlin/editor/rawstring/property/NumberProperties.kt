@@ -5,7 +5,7 @@ import editor.rawstring.serializing.Serializers
 
 sealed class NumberProperty<T>(id: Id, defaultValue: T? = null, currentValue: T? = null) : AbstractProperty<T>(id, defaultValue, currentValue)
 
-sealed interface RangedProperty<T : Comparable<T>, R : ClosedRange<T>> {
+interface RangedProperty<T : Comparable<T>, R : ClosedRange<T>> {
     val range: R
 }
 
@@ -18,8 +18,8 @@ open class IntProperty(id: Id, defaultValue: Int? = 0, currentValue: Int? = null
             RangedIntProperty(id, range, defaultValue, currentValue)
     }
 
-    override fun asRawString(): String =
-        this.toRawStringHelper(Serializers.INT)
+    override fun asRawString(separator: Char): String =
+        this.toRawStringHelper(Serializers.INT, separator)
 }
 
 open class UIntProperty(id: Id, defaultValue: UInt? = 0u, currentValue: UInt? = null) : NumberProperty<UInt>(id, defaultValue, currentValue) {
@@ -30,15 +30,15 @@ open class UIntProperty(id: Id, defaultValue: UInt? = 0u, currentValue: UInt? = 
             RangedUIntProperty(id, range, defaultValue, currentValue)
     }
 
-    override fun asRawString(): String =
-        this.toRawStringHelper(Serializers.UINT)
+    override fun asRawString(separator: Char): String =
+        this.toRawStringHelper(Serializers.UINT, separator)
 }
 
 open class UByteProperty(id: Id, defaultValue: UByte? = 0u, currentValue: UByte? = null) : NumberProperty<UByte>(id, defaultValue, currentValue) {
     override val serializer = Serializers.UBYTE
 
-    override fun asRawString(): String =
-        this.toRawStringHelper(Serializers.UBYTE)
+    override fun asRawString(separator: Char): String =
+        this.toRawStringHelper(Serializers.UBYTE, separator)
 }
 
 open class FloatProperty(id: Id, defaultValue: Float? = 0f, currentValue: Float? = null) : NumberProperty<Float>(id, defaultValue, currentValue) {
@@ -49,8 +49,8 @@ open class FloatProperty(id: Id, defaultValue: Float? = 0f, currentValue: Float?
             RangedFloatProperty(id, range, defaultValue, currentValue)
     }
 
-    override fun asRawString(): String =
-        this.toRawStringHelper(Serializers.FLOAT)
+    override fun asRawString(separator: Char): String =
+        this.toRawStringHelper(Serializers.FLOAT, separator)
 }
 
 

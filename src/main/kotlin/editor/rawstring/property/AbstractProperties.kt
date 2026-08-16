@@ -25,11 +25,18 @@ interface PropertyDefinition<T> : RawStringable {
 
     /**
      * Turns this property into the raw string understandable by geometry dash.
-     *
-     * If you are implementing [AbstractProperty], use [AbstractProperty.toRawStringHelper] to make a raw string
      * @return the raw string in the format `id,value`
      */
-    override fun asRawString(): String
+    override fun asRawString(): String =
+        asRawString(AbstractProperty.KEY_VAL_SEPARATOR)
+
+    /**
+     * Turns this property into the raw string understandable by geometry dash.
+     *
+     * If you are implementing [AbstractProperty], use [AbstractProperty.toRawStringHelper] to make a raw string
+     * @return the raw string in the format `id<separator>value`
+     */
+    fun asRawString(separator: Char = AbstractProperty.KEY_VAL_SEPARATOR): String
 
     /**
      * Returns the property's [value] or throw if it's `null`.
@@ -169,9 +176,9 @@ abstract class AbstractProperty<T>(final override val id: Id, open val defaultVa
      * @see RawStringable
      * @see asRawString
      */
-    protected open fun toRawStringHelper(value: Any? = this.value, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT): String {
+    protected open fun toRawStringHelper(value: Any? = this.value, separator: Char = KEY_VAL_SEPARATOR, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT): String {
         return if (this.isSerializable() && value != null) {
-            this.id.getID() + KEY_VAL_SEPARATOR + value.toString() + suffixMode.getString(this, suffix)
+            this.id.getID() + separator + value.toString() + suffixMode.getString(this, suffix)
         } else {
             ""
         }
@@ -189,10 +196,10 @@ abstract class AbstractProperty<T>(final override val id: Id, open val defaultVa
      * @see RawStringable
      * @see asRawString
      */
-    protected open fun toRawStringHelper(suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT, valueGetter: (T) -> Any): String {
+    protected open fun toRawStringHelper(separator: Char = KEY_VAL_SEPARATOR, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT, valueGetter: (T) -> Any): String {
         return if (this.isSerializable()) {
             val value = valueGetter(this.getOrThrow())
-            this.id.getID() + KEY_VAL_SEPARATOR + value.toString() + suffixMode.getString(this, suffix)
+            this.id.getID() + separator + value.toString() + suffixMode.getString(this, suffix)
         } else {
             ""
         }
@@ -209,8 +216,8 @@ abstract class AbstractProperty<T>(final override val id: Id, open val defaultVa
      * @see RawStringable
      * @see asRawString
      */
-    protected open fun toRawStringHelper(serializer: Serializable<T>, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT): String =
-        this.toRawStringHelper(suffix, suffixMode) { serializer.serialize(it) }
+    protected open fun toRawStringHelper(serializer: Serializable<T>, separator: Char = KEY_VAL_SEPARATOR, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT): String =
+        this.toRawStringHelper(separator, suffix, suffixMode) { serializer.serialize(it) }
 
     override fun toString(): String {
         return "${this::class.simpleName!!}(id = ${this.id}, defaultValue = ${this.defaultValue}, value = ${this.value})"
@@ -323,6 +330,7 @@ abstract class AbstractCollectionProperty<T, C>(
      */
     protected fun toRawIterableStringHelper(
         value: Collection<T>? = this.value,
+        keyValSeparator: Char = KEY_VAL_SEPARATOR,
         suffix: String = "",
         suffixMode: SuffixMode = SuffixMode.DEFAULT
     ): String {
@@ -331,6 +339,7 @@ abstract class AbstractCollectionProperty<T, C>(
         } else {
             this.toRawStringHelper(
                 this.serializer,
+                keyValSeparator,
                 suffix,
                 suffixMode
             )

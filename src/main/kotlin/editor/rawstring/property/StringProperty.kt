@@ -17,11 +17,14 @@ class StringProperty(id: Id, defaultValue: String? = "", currentValue: String? =
             StringProperty(id, defaultValue.toString(), currentValue.toString())
     }
 
-    fun toRawString(charset: Charset): String =
-        this.toRawStringHelper {
+    fun toRawString(separator: Char = KEY_VAL_SEPARATOR, charset: Charset): String =
+        this.toRawStringHelper(separator) {
             Base64.UrlSafe.encode(it.toByteArray(charset))
         }
 
+    override fun asRawString(separator: Char): String =
+        this.toRawString(separator, Charset.defaultCharset())
+
     override fun asRawString(): String =
-        this.toRawString(Charset.defaultCharset())
+        this.toRawString(KEY_VAL_SEPARATOR, Charset.defaultCharset())
 }

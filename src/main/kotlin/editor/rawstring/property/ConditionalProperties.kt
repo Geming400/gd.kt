@@ -78,10 +78,10 @@ open class ConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
      */
     override fun isSerializable(): Boolean = this.predicate(this.dependantOn)
 
-    override fun asRawString(): String {
+    override fun asRawString(separator: Char): String {
         val propValue = this.value
         return if (this.isSerializable() && propValue != null)
-            this.id.getID() + AbstractProperty.KEY_VAL_SEPARATOR + this.serializer.serialize(propValue)
+            this.id.getID() + separator + this.serializer.serialize(propValue)
         else
             ""
     }
@@ -176,10 +176,10 @@ open class MutableConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
     override fun isSerializable(): Boolean =
         this.predicate(this.dependantOn) && super.isSerializable()
 
-    override fun asRawString(): String {
+    override fun asRawString(separator: Char): String {
         val propValue = this.value
         return if (this.isSerializable() && propValue != null)
-            this.id.getID() + KEY_VAL_SEPARATOR + this.serializer.serialize(propValue)
+            this.id.getID() + separator + this.serializer.serialize(propValue)
         else
             ""
     }

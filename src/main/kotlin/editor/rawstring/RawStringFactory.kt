@@ -23,31 +23,31 @@ interface RawStringFactory {
          * Joins multiple objects into a larger raw string understandable by geometry dash.
          * Each entry is separated by a semicolon.
          */
-        fun joinRawStrings(objects: Collection<RawStringable>): String =
-            objects.joinToString(OBJECTS_SEPARATOR.toString()) { it.asRawString() }
+        fun joinRawStrings(objects: Collection<RawStringable>, separator: Char = OBJECTS_SEPARATOR): String =
+            objects.joinToString(separator.toString()) { it.asRawString() }
 
         /**
          * Joins multiple objects into a larger raw string understandable by geometry dash.
          * Each entry is separated by a semicolon.
          */
-        fun joinRawStrings(vararg objects: RawStringable): String =
-            joinRawStrings(objects = listOf(*objects))
+        fun joinRawStrings(vararg objects: RawStringable, separator: Char = OBJECTS_SEPARATOR): String =
+            joinRawStrings(objects = listOf(*objects), separator)
 
         /**
          * Joins multiple objects' raw strings into a larger raw string understandable by geometry dash.
          * Each entry is separated by a semicolon.
          */
         @JvmName("joinRawStringsFromCharSequence")
-        fun joinRawStrings(objects: Collection<CharSequence>): String =
-            objects.joinToString(OBJECTS_SEPARATOR.toString())
+        fun joinRawStrings(objects: Collection<CharSequence>, separator: Char = OBJECTS_SEPARATOR): String =
+            objects.joinToString(separator.toString())
 
         /**
          * Joins multiple objects' raw strings into a larger raw string understandable by geometry dash.
          * Each entry is separated by a semicolon.
          */
         @JvmName("joinRawStringsFromCharSequence")
-        fun joinRawStrings(vararg objects: CharSequence): String =
-            joinRawStrings(objects = listOf(*objects))
+        fun joinRawStrings(vararg objects: CharSequence, separator: Char = OBJECTS_SEPARATOR): String =
+            joinRawStrings(objects = listOf(*objects), separator)
 
         /**
          * Turns a raw string into a [Map] in the format `propID: value`

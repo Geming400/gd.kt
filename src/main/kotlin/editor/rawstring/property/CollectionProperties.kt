@@ -33,8 +33,8 @@ open class ListProperty<T>(
         this.getOrCreateCollection()[index] = element
     }
 
-    override fun asRawString(): String =
-        this.toRawIterableStringHelper()
+    override fun asRawString(separator: Char): String =
+        this.toRawIterableStringHelper(keyValSeparator = separator)
 }
 
 /**
@@ -47,8 +47,8 @@ open class SetProperty<T>(
     currentValue: MutableSet<T>? = null,
     elemSerializer: Serializer<T>
 ) : AbstractCollectionProperty<T, MutableSet<T>>(id, defaultValue, currentValue, elemSerializer) {
-    override fun asRawString(): String =
-        this.toRawIterableStringHelper()
+    override fun asRawString(separator: Char): String =
+        this.toRawIterableStringHelper(keyValSeparator = separator)
 
     override fun createEmptyCollection(): MutableSet<T> = mutableSetOf()
 }
@@ -63,8 +63,8 @@ open class SequencedSetProperty<T>(
     currentValue: SequencedSet<T>? = null,
     elemSerializer: Serializer<T>
 ) : AbstractCollectionProperty<T, SequencedSet<T>>(id, defaultValue, currentValue, elemSerializer) {
-    override fun asRawString(): String =
-        this.toRawIterableStringHelper()
+    override fun asRawString(separator: Char): String =
+        this.toRawIterableStringHelper(keyValSeparator =  separator)
 
     override fun createEmptyCollection(): SequencedSet<T> = linkedSetOf()
 }

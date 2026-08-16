@@ -20,13 +20,13 @@ class HsvProperty(id: Id, defaultValue: Hsv? = Hsv.create(), currentValue: Hsv? 
         return this
     }
 
-    override fun asRawString(): String {
+    override fun asRawString(separator: Char): String {
         val suffix =
             if (this.usesColorPropID == null)
                 ""
             else
                 KEY_VAL_SEPARATOR + this.usesColorPropID!!.getID() + KEY_VAL_SEPARATOR + "1"
 
-        return this.toRawStringHelper(Serializers.HSV, suffix = suffix)
+        return this.toRawStringHelper(Serializers.HSV, separator, suffix)
     }
 }

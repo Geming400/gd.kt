@@ -18,5 +18,5 @@ class GDDurationProperty(id: Id, defaultValue: Float? = 0f, currentValue: Float?
             }
         }
 
-    // TODO: ava.time.Duration getters
+    // TODO: java.time.Duration getters
 }

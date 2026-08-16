@@ -8,14 +8,14 @@ import org.intellij.lang.annotations.MagicConstant
 class BoolProperty(id: Id, defaultValue: Boolean? = false, currentValue: Boolean? = null) : AbstractProperty<Boolean>(id, defaultValue, currentValue) {
     override val serializer = Serializers.BOOLEAN
 
-    override fun asRawString(): String {
+    override fun asRawString(separator: Char): String {
         val boolValue = when (this.value) {
             null -> null
             true -> "1"
             false -> "0"
         }
 
-        return this.toRawStringHelper(boolValue)
+        return this.toRawStringHelper(boolValue, separator)
     }
 
     /**
