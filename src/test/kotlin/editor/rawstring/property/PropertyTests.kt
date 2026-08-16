@@ -15,6 +15,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import kotlin.io.encoding.Base64
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.toJavaDuration
 
 var shouldMutableConditionalPropBeSerializable = false
 
@@ -251,8 +253,29 @@ class PropertyTests {
         durationProp.value = 5f
         Assertions.assertEquals(5f, durationProp.value)
 
-        durationProp.value = -2f // Should get clamped to 0f
-        Assertions.assertEquals(0f, durationProp.value)
+        durationProp.value = -2.4f // Should get set to -1f
+        Assertions.assertEquals(-1f, durationProp.value)
+
+        durationProp.value = Float.POSITIVE_INFINITY // Should get set to -1f
+        Assertions.assertEquals(-1f, durationProp.value)
+
+        durationProp.value = Float.NEGATIVE_INFINITY // Should get set to -1f
+        Assertions.assertEquals(-1f, durationProp.value)
+
+
+        // Duration getters test
+
+        durationProp.duration = 5.seconds
+        Assertions.assertEquals(5.seconds, durationProp.duration!!)
+
+        durationProp.value = 10f
+        Assertions.assertEquals(10.seconds, durationProp.duration!!)
+
+        durationProp.duration = 5.seconds
+        Assertions.assertEquals(5.seconds.toJavaDuration(), durationProp.javaDuration!!)
+
+        durationProp.value = 10f
+        Assertions.assertEquals(10.seconds.toJavaDuration(), durationProp.javaDuration!!)
     }
 
     @Test
