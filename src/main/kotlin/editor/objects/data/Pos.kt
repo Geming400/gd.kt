@@ -59,6 +59,30 @@ data class Pos(
      */
     constructor() : this(0f, 0f)
 
+    operator fun times(num: Float): Pos =
+        this.copy(x = this.x * num, y = this.y * num)
+
+    operator fun times(pos: Position): Pos =
+        this.copy(x = this.x * pos.actualX, y = this.y * pos.actualY)
+
+    operator fun div(num: Float): Pos =
+        this.copy(x = this.x / num, y = this.y / num)
+
+    operator fun div(pos: Position): Pos =
+        this.copy(x = this.x / pos.actualX, y = this.y / pos.actualY)
+
+    operator fun plus(num: Float): Pos =
+        this.copy(x = this.x + num, y = this.y + num)
+
+    operator fun plus(pos: Position): Pos =
+        this.copy(x = this.x + pos.actualX, y = this.y + pos.actualY)
+
+    operator fun minus(num: Float): Pos =
+        this.copy(x = this.x - num, y = this.y - num)
+
+    operator fun minus(pos: Position): Pos =
+        this.copy(x = this.x - pos.actualX, y = this.y - pos.actualY)
+
     override val actualX = this.x
     override val actualY = this.y
 
@@ -108,6 +132,30 @@ data class GridPos(
      * @see ZERO
      */
     constructor() : this(0f, 0f)
+
+    operator fun times(num: Float): GridPos =
+        this.copy(x = this.x * num, y = this.y * num)
+
+    operator fun times(pos: Position): GridPos =
+        this.copy(x = this.x * pos.actualX, y = this.y * pos.actualY)
+
+    operator fun div(num: Float): GridPos =
+        this.copy(x = this.x / num, y = this.y / num)
+
+    operator fun div(pos: Position): GridPos =
+        this.copy(x = this.x / pos.actualX, y = this.y / pos.actualY)
+
+    operator fun plus(num: Float): GridPos =
+        this.copy(x = this.x + num, y = this.y + num)
+
+    operator fun plus(pos: Position): GridPos =
+        this.copy(x = this.x + pos.actualX, y = this.y + pos.actualY)
+
+    operator fun minus(num: Float): GridPos =
+        this.copy(x = this.x - num, y = this.y - num)
+
+    operator fun minus(pos: Position): GridPos =
+        this.copy(x = this.x - pos.actualX, y = this.y - pos.actualY)
 
     override val actualX = this.x * Position.GRID_UNIT
     override val actualY = this.y * Position.GRID_UNIT
