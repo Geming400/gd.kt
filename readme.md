@@ -5,7 +5,9 @@
 This is the 3rd gd.lang lib I've made (it's predecessor is [gddotpy v2](https://github.com/Geming400/gddotpy-v2)).
 This is mostly just to do a bit more kotlin and learn it more deeply.
 
-It can be used, but do not really expect anything
+It can be used, but do not really expect anything, though the difference with most geometry dash libraries is that this one allows you to create objects using an easy to use property system.
+
+There is not much java interoperability because for example `UInt`s cannot get created on java and fully used.
 
 ## Installation
 
@@ -25,7 +27,7 @@ dependencies {
 ### Objects
 
 `gd.kt` allows you to create objects.
-You can look in the `fr.geming400.gddotkt.objects` package or see the inheritors of `SimpleObject`.
+You can look in the `fr.geming400.gddotkt.editor.objects` package or see the inheritors of `SimpleObject`.
 
 You can also create your own object instances by extending the different open classes, like:
 - SimpleObject
@@ -46,3 +48,9 @@ representation of the object via:
 ```kt
 MyObjClass().asRawString()
 ```
+
+### Parsing 
+
+Raw strings can get parses into any classes.
+Using the `ObjectParser` object you can input a raw string and get an output
+TODO
