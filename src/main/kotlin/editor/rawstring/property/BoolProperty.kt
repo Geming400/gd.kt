@@ -5,6 +5,8 @@ import editor.rawstring.serializing.Serializers
 import utils.toInt
 import org.intellij.lang.annotations.MagicConstant
 
+typealias BooleanProperty = BoolProperty
+
 class BoolProperty(id: Id, defaultValue: Boolean? = false, currentValue: Boolean? = null) : AbstractProperty<Boolean>(id, defaultValue, currentValue) {
     override val serializer = Serializers.BOOLEAN
 
