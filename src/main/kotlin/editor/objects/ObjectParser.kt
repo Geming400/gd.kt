@@ -42,6 +42,7 @@ object ObjectParser {
      * @return returns the final instance, aka the same as [toFill]
      * @throws exceptions.InvalidRawStringException if the raw string is invalid *(see [GenericGdObject.isValidObjectString])*
      * @throws IllegalArgumentException if any of the parsed [ids][Id] are below `0` (exclusive, so `< 0`)
+     * @sample samples.editor.objects.parseAnySample
      */
     inline fun <reified T : Any> parseAny(rawString: String, toFill: T = T::class.createInstance(), separator: Char = AbstractProperty.KEY_VAL_SEPARATOR): T =
         parseAnyJava(rawString, toFill, T::class.java, separator)
@@ -80,6 +81,7 @@ object ObjectParser {
      * @return returns the final instance, aka the same as [toFill]
      * @throws exceptions.InvalidRawStringException if the raw string is invalid *(see [GenericGdObject.isValidObjectString])*
      * @throws IllegalArgumentException if any of the parsed [ids][Id] are below `0` (exclusive, so `< 0`)
+     * @sample samples.editor.objects.parseGenericGdObjectSample
      */
     inline fun <reified T : GenericGdObject> parseGdObject(rawString: String, toFill: T = T::class.createInstance(), separator: Char = AbstractProperty.KEY_VAL_SEPARATOR): T =
         parseGdObjectJava(rawString, toFill, separator)

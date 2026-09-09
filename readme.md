@@ -61,6 +61,8 @@ val obj2 = ObjectParser.parse(obj.asRawString(), SimpleObject(1u, 0, 0))
 assertEquals(obj, obj2)
 ```
 
+Object parsers can parse `GenericGdObject`s and any classes.
+
 ## AI
 
 Almost no AI was used in this project. I make my projects by myself.
