@@ -9,6 +9,7 @@ import okhttp3.Request
 import utils.toFormRequestBody
 import java.util.*
 
+@GDClientApi
 open class GDClient(
     val credentials: Credentials? = null,
     val url: HttpUrl = DEFAULT_URL,
@@ -63,6 +64,7 @@ open class GDClient(
 }
 
 // The 'Any' upper bound is to prevent null types
+@OptIn(GDClientApi::class)
 fun <K : Any, V : Any> Map<K, V>.toFormRequestBodyWithClientInfo(client: GDClient, secret: Secret): FormBody {
     val bodyBuilder = this.toFormRequestBody()
     bodyBuilder.add("secret", secret.secret)

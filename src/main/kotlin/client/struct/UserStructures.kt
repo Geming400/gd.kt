@@ -1,6 +1,7 @@
 package client.struct
 
 import client.GDClient
+import client.GDClientApi
 import client.enums.Gamemode
 import editor.objects.ObjectParser
 import editor.rawstring.RawStringFactory
@@ -50,6 +51,7 @@ enum class CommentHistoryState(override val value: Int) : GdEnum {
 }
 
 // TODO: breakdown
+@GDClientApi
 open class UserStructure(override val client: GDClient) : ServerStructure {
     companion object : ServerStructureCompanion<UserStructure> {
         override val separator: Char = ':'
@@ -73,6 +75,7 @@ open class UserStructure(override val client: GDClient) : ServerStructure {
     val userCoins = UIntProperty(17.id, defaultValue = null)
 }
 
+@GDClientApi
 class UserScore(client: GDClient) : UserStructure(client) {
     val ranking = IntProperty(6.id, defaultValue = null)
     /**
@@ -88,6 +91,7 @@ class UserScore(client: GDClient) : UserStructure(client) {
     val special = EnumProperty(15.id, Serializer.enum(Special.entries))
 }
 
+@GDClientApi
 class UserInfo(client: GDClient) : UserStructure(client) {
     val ranking = IntProperty(6.id, defaultValue = null)
     val iconType = EnumProperty(14.id, Serializer.enum(Gamemode.entries))
@@ -137,11 +141,13 @@ class UserInfo(client: GDClient) : UserStructure(client) {
     val custom = UnencodedStringProperty(61.id, defaultValue = null)
 }
 
+@GDClientApi
 class LeaderboardUser(client: GDClient) : UserStructure(client) {
     /** The time since you submitted a levelScore */
     val age = UnencodedStringProperty(42.id, defaultValue = null)
 }
 
+@GDClientApi
 class FriendRequestUser(client: GDClient) : UserStructure(client) {
     val newFriendRequest = BoolProperty(41.id, defaultValue = null)
 }

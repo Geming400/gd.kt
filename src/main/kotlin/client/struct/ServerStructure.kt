@@ -1,11 +1,13 @@
 package client.struct
 
 import client.GDClient
+import client.GDClientApi
 import editor.objects.GenericGdObject
 
 /**
  * Represents a structure that can be returned by Robtop's server.
  */
+@GDClientApi
 interface ServerStructure : GenericGdObject {
     val client: GDClient
 

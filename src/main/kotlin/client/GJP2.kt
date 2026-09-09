@@ -3,6 +3,7 @@ package client
 import org.apache.commons.codec.digest.DigestUtils
 
 @JvmInline
+@GDClientApi
 value class GJP2 internal constructor(val encryptedPassword: String) {
     companion object {
         const val SALT = "mI29fmAnxgTs"

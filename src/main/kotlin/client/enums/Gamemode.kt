@@ -1,7 +1,9 @@
 package client.enums
 
+import client.GDClientApi
 import editor.rawstring.property.GdEnum
 
+@GDClientApi
 enum class Gamemode(override val value: Int) : GdEnum {
     CUBE(0),
     SHIP(1),

@@ -2,6 +2,7 @@ package client
 
 import okhttp3.HttpUrl
 
+@GDClientApi
 enum class Endpoint(val endpoint: String) {
     GET_USER_INFO("getGJUserInfo20");
 
