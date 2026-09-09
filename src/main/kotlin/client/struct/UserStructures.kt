@@ -1,6 +1,6 @@
 package client.struct
 
-import client.GDClient
+import client.AbstractGDClient
 import client.GDClientApi
 import client.enums.Gamemode
 import editor.objects.ObjectParser
@@ -52,12 +52,12 @@ enum class CommentHistoryState(override val value: Int) : GdEnum {
 
 // TODO: breakdown
 @GDClientApi
-open class UserStructure(override val client: GDClient) : ServerStructure {
+open class UserStructure(override val client: AbstractGDClient) : ServerStructure {
     companion object : ServerStructureCompanion<UserStructure> {
         override val separator: Char = ':'
 
-        override fun parse(rawString: String, client: GDClient): UserStructure =
-            ObjectParser.parse(rawString, UserStructure(client))
+        override fun parse(rawString: String, client: AbstractGDClient): UserStructure =
+            ObjectParser.parse(rawString, UserStructure(client), separator)
     }
 
     override val rawStringFactory: RawStringFactory = RawStringFactory.create(this)
@@ -76,7 +76,14 @@ open class UserStructure(override val client: GDClient) : ServerStructure {
 }
 
 @GDClientApi
-class UserScore(client: GDClient) : UserStructure(client) {
+class UserScore(client: AbstractGDClient) : UserStructure(client) {
+    companion object : ServerStructureCompanion<UserScore> {
+        override val separator: Char = ':'
+
+        override fun parse(rawString: String, client: AbstractGDClient): UserScore =
+            ObjectParser.parse(rawString, UserScore(client), separator)
+    }
+
     val ranking = IntProperty(6.id, defaultValue = null)
     /**
      * The player's account ID, or the device ID for unregistered players.
@@ -86,13 +93,20 @@ class UserScore(client: GDClient) : UserStructure(client) {
      * Only has a value when viewing yourself on a leaderboard
      * */
     val accountHighlight = UnencodedStringProperty(7.id, defaultValue = null)
-    val iconType = EnumProperty(14.id, Serializer.enum(Gamemode.entries))
-    val iconID = UIntProperty(9.id, defaultValue = null)
+    val displayIconType = EnumProperty(14.id, Serializer.enum(Gamemode.entries))
+    val displayIconID = UIntProperty(9.id, defaultValue = null)
     val special = EnumProperty(15.id, Serializer.enum(Special.entries))
 }
 
 @GDClientApi
-class UserInfo(client: GDClient) : UserStructure(client) {
+class UserInfo(client: AbstractGDClient) : UserStructure(client) {
+    companion object : ServerStructureCompanion<UserInfo> {
+        override val separator: Char = ':'
+
+        override fun parse(rawString: String, client: AbstractGDClient): UserInfo =
+            ObjectParser.parse(rawString, UserInfo(client), separator)
+    }
+
     val ranking = IntProperty(6.id, defaultValue = null)
     val iconType = EnumProperty(14.id, Serializer.enum(Gamemode.entries))
     val iconID = UIntProperty(9.id, defaultValue = null)
@@ -100,15 +114,20 @@ class UserInfo(client: GDClient) : UserStructure(client) {
     val messageState = EnumProperty(18.id, Serializer.enum(MessageState.entries))
     val friendsState = EnumProperty(19.id, Serializer.enum(FriendsState.entries))
     val youTube = UnencodedStringProperty(20.id, defaultValue = null)
-    val accIcon = UIntProperty(21.id, defaultValue = null)
-    val accShip = UIntProperty(22.id, defaultValue = null)
-    val accBall = UIntProperty(23.id, defaultValue = null)
-    val accBird = UIntProperty(24.id, defaultValue = null)
-    val accDart = UIntProperty(25.id, defaultValue = null)
-    val accRobot = UIntProperty(26.id, defaultValue = null)
-    val accGlow = BoolProperty(28.id, defaultValue = null)
+    val cubeIconID = UIntProperty(21.id, defaultValue = null)
+    val shipIconID = UIntProperty(22.id, defaultValue = null)
+    val ballIconID = UIntProperty(23.id, defaultValue = null)
+    val ufoIconID = UIntProperty(24.id, defaultValue = null)
+    val waveIconID = UIntProperty(25.id, defaultValue = null)
+    val robotIconID = UIntProperty(26.id, defaultValue = null)
+    val spiderIconID = UIntProperty(43.id, defaultValue = null)
+    val swingIconID = UIntProperty(53.id, defaultValue = null)
+    val jetpackIconID = UIntProperty(54.id, defaultValue = null)
+    val hasGlow = BoolProperty(28.id, defaultValue = null)
+    val glowColor = UIntProperty(51.id, defaultValue = null)
     val isRegistered = BoolProperty(29.id, defaultValue = null)
     val globalRank = UIntProperty(30.id, defaultValue = null)
+    val iconExplosionID = UIntProperty(48.id, defaultValue = null)
     val friendState = EnumProperty(31.id, Serializer.enum(FriendState.entries))
     /** Only has a value when the player sent you a friend request */
     val friendRequestID = UIntProperty(32.id, defaultValue = null)
@@ -120,34 +139,47 @@ class UserInfo(client: GDClient) : UserStructure(client) {
     val messages = UIntProperty(38.id, defaultValue = null)
     val friendRequests = UIntProperty(39.id, defaultValue = null)
     val newFriends = UIntProperty(40.id, defaultValue = null)
-    val accSpider = UIntProperty(43.id, defaultValue = null)
     val twitter = UnencodedStringProperty(44.id, defaultValue = null)
     val twitch = UnencodedStringProperty(45.id, defaultValue = null)
     val diamonds = UIntProperty(46.id, defaultValue = null)
-    val accExplosion = UIntProperty(48.id, defaultValue = null)
-    val mod = EnumProperty(49.id, Serializer.enum(ModLevel.entries))
+    val modLevel = EnumProperty(49.id, Serializer.enum(ModLevel.entries))
     val commentHistoryState = EnumProperty(50.id, Serializer.enum(CommentHistoryState.entries))
-    val color3 = UIntProperty(51.id, defaultValue = null)
     val moons = UIntProperty(52.id, defaultValue = null)
-    val accSwing = UIntProperty(53.id, defaultValue = null)
-    val accJetpack = UIntProperty(54.id, defaultValue = null)
     val demons = UnencodedStringProperty(55.id, defaultValue = null)
-    val classicLevels = UnencodedStringProperty(56.id, defaultValue = null)
-    val platformerLevels = UnencodedStringProperty(57.id, defaultValue = null)
+    val rawClassicLevelsBreakdown = UnencodedStringProperty(56.id, defaultValue = null)
+    val rawPlatformerLevelsBreakdown = UnencodedStringProperty(57.id, defaultValue = null)
     val discord = UnencodedStringProperty(58.id, defaultValue = null)
     val instagram = UnencodedStringProperty(59.id, defaultValue = null)
     val tiktok = UnencodedStringProperty(60.id, defaultValue = null)
-    /** The player's custom one-time authentication token */
-    val custom = UnencodedStringProperty(61.id, defaultValue = null)
+    /**
+     * A player provided info. Quoting from geometry dash:
+     * > "This field can be used for a custom, one time authentication token generated by a third-party service (such as a mod).
+     * Once saved here, the service can link and verify your account."
+     */
+    val customField = UnencodedStringProperty(61.id, defaultValue = null)
 }
 
 @GDClientApi
-class LeaderboardUser(client: GDClient) : UserStructure(client) {
+class LeaderboardUser(client: AbstractGDClient) : UserStructure(client) {
+    companion object : ServerStructureCompanion<LeaderboardUser> {
+        override val separator: Char = ':'
+
+        override fun parse(rawString: String, client: AbstractGDClient): LeaderboardUser =
+            ObjectParser.parse(rawString, LeaderboardUser(client), separator)
+    }
+
     /** The time since you submitted a levelScore */
     val age = UnencodedStringProperty(42.id, defaultValue = null)
 }
 
 @GDClientApi
-class FriendRequestUser(client: GDClient) : UserStructure(client) {
+class FriendRequestUser(client: AbstractGDClient) : UserStructure(client) {
+    companion object : ServerStructureCompanion<FriendRequestUser> {
+        override val separator: Char = ':'
+
+        override fun parse(rawString: String, client: AbstractGDClient): FriendRequestUser =
+            ObjectParser.parse(rawString, FriendRequestUser(client), separator)
+    }
+
     val newFriendRequest = BoolProperty(41.id, defaultValue = null)
 }
