@@ -25,10 +25,9 @@ data class Pos(
     val y: Float
 ) : Position {
     companion object {
-        @JvmStatic
+        @JvmField
         @get:JvmName("ZERO")
-        val ZERO: Pos
-            get() = Pos()
+        val ZERO: Pos = Pos()
 
         /**
          * Create a [Pos] object on the intersections of geometry dash's grid
@@ -99,10 +98,9 @@ data class GridPos(
     val y: Float
 ) : Position {
     companion object {
-        @JvmStatic
+        @JvmField
         @get:JvmName("ZERO")
-        val ZERO: GridPos
-            get() = GridPos()
+        val ZERO: GridPos = GridPos()
 
         /**
          * Create a [GridPos] object on the intersections of geometry dash's grid
