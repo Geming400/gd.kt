@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "fr.geming400.gddotkt"
-version = "1.0.1"
+version = "1.0.2"
 val samplesDir = "src/samples/kotlin"
 
 java {
