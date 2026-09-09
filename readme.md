@@ -1,5 +1,7 @@
 # gd.kt
 
+[![Jitpack Badge](https://jitpack.io/v/Geming400/gd.kt.svg)](https://jitpack.io/#Geming400/gd.kt)
+
 *(This is actually the lib I've remade the most)*
 
 This is the 3rd gd.lang lib I've made (it's predecessor is [gddotpy v2](https://github.com/Geming400/gddotpy-v2)).
