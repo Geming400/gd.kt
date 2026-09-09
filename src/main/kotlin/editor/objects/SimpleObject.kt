@@ -4,6 +4,7 @@ import annotations.GDName
 import editor.objects.data.Pos
 import editor.objects.data.Position
 import editor.objects.data.Scale
+import editor.rawstring.DynamicRawStringFactory
 import editor.rawstring.RawStringFactory
 import editor.rawstring.id
 import editor.rawstring.property.*
@@ -16,7 +17,7 @@ import editor.rawstring.serializing.Serializers
  * **If you are wondering what any of these properties mean, check the [GD Editor Guide](https://www.robtopgames.com/files/GDEditor.pdf) !**
  */
 open class SimpleObject : GenericGdObject {
-    override val rawStringFactory: RawStringFactory = RawStringFactory.create(this)
+    override val rawStringFactory: DynamicRawStringFactory = RawStringFactory.create(this)
 
     val objID = UIntProperty(1.id, defaultValue = null)
     val x = FloatProperty(2.id, defaultValue = null)
@@ -114,9 +115,8 @@ open class SimpleObject : GenericGdObject {
         return this.asRawString() == other.asRawString()
     }
 
-    override fun hashCode(): Int {
-        return this.asRawString().hashCode()
-    }
+    override fun hashCode(): Int =
+        this.asRawString().hashCode()
 
     override fun toString(): String {
         return "${this::class.simpleName}(objID = ${this.objID.value}, x = ${this.x.value}, y = ${this.y.value})"

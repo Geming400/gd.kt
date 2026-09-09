@@ -8,6 +8,7 @@ import exceptions.InvalidRawStringException
 /**
  * A raw string factory allows you to abstract the generation of raw string for [GenericGdObjects][GenericGdObject].
  * Internally, using reflection it looks for [PropertyDefinitions][PropertyDefinition] and creates the raw string from there.
+ * @see DynamicRawStringFactory
  */
 interface RawStringFactory {
     companion object {
@@ -16,7 +17,7 @@ interface RawStringFactory {
         /**
          * Creates the default implementation for a raw string factory
          */
-        fun create(parent: GenericGdObject, keyValSeparator: Char = AbstractProperty.KEY_VAL_SEPARATOR): RawStringFactory =
+        fun create(parent: GenericGdObject, keyValSeparator: Char = AbstractProperty.KEY_VAL_SEPARATOR): DynamicRawStringFactory =
             RawStringFactoryImpl(parent, keyValSeparator)
 
         /**
@@ -82,6 +83,11 @@ interface RawStringFactory {
                 false
             }
         }
+
+        fun createRawString(properties: Collection<PropertyDefinition<*>>, separator: Char = AbstractProperty.KEY_VAL_SEPARATOR) =
+            properties.joinToString(separator.toString()) {
+                it.asRawString()
+            }
     }
 
     /**
@@ -89,6 +95,7 @@ interface RawStringFactory {
      * They are cached per-instance and are only cached when this var's getter is called
      */
     val properties: Collection<PropertyDefinition<*>>
+    val keyValSeparator: Char
 
     /**
      * Get the raw string of this factory's linked obj by concatenating all
@@ -97,9 +104,7 @@ interface RawStringFactory {
      * @see PropertyDefinition.asRawString
      */
     fun asRawString(): String =
-        this.getSerializableProperties().joinToString(AbstractProperty.KEY_VAL_SEPARATOR.toString()) {
-            it.asRawString()
-        }
+        createRawString(this.getSerializableProperties(), this.keyValSeparator)
 
     fun getSerializableProperties(): List<PropertyDefinition<*>> =
         this.properties

@@ -9,8 +9,10 @@ import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.starProjectedType
 
-internal class RawStringFactoryImpl(private val parent: GenericGdObject, val keyValSeparator: Char = AbstractProperty.KEY_VAL_SEPARATOR) : RawStringFactory {
+internal class RawStringFactoryImpl(private val parent: GenericGdObject, override val keyValSeparator: Char = AbstractProperty.KEY_VAL_SEPARATOR) : DynamicRawStringFactory {
     private var cachedProperties: Collection<PropertyDefinition<*>>? = null
+
+    override val dynamicProperties: MutableList<PropertyDefinition<*>> = arrayListOf()
 
     override val properties: Collection<PropertyDefinition<*>>
         get() {
@@ -36,22 +38,6 @@ internal class RawStringFactoryImpl(private val parent: GenericGdObject, val key
         consumer(props.sortedBy { it.id })
     }
 
-    /**
-     * Get the raw string of this factory's [parent] by concatenating all
-     * properties' raw strings
-     * @return the raw string of this factory's [parent]
-     * @see PropertyDefinition.asRawString
-     */
-    override fun asRawString(): String =
-        this.getSerializableProperties().joinToString(AbstractProperty.KEY_VAL_SEPARATOR.toString()) {
-            it.asRawString(this.keyValSeparator)
-        }
-
-    /**
-     * Gets all the **serializable** properties of this factory's parent in a map
-     * in the format `propID: prop`
-     * @return the properties in a [Map]
-     */
     override fun asMap(): Map<Id, PropertyDefinition<*>> {
         val res = mutableMapOf<Id, PropertyDefinition<*>>()
         this.getSerializableProperties().forEach {

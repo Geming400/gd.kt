@@ -3,6 +3,7 @@ package editor.rawstring
 import CustomAssertions
 import TestTags
 import editor.objects.SimpleObject
+import editor.rawstring.property.IntProperty
 import exceptions.InvalidRawStringException
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
@@ -66,5 +67,21 @@ private class RawStringFactoryTests {
 
         val rawString3 = "1,10," // Even number of commas = invalid raw string
         Assertions.assertThrows(InvalidRawStringException::class.java) { RawStringFactory.rawStringToMap(rawString3) }
+    }
+
+    @Test
+    @DisplayName("DynamicRawStringFactory test")
+    fun dynamicRawStringFactoryTest() {
+        val obj = SimpleObject(1u, 0f, 0f)
+        val rawStringFactory = obj.rawStringFactory
+
+        CustomAssertions.assertRawStringEquals("1,1,2,0.0,3,0.0", obj.asRawString())
+
+        val intProp = IntProperty(5.id, defaultValue = 12) // non-serializable prop
+        rawStringFactory.dynamicProperties.add(intProp)
+        CustomAssertions.assertRawStringEquals("1,1,2,0.0,3,0.0", obj.asRawString())
+
+        intProp.value = 10
+        CustomAssertions.assertRawStringEquals("1,1,2,0.0,3,0.0,5,10", obj.asRawString())
     }
 }
