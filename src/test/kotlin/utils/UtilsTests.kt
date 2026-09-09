@@ -10,16 +10,16 @@ import org.junit.jupiter.api.Test
 private class UtilsTest {
     @Test
     fun isPrimitiveTest() {
-        Assertions.assertTrue(Utils.isPrimitive("0"))
-        Assertions.assertTrue(Utils.isPrimitive(0))
-        Assertions.assertTrue(Utils.isPrimitive(0.0f))
-        Assertions.assertTrue(Utils.isPrimitive(0.0))
-        Assertions.assertTrue(Utils.isPrimitive(0L))
-        Assertions.assertTrue(Utils.isPrimitive(0.toByte()))
-        Assertions.assertTrue(Utils.isPrimitive(0.toShort()))
-        Assertions.assertTrue(Utils.isPrimitive(false))
+        Assertions.assertTrue(isPrimitive("0"))
+        Assertions.assertTrue(isPrimitive(0))
+        Assertions.assertTrue(isPrimitive(0.0f))
+        Assertions.assertTrue(isPrimitive(0.0))
+        Assertions.assertTrue(isPrimitive(0L))
+        Assertions.assertTrue(isPrimitive(0.toByte()))
+        Assertions.assertTrue(isPrimitive(0.toShort()))
+        Assertions.assertTrue(isPrimitive(false))
 
-        Assertions.assertFalse(Utils.isPrimitive(arrayOf<Any>()))
+        Assertions.assertFalse(isPrimitive(arrayOf<Any>()))
     }
 
     @Test
