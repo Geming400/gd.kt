@@ -11,6 +11,12 @@ It can be used, but do not really expect anything, though the difference with mo
 
 There is not much java interoperability because for example `UInt`s cannot get created on java and fully used.
 
+> [!NOTE]
+> There are no docs yet. This readme is the only documentation you will find
+> for the moment.
+>
+> Most classes/functions have KDoc attached to them !
+
 ## Installation
 
 You can install this lib via JitPack:
