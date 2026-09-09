@@ -52,5 +52,19 @@ MyObjClass().asRawString()
 ### Parsing 
 
 Raw strings can get parses into any classes.
-Using the `ObjectParser` object you can input a raw string and get an output
-TODO
+Using the `ObjectParser` object you can input a raw string and get an output:
+```kt
+val obj = SimpleObject(5u, 12, 16)
+// The "SimpleObject" provided is a dummy instance
+// every properties from the raw string is going to get automatically filled
+val obj2 = ObjectParser.parse(obj.asRawString(), SimpleObject(1u, 0, 0))
+assertEquals(obj, obj2)
+```
+
+## AI
+
+Almost no AI was used in this project. I make my projects by myself.
+
+However, some large classes like structures for the client api are
+really boring to make since it's really long, and it's not really
+interesting to do.
