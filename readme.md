@@ -53,7 +53,7 @@ MyObjClass().asRawString()
 
 ### Parsing 
 
-Raw strings can get parses into any classes.
+Raw strings can get parsed into any class.
 Using the `ObjectParser` object you can input a raw string and get an output:
 ```kt
 val obj = SimpleObject(5u, 12, 16)
