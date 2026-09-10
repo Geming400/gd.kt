@@ -1,6 +1,6 @@
 package client.struct
 
-import client.GDClient
+import client.AbstractGDClient
 import client.GDClientApi
 
 /**
@@ -8,8 +8,8 @@ import client.GDClientApi
  * This always must be the children of a `companion object`
  */
 @GDClientApi
-interface ServerStructureCompanion<out T> {
+interface ServerStructureCompanion<out T : ServerStructure> {
     val separator: Char
 
-    fun parse(rawString: String, client: GDClient): T
+    fun parse(rawString: String, client: AbstractGDClient): T
 }

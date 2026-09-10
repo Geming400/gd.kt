@@ -1,16 +1,17 @@
 package client
 
 import client.struct.ServerStructure
-import okhttp3.FormBody
-import okhttp3.HttpUrl
+import client.struct.ServerStructureCompanion
+import client.struct.UserInfo
+import exceptions.InvalidRawStringException
+import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import utils.toFormRequestBody
+import java.io.IOException
 import java.util.*
 
 @GDClientApi
-open class GDClient(
+abstract class AbstractGDClient(
     val credentials: Credentials? = null,
     val url: HttpUrl = DEFAULT_URL,
 
@@ -28,44 +29,103 @@ open class GDClient(
     protected fun resolveURL(endpoint: Endpoint): HttpUrl =
         endpoint.resolve(this.url)
 
-    protected fun createRequest(endpoint: Endpoint): Request.Builder =
+    protected open fun createRequest(endpoint: Endpoint): Request.Builder =
         Request.Builder()
             .url(this.resolveURL(endpoint))
             .header("Content-Type", "application/x-www-form-urlencoded")
             .header("User-Agent", "")
 
-    fun isLoggedIn(): Boolean =
-        this.credentials != null
+    protected fun <T : ServerStructure> executeRequest(
+        serverStructureCompanion: ServerStructureCompanion<T>,
+        endpoint: Endpoint,
+        data: Map<Any, Any>,
+        asyncCallback: CallbackWithData<T>? = null,
+        secret: Secret = Secret.COMMON,
+        postProcessingReqBuilder: (Request.Builder) -> Request.Builder = { it }
+    ): Result<T> {
+        val reqBuilder = postProcessingReqBuilder(
+            this.createRequest(endpoint)
+                .post(data.toFormRequestBodyWithClientInfo(this, secret))
+        )
 
-    fun fetchLevel() {
-        val req = this.createRequest(Endpoint.GET_USER_INFO)
-            .post(mapOf(
-                // TODO
-                Pair("a", "a")
-            ).toFormRequestBodyWithClientInfo(this, Secret.COMMON))
+        val call = this.client.newCall(reqBuilder.build())
+        if (asyncCallback == null) {
+            // if asyncCallback == null then we do synchronous requests
+            try {
+                call.execute().use { response ->
+                    val res = Result.success(serverStructureCompanion.parse(response.body.string(), this))
+                    return res
+                }
+            } catch (e: IOException) {
+                return Result.failure(e)
+            } catch (e: Exception) {
+                return Result.failure(e)
+            }
+        } else {
+            call.enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) =
+                    asyncCallback.onNetworkFailure(call, e)
+
+                override fun onResponse(call: Call, response: Response) {
+                    try {
+                        val parsedData = serverStructureCompanion.parse(response.body.string(), this@AbstractGDClient)
+                        asyncCallback.onResponse(call, response, parsedData)
+                    } catch (e: InvalidRawStringException) {
+                        asyncCallback.onParsingFailure(call, e)
+                    }
+                }
+            })
+
+            return Result.failure(NullPointerException("Cannot get a return value on async requests"))
+        }
     }
 
-    fun getUserInfo(accountID: Int): Result<ServerStructure> {
-        val req = this.createRequest(Endpoint.GET_USER_INFO)
-            .post(mapOf(
-                Pair("targetAccountID", accountID)
-            ).toFormRequestBodyWithClientInfo(this, Secret.COMMON))
-            .build()
+    fun isLoggedIn(): Boolean =
+        this.credentials != null
+}
 
-        try {
-            this.client.newCall(req).execute().use { response ->
-                println("Received: ${response.body.string()}")
-                return Result.failure(NullPointerException())
-            }
-        } catch (e: Exception) {
-            return Result.failure(e)
-        }
+@GDClientApi
+class GDClient(
+    credentials: Credentials? = null,
+    url: HttpUrl = DEFAULT_URL,
+
+    gameVersion: UInt = GAME_VERSION,
+    binaryVersion: UInt = BINARY_VERSION
+) : AbstractGDClient(credentials, url, gameVersion, binaryVersion) {
+    fun getUserInfo(accountID: Int): Result<UserInfo> =
+        this.executeRequest(
+            UserInfo,
+            Endpoint.GET_USER_INFO,
+            mapOf(
+                Pair("targetAccountID", accountID)
+            ),
+            null
+        )
+}
+
+@GDClientApi
+class AsyncGDClient(
+    credentials: Credentials? = null,
+    url: HttpUrl = DEFAULT_URL,
+
+    gameVersion: UInt = GAME_VERSION,
+    binaryVersion: UInt = BINARY_VERSION
+) : AbstractGDClient(credentials, url, gameVersion, binaryVersion) {
+    fun getUserInfo(accountID: Int, asyncCallback: CallbackWithData<UserInfo>) {
+        this.executeRequest(
+            UserInfo,
+            Endpoint.GET_USER_INFO,
+            mapOf(
+                Pair("targetAccountID", accountID)
+            ),
+            asyncCallback
+        )
     }
 }
 
 // The 'Any' upper bound is to prevent null types
-@OptIn(GDClientApi::class)
-fun <K : Any, V : Any> Map<K, V>.toFormRequestBodyWithClientInfo(client: GDClient, secret: Secret): FormBody {
+@GDClientApi
+fun <K : Any, V : Any> Map<K, V>.toFormRequestBodyWithClientInfo(client: AbstractGDClient, secret: Secret): FormBody {
     val bodyBuilder = this.toFormRequestBody()
     bodyBuilder.add("secret", secret.secret)
     bodyBuilder.add("gameVersion", client.gameVersion.toString())
@@ -75,4 +135,25 @@ fun <K : Any, V : Any> Map<K, V>.toFormRequestBodyWithClientInfo(client: GDClien
     bodyBuilder.add("uuid", UUID.randomUUID().toString())
 
     return bodyBuilder.build()
+}
+
+@GDClientApi
+interface CallbackWithData<T> {
+    @Throws(IOException::class)
+    fun onNetworkFailure(
+        call: Call,
+        e: IOException,
+    )
+
+    fun onParsingFailure(
+        call: Call,
+        e: InvalidRawStringException,
+    ) {}
+
+    @Throws(IOException::class)
+    fun onResponse(
+        call: Call,
+        response: Response,
+        data: T
+    )
 }

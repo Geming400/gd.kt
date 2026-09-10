@@ -1,6 +1,6 @@
 package client.struct
 
-import client.GDClient
+import client.AbstractGDClient
 import client.GDClientApi
 import editor.objects.GenericGdObject
 
@@ -9,7 +9,7 @@ import editor.objects.GenericGdObject
  */
 @GDClientApi
 interface ServerStructure : GenericGdObject {
-    val client: GDClient
+    val client: AbstractGDClient
 
     /**
      * Get the geometry dash raw string representing this object.
