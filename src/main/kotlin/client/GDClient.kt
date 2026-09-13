@@ -16,7 +16,8 @@ abstract class AbstractGDClient(
     val url: HttpUrl = DEFAULT_URL,
 
     val gameVersion: UInt = GAME_VERSION,
-    val binaryVersion: UInt = BINARY_VERSION
+    val binaryVersion: UInt = BINARY_VERSION,
+    val platform: Platform = Platform.get()
 ) {
     companion object {
         val DEFAULT_URL = "https://www.boomlings.com/".toHttpUrl()
@@ -90,8 +91,9 @@ class GDClient(
     url: HttpUrl = DEFAULT_URL,
 
     gameVersion: UInt = GAME_VERSION,
-    binaryVersion: UInt = BINARY_VERSION
-) : AbstractGDClient(credentials, url, gameVersion, binaryVersion) {
+    binaryVersion: UInt = BINARY_VERSION,
+    platform: Platform = Platform.get()
+) : AbstractGDClient(credentials, url, gameVersion, binaryVersion, platform) {
     fun getUserInfo(accountID: Int): Result<UserInfo> =
         this.executeRequest(
             UserInfo,
@@ -109,8 +111,9 @@ class AsyncGDClient(
     url: HttpUrl = DEFAULT_URL,
 
     gameVersion: UInt = GAME_VERSION,
-    binaryVersion: UInt = BINARY_VERSION
-) : AbstractGDClient(credentials, url, gameVersion, binaryVersion) {
+    binaryVersion: UInt = BINARY_VERSION,
+    platform: Platform = Platform.get()
+) : AbstractGDClient(credentials, url, gameVersion, binaryVersion, platform) {
     fun getUserInfo(accountID: Int, asyncCallback: CallbackWithData<UserInfo>) {
         this.executeRequest(
             UserInfo,
@@ -130,6 +133,7 @@ fun <K : Any, V : Any> Map<K, V>.toFormRequestBodyWithClientInfo(client: Abstrac
     bodyBuilder.add("secret", secret.secret)
     bodyBuilder.add("gameVersion", client.gameVersion.toString())
     bodyBuilder.add("gameVersion", client.binaryVersion.toString())
+    bodyBuilder.add("dvs", client.platform.value.toString())
     if (client.credentials != null)
         bodyBuilder.add("gjp2", client.credentials.gjp2.encryptedPassword)
     bodyBuilder.add("uuid", UUID.randomUUID().toString())

@@ -22,6 +22,7 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation("com.squareup.okhttp3:okhttp:5.4.0")
     implementation("commons-codec:commons-codec:1.22.1")
+    implementation("org.apache.commons:commons-lang3:3.20.0")
 }
 
 kotlin {
