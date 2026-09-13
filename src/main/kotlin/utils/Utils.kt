@@ -5,7 +5,8 @@ import exceptions.IllegalTypeException
 import okhttp3.FormBody
 
 fun isPrimitive(value: Any) =
-    value is String || value::class.javaPrimitiveType != null
+    // We allow UINTs because they are ints
+    value is String || value is UInt || value::class.javaPrimitiveType != null
 
 /**
  * Returns this boolean as an int.
@@ -73,10 +74,10 @@ fun <K : Any, V : Any> Map<K, V>.toFormRequestBody(): FormBody.Builder {
     val bodyBuilder = FormBody.Builder()
     this.forEach { (k, v) ->
         if (!isPrimitive(k))
-            throw IllegalTypeException("Key '$k' type is not a primitive and so cannot get turned into a form key")
+            throw IllegalTypeException("Key '$k''s type (${k::class.simpleName}) is not a primitive and so cannot get turned into a form key")
 
         if (!isPrimitive(v))
-            throw IllegalTypeException("Value '$v' type is not a primitive and so cannot get turned into a form key")
+            throw IllegalTypeException("Value '$v''s type (${v::class.simpleName}) is not a primitive and so cannot get turned into a form key")
 
         bodyBuilder.add(k.toString(), v.toString())
     }
