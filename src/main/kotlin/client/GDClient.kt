@@ -9,6 +9,11 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import utils.toFormRequestBody
 import java.io.IOException
 import java.util.*
+import kotlin.io.encoding.Base64
+import kotlin.random.Random
+
+@GDClientApi
+typealias ResponseHandler = (body: String) -> Unit
 
 @GDClientApi
 abstract class AbstractGDClient(
