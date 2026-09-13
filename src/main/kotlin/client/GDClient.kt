@@ -1,9 +1,15 @@
 package client
 
+import client.endpoint.Endpoint
+import client.endpoint.Endpoints
 import client.struct.ServerStructure
 import client.struct.ServerStructureCompanion
 import client.struct.UserInfo
+import editor.rawstring.serializing.Parsable
+import editor.rawstring.serializing.Serializers
+import exceptions.GdDotKtException
 import exceptions.InvalidRawStringException
+import exceptions.ServerErrorException
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import utils.toFormRequestBody
@@ -28,9 +34,69 @@ abstract class AbstractGDClient(
         val DEFAULT_URL = "https://www.boomlings.com/".toHttpUrl()
         const val GAME_VERSION = 22u
         const val BINARY_VERSION = 47u
+
+        /**
+         * Generates an [UDID](https://en.wikipedia.org/wiki/UDID) according to [boomlings.dev](https://boomlings.dev/topics/encryption/id#udid)
+         */
+        fun generateUDID(rngSource: Random = Random): String {
+            val parts = ArrayList<String>(4)
+            for (i in 0..4)
+                parts.add(rngSource.nextInt(100_000, 100_000_000).toString())
+
+            return "S15" + parts.joinToString(separator = "")
+        }
     }
 
     protected val client = OkHttpClient()
+
+    private var internalAccountInfo: Array<String>? = null
+
+    /**
+     * The client's account ID.
+     * If not logged in, `null` will be returned.
+     *
+     * This info is always fetched **synchronously**
+     * @see getAccountIdOrThrow
+     */
+    val accountID: UInt?
+        get() {
+            if (!this.isLoggedIn())
+                return null
+
+            if (this.internalAccountInfo == null) {
+                this.internalAccountInfo = this.getAccountInfo()
+                return this.internalAccountInfo!![0].toUInt()
+            } else {
+                return this.internalAccountInfo!![0].toUInt()
+            }
+        }
+
+    /**
+     * The client's player ID.
+     * If not logged in, `null` will be returned.
+     *
+     * This info is always fetched **synchronously**
+     * @see getPlayerIdOrThrow
+     */
+    val playerID: UInt?
+        get() {
+            if (!this.isLoggedIn())
+                return null
+
+            if (this.internalAccountInfo == null) {
+                this.internalAccountInfo = this.getAccountInfo()
+                return this.internalAccountInfo!![1].toUInt()
+            } else {
+                return this.internalAccountInfo!![1].toUInt()
+            }
+        }
+
+    /**
+     * The [UDID](https://en.wikipedia.org/wiki/UDID) linked to this client.
+     * Each client generates its own UDID
+     * @see generateUDID
+     */
+    val udid: String = generateUDID()
 
     protected fun resolveURL(endpoint: Endpoint): HttpUrl =
         endpoint.resolve(this.url)
@@ -45,9 +111,48 @@ abstract class AbstractGDClient(
         serverStructureCompanion: ServerStructureCompanion<T>,
         endpoint: Endpoint,
         data: Map<Any, Any>,
-        asyncCallback: CallbackWithData<T>? = null,
         secret: Secret = Secret.COMMON,
-        postProcessingReqBuilder: (Request.Builder) -> Request.Builder = { it }
+        asyncCallback: CallbackWithData<T>? = null,
+        postProcessingReqBuilder: (Request.Builder) -> Request.Builder = { it },
+        responseHandler: ResponseHandler = endpoint.responseHandler
+    ): Result<T> =
+        this.executeRequest(
+            endpoint,
+            data,
+            secret,
+            asyncCallback,
+            postProcessingReqBuilder,
+            { rawString: String, client: AbstractGDClient -> serverStructureCompanion.parse(rawString, client) },
+            responseHandler
+        )
+
+    protected fun <T> executeRequest(
+        serializer: Parsable<T>,
+        endpoint: Endpoint,
+        data: Map<Any, Any>,
+        secret: Secret = Secret.COMMON,
+        asyncCallback: CallbackWithData<T>? = null,
+        postProcessingReqBuilder: (Request.Builder) -> Request.Builder = { it },
+        responseHandler: ResponseHandler = endpoint.responseHandler
+    ): Result<T> =
+        this.executeRequest(
+            endpoint,
+            data,
+            secret,
+            asyncCallback,
+            postProcessingReqBuilder,
+            { rawString: String, client: AbstractGDClient -> serializer.parse(rawString) },
+            responseHandler
+        )
+
+    protected open fun <T> executeRequest(
+        endpoint: Endpoint,
+        data: Map<Any, Any>,
+        secret: Secret = Secret.COMMON,
+        asyncCallback: CallbackWithData<T>? = null,
+        postProcessingReqBuilder: (Request.Builder) -> Request.Builder = { it },
+        parser: (rawString: String, client: AbstractGDClient) -> T,
+        responseHandler: ResponseHandler = {}
     ): Result<T> {
         val reqBuilder = postProcessingReqBuilder(
             this.createRequest(endpoint)
@@ -59,7 +164,10 @@ abstract class AbstractGDClient(
             // if asyncCallback == null then we do synchronous requests
             try {
                 call.execute().use { response ->
-                    val res = Result.success(serverStructureCompanion.parse(response.body.string(), this))
+                    val body = response.body.string()
+                    responseHandler(body)
+
+                    val res = Result.success(parser(body, this))
                     return res
                 }
             } catch (e: IOException) {
@@ -74,8 +182,10 @@ abstract class AbstractGDClient(
 
                 override fun onResponse(call: Call, response: Response) {
                     try {
-                        val parsedData = serverStructureCompanion.parse(response.body.string(), this@AbstractGDClient)
-                        asyncCallback.onResponse(call, response, parsedData)
+                        val body = response.body.string()
+                        responseHandler(body)
+
+                        asyncCallback.onResponse(call, response, parser(body, this@AbstractGDClient))
                     } catch (e: InvalidRawStringException) {
                         asyncCallback.onParsingFailure(call, e)
                     }
@@ -86,8 +196,44 @@ abstract class AbstractGDClient(
         }
     }
 
+    protected fun getAccountInfo(): Array<String> {
+        val req =
+            this.createRequest(Endpoints.LOGIN)
+                .post(mapOf<Any, Any>(
+                    Pair("userName", this.credentials!!.username),
+                    Pair("udid", this.udid)
+                ).toFormRequestBodyWithClientInfo(this, Secret.ACCOUNT))
+                .build()
+
+        this.client.newCall(req).execute().use { response ->
+            val body = response.body.string()
+            when (body) {
+                "-1" -> throw ServerErrorException.genericError()
+                "-11" -> throw ServerErrorException(-11, "Login failed. Incorrect credentials")
+                "-12" -> throw ServerErrorException(-12, "Account has been disabled")
+            }
+
+            return body.split(",").toTypedArray()
+        }
+    }
+
+    fun getAccountIdOrThrow(): UInt =
+        Objects.requireNonNull(this.accountID, "Cannot get the client's accountID since no credentials were entered")!!
+
+    fun getPlayerIdOrThrow(): UInt =
+        Objects.requireNonNull(this.playerID, "Cannot get the client's accountID since no credentials were entered")!!
+
+    /**
+     * If this client is logged in. This doesn't check if the credentials are valid
+     * @see credentials
+     */
     fun isLoggedIn(): Boolean =
         this.credentials != null
+
+    fun throwIfLoggedOut() {
+        if (!this.isLoggedIn())
+            throw GdDotKtException("This client must be logged in, but it isn't")
+    }
 }
 
 @GDClientApi
@@ -102,12 +248,28 @@ class GDClient(
     fun getUserInfo(accountID: Int): Result<UserInfo> =
         this.executeRequest(
             UserInfo,
-            Endpoint.GET_USER_INFO,
+            Endpoints.GET_USER_INFO,
             mapOf(
                 Pair("targetAccountID", accountID)
             ),
-            null
+            asyncCallback = null
         )
+
+    /**
+     * @return the ID of the sent comment
+     */
+    fun postAccountComment(message: String): Result<Int> {
+        this.throwIfLoggedOut()
+        return this.executeRequest(
+            Serializers.INT,
+            Endpoints.UPLOAD_ACCOUNT_COMMENT,
+            mapOf(
+                Pair("comment", Base64.UrlSafe.encode(message.toByteArray())),
+                Pair("accountID", this.accountID!!)
+            ),
+            asyncCallback = null
+        )
+    }
 }
 
 @GDClientApi
@@ -122,11 +284,27 @@ class AsyncGDClient(
     fun getUserInfo(accountID: Int, asyncCallback: CallbackWithData<UserInfo>) {
         this.executeRequest(
             UserInfo,
-            Endpoint.GET_USER_INFO,
+            Endpoints.LOGIN,
             mapOf(
                 Pair("targetAccountID", accountID)
             ),
-            asyncCallback
+            asyncCallback = asyncCallback
+        )
+    }
+
+    /**
+     * @return the ID of the sent comment
+     */
+    fun postAccountComment(message: String, asyncCallback: CallbackWithData<Int>) {
+        this.throwIfLoggedOut()
+        this.executeRequest(
+            Serializers.INT,
+            Endpoints.UPLOAD_ACCOUNT_COMMENT,
+            mapOf(
+                Pair("comment", Base64.UrlSafe.encode(message.toByteArray())),
+                Pair("accountID", this.accountID!!)
+            ),
+            asyncCallback = asyncCallback
         )
     }
 }
@@ -157,6 +335,11 @@ interface CallbackWithData<T> {
     fun onParsingFailure(
         call: Call,
         e: InvalidRawStringException,
+    ) {}
+
+    fun onGdServerException(
+        call: Call,
+        e: ServerErrorException
     ) {}
 
     @Throws(IOException::class)
