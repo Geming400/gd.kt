@@ -93,21 +93,6 @@ open class SimpleObject : GenericGdObject {
     }
 
 
-    /**
-     * For more information see [RawStringFactory.asRawStringIntMap]
-     * @see RawStringFactory.asRawStringIntMap
-     */
-    fun asRawStringMap(): Map<UInt, String> =
-        this.rawStringFactory.asRawStringIntMap()
-
-    /**
-     * For more information see [RawStringFactory.asIntMap]
-     * @see RawStringFactory.asIntMap
-     */
-    fun asMap(): Map<UInt, PropertyDefinition<*>> =
-        this.rawStringFactory.asIntMap()
-
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is SimpleObject) return false
@@ -129,3 +114,17 @@ open class SimpleObject : GenericGdObject {
 //        prop.value = value
 //    }
 }
+
+/**
+ * For more information see [RawStringFactory.asRawStringIntMap]
+ * @see RawStringFactory.asRawStringIntMap
+ */
+fun SimpleObject.asRawStringMap(): Map<UInt, String> =
+    this.rawStringFactory.asRawStringIntMap()
+
+/**
+ * For more information see [RawStringFactory.asIntMap]
+ * @see RawStringFactory.asIntMap
+ */
+fun SimpleObject.asMap(): Map<UInt, PropertyDefinition<*>> =
+    this.rawStringFactory.asIntMap()
