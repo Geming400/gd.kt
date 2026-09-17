@@ -13,6 +13,7 @@ import editor.rawstring.property.IntProperty
 import editor.rawstring.property.UIntProperty
 import editor.rawstring.property.UnencodedStringProperty
 import editor.rawstring.serializing.Serializer
+import exceptions.GdDotKtException
 
 enum class MessageState(override val value: Int) : GdEnum {
     ALL(0),
@@ -50,7 +51,103 @@ enum class CommentHistoryState(override val value: Int) : GdEnum {
     NONE(2),
 }
 
-// TODO: breakdown
+private const val BREAKDOWN_SEPARATOR: Char = ','
+
+@GDClientApi
+class ClassicLevelsBreakdown {
+    var auto: Int
+    var easy: Int
+    var normal: Int
+    var hard: Int
+    var harder: Int
+    var insane: Int
+
+    var daily: Int
+    var gauntlet: Int
+
+    constructor(rawBreakdown: String) {
+        val splittedBreakdown = rawBreakdown.split(BREAKDOWN_SEPARATOR)
+        if (splittedBreakdown.size != 8)
+            throw GdDotKtException("Size of collection $rawBreakdown is of size ${splittedBreakdown.size} but it was expected to by 8 elements long")
+
+        this.auto = splittedBreakdown[0].toInt()
+        this.easy = splittedBreakdown[1].toInt()
+        this.normal = splittedBreakdown[2].toInt()
+        this.hard = splittedBreakdown[3].toInt()
+        this.harder = splittedBreakdown[4].toInt()
+        this.insane = splittedBreakdown[5].toInt()
+
+        this.daily = splittedBreakdown[6].toInt()
+        this.gauntlet = splittedBreakdown[7].toInt()
+    }
+}
+
+@GDClientApi
+class PlatformerLevelsBreakdown {
+    var auto: Int
+    var easy: Int
+    var normal: Int
+    var hard: Int
+    var harder: Int
+    var insane: Int
+
+    var theMap: Int
+
+    constructor(rawBreakdown: String) {
+        val splittedBreakdown = rawBreakdown.split(BREAKDOWN_SEPARATOR)
+        if (splittedBreakdown.size != 7)
+            throw GdDotKtException("Size of collection $rawBreakdown is of size ${splittedBreakdown.size} but it was expected to by 7 elements long")
+
+        this.auto = splittedBreakdown[0].toInt()
+        this.easy = splittedBreakdown[1].toInt()
+        this.normal = splittedBreakdown[2].toInt()
+        this.hard = splittedBreakdown[3].toInt()
+        this.harder = splittedBreakdown[4].toInt()
+        this.insane = splittedBreakdown[5].toInt()
+
+        this.theMap = splittedBreakdown[6].toInt()
+    }
+}
+
+@GDClientApi
+class DemonLevelsBreakdown {
+    var easyDemon: Int
+    var mediumDemon: Int
+    var hardDemon: Int
+    var insaneDemon: Int
+    var extremeDemon: Int
+
+    var easyDemonPlatformer: Int
+    var mediumDemonPlatformer: Int
+    var hardDemonPlatformer: Int
+    var insaneDemonPlatformer: Int
+    var extremeDemonPlatformer: Int
+
+    var weekly: Int
+    var gauntlet: Int
+
+    constructor(rawBreakdown: String) {
+        val splittedBreakdown = rawBreakdown.split(BREAKDOWN_SEPARATOR)
+        if (splittedBreakdown.size != 12)
+            throw GdDotKtException("Size of collection $rawBreakdown is of size ${splittedBreakdown.size} but it was expected to by 12 elements long")
+
+        this.easyDemon = splittedBreakdown[0].toInt()
+        this.mediumDemon = splittedBreakdown[1].toInt()
+        this.hardDemon = splittedBreakdown[2].toInt()
+        this.insaneDemon = splittedBreakdown[3].toInt()
+        this.extremeDemon = splittedBreakdown[4].toInt()
+
+        this.easyDemonPlatformer = splittedBreakdown[5].toInt()
+        this.mediumDemonPlatformer = splittedBreakdown[6].toInt()
+        this.hardDemonPlatformer = splittedBreakdown[7].toInt()
+        this.insaneDemonPlatformer = splittedBreakdown[8].toInt()
+        this.extremeDemonPlatformer = splittedBreakdown[9].toInt()
+
+        this.weekly = splittedBreakdown[10].toInt()
+        this.gauntlet = splittedBreakdown[11].toInt()
+    }
+}
+
 @GDClientApi
 open class UserStructure(override val client: AbstractGDClient) : ServerStructure {
     companion object : ServerStructureCompanion<UserStructure> {
@@ -145,9 +242,15 @@ class UserInfo(client: AbstractGDClient) : UserStructure(client) {
     val modLevel = EnumProperty(49.id, Serializer.enum(ModLevel.entries))
     val commentHistoryState = EnumProperty(50.id, Serializer.enum(CommentHistoryState.entries))
     val moons = UIntProperty(52.id, defaultValue = null)
-    val demons = UnencodedStringProperty(55.id, defaultValue = null)
+    val rawDemonLevelsBreakdown = UnencodedStringProperty(55.id, defaultValue = null)
     val rawClassicLevelsBreakdown = UnencodedStringProperty(56.id, defaultValue = null)
     val rawPlatformerLevelsBreakdown = UnencodedStringProperty(57.id, defaultValue = null)
+    val demonBreakdown
+        get() = DemonLevelsBreakdown(this.rawDemonLevelsBreakdown.getOrThrow())
+    val classicBreakdown
+        get() = ClassicLevelsBreakdown(this.rawClassicLevelsBreakdown.getOrThrow())
+    val platformerBreadown
+        get() = PlatformerLevelsBreakdown(this.rawPlatformerLevelsBreakdown.getOrThrow())
     val discord = UnencodedStringProperty(58.id, defaultValue = null)
     val instagram = UnencodedStringProperty(59.id, defaultValue = null)
     val tiktok = UnencodedStringProperty(60.id, defaultValue = null)
