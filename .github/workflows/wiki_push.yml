@@ -7,11 +7,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      # Additional steps to generate documentation in "Documentation" directory
-      - name: Upload Documentation to Wiki
-        uses: SwiftDocOrg/github-wiki-publish-action@v1
-        with:
-          path: "docs"
+#      - uses: actions/checkout@v1
+#      # Additional steps to generate documentation in "Documentation" directory
+#      - name: Upload Documentation to Wiki
+#        uses: SwiftDocOrg/github-wiki-publish-action@v1
+#        with:
+#          path: "docs"
+#        env:
+#          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+
+      - name: Upload Release Notes to Wiki
+        uses: docker://decathlon/wiki-page-creator-action:latest
         env:
-          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          ACTION_MAIL: 101340400+Geming400@users.noreply.github.com
+          ACTION_NAME: Geming400
+          OWNER: Geming400
+          REPO_NAME: gd.kt
+          TRANSLATE_UNDERSCORE_TO_SPACE: true
+          MD_FOLDER: docs
