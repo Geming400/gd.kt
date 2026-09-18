@@ -92,4 +92,19 @@ private class UtilsTest {
         Assertions.assertNotEquals(string, encryptedString)
         Assertions.assertEquals(string, encryptedString.cyclicXor(key))
     }
+
+    @Test
+    @DisplayName("Cacher test")
+    fun cacherTest() {
+        val cacher = remember { 12 }
+        var cachedValue by cacher
+
+        Assertions.assertNull(cacher.cachedValue)
+        Assertions.assertEquals(12, cachedValue /* Calls Cacher.getValue */)
+        cachedValue = 20
+        Assertions.assertEquals(20, cachedValue /* Calls Cacher.getValue */)
+
+        cacher.invalidate()
+        Assertions.assertNull(cacher.cachedValue)
+    }
 }
