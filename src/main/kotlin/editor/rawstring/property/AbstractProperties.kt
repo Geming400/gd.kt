@@ -4,6 +4,7 @@ import editor.rawstring.Id
 import editor.rawstring.serializing.Serializable
 import editor.rawstring.serializing.Serializer
 import editor.rawstring.RawStringable
+import kotlin.reflect.KProperty
 
 interface PropertyDefinition<T> : RawStringable {
     val id: Id
@@ -75,6 +76,9 @@ interface PropertyDefinition<T> : RawStringable {
             other
         else
             this.value!!
+
+    operator fun getValue(thisRef: Any, property: KProperty<*>): T? =
+        this.value
 }
 
 /**
@@ -85,6 +89,10 @@ interface MutableProperty<T> : PropertyDefinition<T> {
      * The current value of the property
      */
     override var value: T?
+
+    operator fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
+        this.value = value
+    }
 }
 
 /**
