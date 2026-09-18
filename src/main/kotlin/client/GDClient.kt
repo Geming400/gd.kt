@@ -12,6 +12,10 @@ import exceptions.InvalidRawStringException
 import exceptions.ServerErrorException
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import org.apache.commons.codec.digest.DigestUtils
+import utils.cyclicXor
+import utils.nonNull
+import utils.remember
 import utils.toFormRequestBody
 import java.io.IOException
 import java.util.*
@@ -44,6 +48,21 @@ abstract class AbstractGDClient(
                 parts.add(rngSource.nextInt(100_000, 100_000_000).toString())
 
             return "S15" + parts.joinToString(separator = "")
+        }
+
+        fun createCHK(values: List<Any>, key: String, salt: String? = null): String {
+            val valuesToCompute = values
+                .map { it.toString() }
+                .toMutableList()
+
+            if (salt != null)
+                valuesToCompute.add(salt)
+
+            val stringToCompute = valuesToCompute.joinToString()
+
+            val hashed = DigestUtils.sha1Hex(stringToCompute)
+            val xored = hashed.cyclicXor(key)
+            return Base64.UrlSafe.encode(xored.toByteArray())
         }
     }
 
