@@ -61,6 +61,19 @@ fun myFunc(): Nothing = TODO()
 fun myFunc(): Nothing = TODO()
 ```
 
+#### Companion objects
+
+Companion objects must be placed at the start of a class, not the end:
+```kotlin
+class Foo {
+    companion object {
+        // ...
+    }
+    
+    // ...
+}
+```
+
 ### Editor
 
 If you end up modifying **objects** and are adding properties, you should
