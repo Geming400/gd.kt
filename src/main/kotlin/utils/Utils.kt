@@ -86,6 +86,94 @@ fun <K : Any, V : Any> Map<K, V>.toFormRequestBody(): FormBody.Builder {
 }
 
 /**
+ * Performs a "static xor" operation on this string with the given [key].
+ * This is taken from [boomlings.dev](https://boomlings.dev/topics/encryption/xor#singular)
+ * @param key the key to encrypt the content with
+ * @return the encrypted value.
+ *         This value can be brought back to its original string by
+ *         executing this function on the encrypted string with
+ *         the same key:
+ *
+ *         val myString = "Hi hello"
+ *         val myKey = 1291
+ *
+ *         val myEncryptedString = myString.staticXor(myKey)
+ *         assertEquals(myString, myEncryptedString.staticXor(myKey))
+ *
+ * @see cyclicXor
+ */
+fun String.staticXor(key: Int): String {
+    var res = ""
+    this.forEach {
+        res += (it.code xor key).toChar()
+    }
+
+    return res
+}
+
+/**
+ * Performs a "cyclic xor" operation on this string with the given [key]
+ * This is taken from [boomlings.dev](https://boomlings.dev/topics/encryption/xor#cycle)
+ * @param key the key to encrypt the content with.
+ *            The key encode individual parts of the string, unlike
+ *            the [staticXor] where the key is used to encode
+ *            the entire string
+ * @return the encrypted value.
+ *         This value can be brought back to its original string by
+ *         executing this function on the encrypted string with
+ *         the same key:
+ *
+ *         val myString = "Hi hello"
+ *         val myKey = "1291"
+ *
+ *         val myEncryptedString = myString.cyclicXor(myKey)
+ *         assertEquals(myString, myEncryptedString.cyclicXor(myKey))
+ *
+ * @see staticXor
+ */
+fun String.cyclicXor(key: String): String {
+    val byteString = this.toByteArray()
+    val result = CharArray(byteString.size)
+
+    byteString.forEachIndexed { i, b ->
+        result[i] = (byteString[i].toInt() xor key[i % key.length].code).toChar()
+    }
+
+    return result.concatToString()
+}
+
+/**
+ * Performs a "cyclic xor" operation on this string with the given [key]
+ * This is taken from [boomlings.dev](https://boomlings.dev/topics/encryption/xor#cycle)
+ * @param key the key to encrypt the content with.
+ *            The key encode individual parts of the string, unlike
+ *            the [staticXor] where the key is used to encode
+ *            the entire string
+ * @return the encrypted value.
+ *         This value can be brought back to its original string by
+ *         executing this function on the encrypted string with
+ *         the same key:
+ *
+ *         val myString = "Hi hello"
+ *         val myKey = "1291"
+ *
+ *         val myEncryptedString = myString.cyclicXor(myKey)
+ *         assertEquals(myString, myEncryptedString.cyclicXor(myKey))
+ *
+ * @see staticXor
+ */
+fun String.cyclicXor(key: Int) = this.cyclicXor(key.toString())
+
+
+fun cyclicXor(content: ByteArray, key: ByteArray): ByteArray {
+    val result = ByteArray(content.size)
+
+    for (i in content.indices) result[i] = (content[i].toInt() xor key[i % key.size].toInt()).toByte()
+
+    return result
+}
+
+/**
  * This is not like kotlin's T0DO() function and is instead used for tests to prevent
  * show useless TODOs from showing up
  */
