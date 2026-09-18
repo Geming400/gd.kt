@@ -6,6 +6,11 @@ import editor.rawstring.serializing.Serializer
 import editor.rawstring.RawStringable
 import kotlin.reflect.KProperty
 
+/**
+ * The base interface for all properties.
+ * This property is **immutable**. See [MutableProperty] for a mutable property interface
+ * @see MutableProperty
+ */
 interface PropertyDefinition<T> : RawStringable {
     val id: Id
     val serializer: Serializer<T>
