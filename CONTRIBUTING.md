@@ -17,6 +17,50 @@ most stuff don't need any samples !
 
 Kotlin's coding guidelines should be followed.
 
+### General guidelines
+
+#### Annotations
+
+For annotations, they should be placed in order from the shortest to the longest
+or by order of importance:
+
+```kotlin
+// Ordered by their length
+
+@DoesThing                                             // 10 chars long
+@Annotation                                            // 11 chars long
+@Annot("This string makes the resulting line longer")  // 53 chars long
+fun myFunc(): Nothing = TODO()
+```
+
+```kotlin
+// Ordered by their important
+//
+// This is very subjective
+// but is still a rule nonetheless
+
+@GDName("Something Something")  // Least important
+@JvmStatic                      // These are placed last, except if there's an opt in annotation
+@OptIn(MyOptInClass::class)     // Always last no matter what
+fun myFunc(): Nothing = TODO()
+```
+
+Unlike in kotlin's coding guidelines, annotations shouldn't be placed
+on the same line as other ones:
+
+```kotlin
+// Not allowed
+@MyAnnot @JvmStatic
+@Thing("hi")
+fun myFunc(): Nothing = TODO()
+
+// Allowed
+@MyAnnot
+@JvmStatic
+@Thing("hi")
+fun myFunc(): Nothing = TODO()
+```
+
 ### Editor
 
 If you end up modifying **objects** and are adding properties, you should
@@ -64,7 +108,7 @@ private class MyTest {
 }
 ```
 
-Tags must also **always** be added:
+Tags must also **always** be added *(unless they do not relate to the editor/client api)*:
 ```kotlin
 private class MyTest {
     @Test
@@ -83,7 +127,8 @@ private class MyClientTest {
 }
 ```
 
-`@Tag("Your tag")` is not allowed !
+`@Tag("Your tag")` is not allowed ! The tag names must always come from `TestTags`.
+`@Tag` annotation must also be placed at the end of the annotation chain if possible
 
 ---
 
