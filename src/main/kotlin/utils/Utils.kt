@@ -164,6 +164,13 @@ fun String.cyclicXor(key: String): String {
  */
 fun String.cyclicXor(key: Int) = this.cyclicXor(key.toString())
 
+/**
+ * Quotes this string
+ * @return `"$this"`
+ */
+fun CharSequence?.quote(): String =
+    "\"$this\""
+
 internal inline fun <T : Any> nonNull(valueGetter: () -> T?): T =
     valueGetter()!!
 
