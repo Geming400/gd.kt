@@ -6,7 +6,7 @@ import okhttp3.FormBody
 
 fun isPrimitive(value: Any) =
     // We allow UINTs because they are ints
-    value is String || value is UInt || value::class.javaPrimitiveType != null
+    value is CharSequence || value is UInt || value::class.javaPrimitiveType != null
 
 /**
  * Returns this boolean as an int.
