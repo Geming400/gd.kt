@@ -7,7 +7,7 @@ import exceptions.InvalidRawStringException
 
 /**
  * A raw string factory allows you to abstract the generation of raw string for [GenericGdObjects][GenericGdObject].
- * Internally, using reflection it looks for [PropertyDefinitions][PropertyDefinition] and creates the raw string from there.
+ * Internally, the **default implementation** uses reflection to look for [PropertyDefinitions][PropertyDefinition] and create the raw string from there.
  * @see DynamicRawStringFactory
  */
 interface RawStringFactory {
