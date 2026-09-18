@@ -96,15 +96,26 @@ private class UtilsTest {
     @Test
     @DisplayName("Cacher test")
     fun cacherTest() {
-        val cacher = remember { 12 }
+        var calledLambdaAmount = 0
+        val cacher = remember {
+            calledLambdaAmount += 1
+            12
+        }
         var cachedValue by cacher
 
         Assertions.assertNull(cacher.cachedValue)
-        Assertions.assertEquals(12, cachedValue /* Calls Cacher.getValue */)
+        Assertions.assertEquals(0, calledLambdaAmount)
+        Assertions.assertEquals(12, cachedValue /* Calls Cacher.getValue + lambda */)
+        Assertions.assertEquals(1, calledLambdaAmount)
+
         cachedValue = 20
         Assertions.assertEquals(20, cachedValue /* Calls Cacher.getValue */)
+        Assertions.assertEquals(1, calledLambdaAmount)
 
         cacher.invalidate()
         Assertions.assertNull(cacher.cachedValue)
+        Assertions.assertEquals(1, calledLambdaAmount)
+        Assertions.assertEquals(12, cachedValue /* Calls Cacher.getValue + lambda */)
+        Assertions.assertEquals(2, calledLambdaAmount)
     }
 }
