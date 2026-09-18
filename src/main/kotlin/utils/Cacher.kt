@@ -39,10 +39,10 @@ class Cacher<T>(val valueGetter: CacheValueGetter<T>) {
             this.cachedValue = value
         }
 
-    operator fun getValue(thisRef: Any, property: KProperty<*>): T =
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): T =
         this.value
 
-    operator fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
         this.value = value
     }
 
