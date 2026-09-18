@@ -236,25 +236,42 @@ abstract class AbstractGDClient(
         }
     }
 
+    /**
+     * @see accountID
+     * @throws LoggedOutException if [accountID] is `null`
+     */
     fun getAccountIdOrThrow(): UInt =
-        Objects.requireNonNull(this.accountID, "Cannot get the client's accountID since no credentials were entered")!!
-
-    fun getPlayerIdOrThrow(): UInt =
-        Objects.requireNonNull(this.playerID, "Cannot get the client's accountID since no credentials were entered")!!
+        nonNull(LoggedOutException("Cannot get the client's accountID since this client isn't logged in")) { this.accountID }
 
     /**
-     * If this client is logged in. This doesn't check if the credentials are valid
+     * @see playerID
+     * @throws LoggedOutException if [playerID] is `null`
+     */
+    fun getPlayerIdOrThrow(): UInt =
+        nonNull(LoggedOutException("Cannot get the client's playerID since this client isn't logged in")) { this.accountID }
+
+    /**
+     * If this client is logged in. **This doesn't check if the credentials are valid.**
      * @see credentials
      */
     fun isLoggedIn(): Boolean =
         this.credentials != null
 
+    /**
+     * Throws an exception if this client does not happen to be logged in
+     * @see isLoggedIn
+     * @throws LoggedOutException if the client is not logged in
+     */
     fun throwIfLoggedOut() {
         if (!this.isLoggedIn())
-            throw GdDotKtException("This client must be logged in, but it isn't")
+            throw LoggedOutException()
     }
 }
 
+/**
+ * Represents a **synchronous** geometry dash client.
+ * @see AsyncGDClient
+ */
 @GDClientApi
 class GDClient(
     credentials: Credentials? = null,
@@ -291,6 +308,10 @@ class GDClient(
     }
 }
 
+/**
+ * Represents an **asynchronous** geometry dash client.
+ * @see GDClient
+ */
 @GDClientApi
 class AsyncGDClient(
     credentials: Credentials? = null,
