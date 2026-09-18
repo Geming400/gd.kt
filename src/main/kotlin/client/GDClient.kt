@@ -71,6 +71,20 @@ abstract class AbstractGDClient(
     private var internalAccountInfo: Array<String>? = null
 
     /**
+     * The account info for this client.
+     * If this client is not [logged in][isLoggedIn], an exception will be thrown
+     *
+     * This info is always fetched **synchronously**
+     * @throws LoggedOutException if the client is not logged in and tries to fetch this
+     * @throws IOException see [Call.execute] for info on this exception
+     * @see accountID
+     */
+    val accountInfo: UserInfo by remember {
+        this.throwIfLoggedOut()
+        this.synchronousClient.getUserInfo(this.getAccountIdOrThrow().toInt()).getOrThrow()
+    }
+
+    /**
      * The client's account ID.
      * If not logged in, `null` will be returned.
      *
