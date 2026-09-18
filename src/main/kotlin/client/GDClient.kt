@@ -368,3 +368,15 @@ interface CallbackWithData<T> {
         data: T
     )
 }
+
+/**
+ * A copy of this client that is always synchronous
+ */
+@OptIn(GDClientApi::class)
+val AbstractGDClient.synchronousClient
+    get() = GDClient(
+        this.credentials,
+        this.url,
+        this.gameVersion, this.binaryVersion,
+        this.platform
+    )
