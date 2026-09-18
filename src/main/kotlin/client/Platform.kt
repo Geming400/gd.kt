@@ -13,7 +13,13 @@ enum class Platform(val value: Int) {
     MACOS(8);
 
     companion object {
-        val DEFAULT = WINDOWS
+        /**
+         * The default [Platform] value when this device's
+         * OS cannot be found/is unknown
+         * @see get
+         */
+        inline val DEFAULT
+            get() = WINDOWS
 
         /**
          * Gets the current platform from this device's OS.
