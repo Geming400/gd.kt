@@ -39,6 +39,10 @@ class Cacher<T>(val valueGetter: CacheValueGetter<T>) {
             this.cachedValue = value
         }
 
+    fun invalidate() {
+        this.cachedValue = null
+    }
+
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T =
         this.value
 
