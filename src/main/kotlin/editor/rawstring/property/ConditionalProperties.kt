@@ -85,6 +85,9 @@ open class ConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
         else
             ""
     }
+
+    override fun toString(): String =
+        PropertyDefinition.createToString(this)
 }
 
 /**
@@ -183,4 +186,7 @@ open class MutableConditionalProperty<T, PT, P : AbstractProperty<PT>?>(
         else
             ""
     }
+
+    override fun toString(): String =
+        PropertyDefinition.createToString(this)
 }

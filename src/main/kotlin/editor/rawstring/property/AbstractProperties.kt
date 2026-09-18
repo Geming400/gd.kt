@@ -4,6 +4,7 @@ import editor.rawstring.Id
 import editor.rawstring.serializing.Serializable
 import editor.rawstring.serializing.Serializer
 import editor.rawstring.RawStringable
+import utils.quote
 import kotlin.reflect.KProperty
 
 /**
@@ -12,6 +13,25 @@ import kotlin.reflect.KProperty
  * @see MutableProperty
  */
 interface PropertyDefinition<T> : RawStringable {
+    companion object {
+        /**
+         * Creates the result for a [toString] result,
+         * for a [property][PropertyDefinition]
+         */
+        fun createToString(prop: PropertyDefinition<*>): String {
+            val valueStr = if (prop.value is CharSequence)
+                prop.value.toString().quote()
+            else
+                prop.value.toString()
+
+            return if (prop is AbstractProperty<*>) {
+                "${this::class.simpleName!!}(id = ${prop.id}, defaultValue = ${prop.defaultValue}, value = $valueStr)"
+            } else {
+                "${this::class.simpleName!!}(id = ${prop.id}, value = $valueStr)"
+            }
+        }
+    }
+
     val id: Id
     val serializer: Serializer<T>
 
@@ -232,9 +252,8 @@ abstract class AbstractProperty<T>(final override val id: Id, open val defaultVa
     protected open fun toRawStringHelper(serializer: Serializable<T>, separator: Char = KEY_VAL_SEPARATOR, suffix: String = "", suffixMode: SuffixMode = SuffixMode.DEFAULT): String =
         this.toRawStringHelper(separator, suffix, suffixMode) { serializer.serialize(it) }
 
-    override fun toString(): String {
-        return "${this::class.simpleName!!}(id = ${this.id}, defaultValue = ${this.defaultValue}, value = ${this.value})"
-    }
+    override fun toString(): String =
+        PropertyDefinition.createToString(this)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
