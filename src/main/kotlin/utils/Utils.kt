@@ -164,14 +164,14 @@ fun String.cyclicXor(key: String): String {
  */
 fun String.cyclicXor(key: Int) = this.cyclicXor(key.toString())
 
+internal inline fun <T : Any> nonNull(valueGetter: () -> T?): T =
+    valueGetter()!!
 
-fun cyclicXor(content: ByteArray, key: ByteArray): ByteArray {
-    val result = ByteArray(content.size)
+internal inline fun <T : Any> nonNull(exception: RuntimeException, valueGetter: () -> T?): T =
+    valueGetter() ?: throw exception
 
-    for (i in content.indices) result[i] = (content[i].toInt() xor key[i % key.size].toInt()).toByte()
-
-    return result
-}
+internal inline fun <T : Any> nonNull(message: String, valueGetter: () -> T?): T =
+    nonNull(NullPointerException(message), valueGetter)
 
 /**
  * This is not like kotlin's T0DO() function and is instead used for tests to prevent
