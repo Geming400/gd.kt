@@ -7,8 +7,8 @@ import client.struct.ServerStructureCompanion
 import client.struct.UserInfo
 import editor.rawstring.serializing.Parsable
 import editor.rawstring.serializing.Serializers
-import exceptions.GdDotKtException
 import exceptions.InvalidRawStringException
+import exceptions.LoggedOutException
 import exceptions.ServerErrorException
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
