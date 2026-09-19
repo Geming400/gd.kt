@@ -1,5 +1,6 @@
 package client
 
+import XorKey
 import client.endpoint.Endpoint
 import client.endpoint.Endpoints
 import client.struct.ServerStructure

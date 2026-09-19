@@ -12,6 +12,6 @@ object Endpoints {
     val LOGIN = Endpoint("accounts/loginGJAccount")
 
     // Comments
-    val UPLOAD_COMMENT = Endpoint("uploadGJAccComment20", ResponseHandlers.COMMENT)
+    val UPLOAD_COMMENT = Endpoint("uploadGJComment21", ResponseHandlers.COMMENT)
     val UPLOAD_ACCOUNT_COMMENT = Endpoint("uploadGJAccComment20", ResponseHandlers.COMMENT)
 }
