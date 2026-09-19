@@ -50,7 +50,7 @@ abstract class AbstractGDClient(
             return "S15" + parts.joinToString(separator = "")
         }
 
-        fun createCHK(values: List<Any>, key: String, salt: String? = null): String {
+        private fun createCHK(values: List<Any>, xorer: (hashed: String) -> String, salt: String? = null): String {
             val valuesToCompute = values
                 .map { it.toString() }
                 .toMutableList()
@@ -58,12 +58,28 @@ abstract class AbstractGDClient(
             if (salt != null)
                 valuesToCompute.add(salt)
 
-            val stringToCompute = valuesToCompute.joinToString()
+            val stringToCompute = valuesToCompute.joinToString("")
 
             val hashed = DigestUtils.sha1Hex(stringToCompute)
-            val xored = hashed.cyclicXor(key)
+            val xored = xorer(hashed)
             return Base64.UrlSafe.encode(xored.toByteArray())
         }
+
+        fun createCHK(values: List<Any>, key: String, salt: String? = null): String =
+            createCHK(
+                values,
+                { it.cyclicXor(key) },
+                salt
+            )
+
+        fun createCHK(vararg values: Any, key: String, salt: String? = null): String =
+            createCHK(values.toList(), key, salt)
+
+        fun createCHK(values: List<Any>, key: XorKey, salt: String? = key.salt): String =
+            createCHK(values, { key applyXor it }, salt)
+
+        fun createCHK(vararg values: Any, key: XorKey, salt: String? = key.salt): String =
+            createCHK(values.toList(), key, salt)
     }
 
     protected val client = OkHttpClient()
